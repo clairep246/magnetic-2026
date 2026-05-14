@@ -3,14 +3,14 @@ body{
     font-family: Arial, sans-serif;
 }
 
-.Login{
+.Signup{
     display:flex;
     height:100%;         
     width:100%;          
 }
 
 /* LEFT SIDE */
-.LoginSection{
+.SignupSection{
     width:50%;
     display:flex;
     justify-content:center;
