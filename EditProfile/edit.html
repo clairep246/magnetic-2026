@@ -1,0 +1,143 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="edit.css">
+    <title>Document</title>
+</head>
+<body>
+    <!--Nav bar-->
+    <nav class="navbar">
+
+        <a href="index.html" class="logo">
+            <img src="/images/logo.png" alt="Logo">
+        </a>
+
+        <div class="links">
+            <a href="#">Home</a>
+            <a href="/CreateActivity/create.html">Create Activity</a>
+            <a href="/ActivityBrowser/browser.html">Browse Activities</a>
+            <a href="#">Friends</a>
+            <a href="/profile page/profile.html">Profile</a>
+        
+        </div>
+    </nav>
+
+    <!--Edit Section-->
+    <div class="EditProfile">
+
+        <!-- Top Section -->
+        <div class="top">
+            <button>Back</button>
+            <h1>Edit Profile</h1>
+        </div>
+
+        <!-- Profile Image -->
+        <div class="profile-pic">
+
+            <img src="#" id="preview" alt="Profile Image">
+
+            <div class="uploadFile">
+                <label>Upload Profile Photo</label>
+                <input type="file" accept="image/*">
+            </div>
+
+        </div>
+
+        <!-- Edit Section-->
+        <div class="EditSection">
+
+            <!-- Name -->
+            <label>Name</label>
+            <input type="text" placeholder="Enter your name">
+
+            <!-- About -->
+            <label>About</label>
+            <textarea placeholder="Write something about yourself..."></textarea>
+
+            <!-- Course -->
+            <label>Course</label>
+
+            <select name="Majors" id="Major">
+
+                <option value="">Select your major</option>
+
+                <option>Computing</option>
+                <option>Business</option>
+                <option>Engineering</option>
+                <option>Sciences</option>
+                <option>Humanities and Social Sciences</option>
+                <option>Medicine</option>
+                <option>Law</option>
+                <option>Prefer not to say</option>
+
+            </select>
+
+            <!-- Interests -->
+            <label>Interests</label>
+            <input type="text" placeholder="e.g. music, sports, coding">
+
+            <!-- Residence -->
+            <label>Residences</label>
+
+            <select name="Residence" id="Residence">
+
+                <option value="">Select your residence</option>
+                <option>NIL</option>
+
+                <!-- Halls -->
+                <optgroup label="Halls of Residence">
+
+                    <option>Eusoff Hall</option>
+                    <option>Kent Ridge Hall</option>
+                    <option>King Edward VII Hall</option>
+                    <option>Raffles Hall</option>
+                    <option>Sheares Hall</option>
+                    <option>Temasek Hall</option>
+
+                </optgroup>
+
+                <!-- Houses -->
+                <optgroup label="Houses">
+
+                    <option>Helix House</option>
+                    <option>Lighthouse House</option>
+                    <option>Pioneer House</option>
+                    <option>Valour House</option>
+
+                </optgroup>
+
+                <!-- Residential Colleges -->
+                <optgroup label="Residential Colleges">
+
+                    <option>NUS College Residences</option>
+                    <option>College of Alice & Peter Tan (CAPT)</option>
+                    <option>Residential College 4 (RC4)</option>
+                    <option>Ridge View Residential College (RVRC)</option>
+                    <option>Tembusu College</option>
+                    <option>Acacia College</option>
+
+                </optgroup>
+
+                <!-- Student Residences -->
+                <optgroup label="Student Residences">
+
+                    <option>Prince George’s Park Residences (PGPR)</option>
+                    <option>UTown Residence</option>
+
+                </optgroup>
+
+            </select>
+
+            <!-- Location -->
+            <label>Location</label>
+            <input type="text" placeholder="your location e.g. Jurong or put NIL">
+
+        </div>
+
+        <!-- Save Button -->
+        <button class="save">Save Profile</button>
+
+    </div>
+</body>
+</html>

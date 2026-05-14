@@ -1,0 +1,109 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #F4F8F7;
+}
+
+/*Nav bar*/
+.navbar {
+    width: 98%;
+    background-color: white;
+    border-bottom: 1px solid #ddd;
+    padding-left: 30px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo img {
+    width: 140px;
+    height: auto;
+}
+
+.links {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    padding-right: 40px;
+}
+
+.links a {
+    text-decoration: none;
+    color: #333;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.links a:hover {
+    color: #305281;
+}
+
+/*----------Create Activity----------*/
+.CreateActivity {
+    max-width: 98%;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.top {
+    display: flex;
+    align-items: center;
+    gap: 430px;
+}
+
+.top button {
+    padding: 6px 12px;
+    cursor: pointer;
+    background: #2d6a4f;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.top button:hover {
+    background: #1b4332;
+}
+
+.EditSection {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+label {
+    font-weight: bold;
+}
+
+input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+textarea {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    height: 80px;
+}
+
+textarea::placeholder {
+    font-family: Arial, san-serif;
+}
+
+.save {
+    margin-top: 20px;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    background: #2d6a4f;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.save:hover {
+    background: #1b4332;
+}

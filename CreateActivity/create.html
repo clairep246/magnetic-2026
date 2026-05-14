@@ -1,0 +1,69 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="create.css">
+    <title>Document</title>
+</head>
+<body>
+    <!--Nav Bar-->
+    <nav class="navbar">
+
+        <a href="index.html" class="logo">
+            <img src="/images/logo.png" alt="Logo">
+        </a>
+
+        <div class="links">
+            <a href="#">Home</a>
+            <a href="create.html">Create Activity</a>
+            <a href="/ActivityBrowser/browser.html">Browse Activities</a>
+            <a href="#">Friends</a>
+            <a href="/profile page/profile.html">Profile</a>
+       
+        </div>
+    </nav>
+
+    <!--Create Activity section-->
+    <div class="CreateActivity">
+
+        <!-- Top Section -->
+        <div class="top">
+            <button>Back</button>
+            <h1>Create Activity</h1>
+        </div>
+
+        <!-- Edit Section-->
+        <div class="EditSection">
+
+            <!-- Name -->
+            <label>Activity Name</label>
+            <input type="text" placeholder="Enter activity name">
+
+            <!-- About -->
+            <label>Description</label>
+            <textarea placeholder="Description of activity"></textarea>
+
+            <!--Location-->
+            <label>Location</label>
+            <input type="text" placeholder="eg NUS, Marina Bay">
+
+            <!-- Date -->
+            <label>Date</label>
+            <input type="date">
+
+            <!--Time-->
+            <label>Time</label>
+            <input type="time">
+
+            <label>Max number of participants</label>
+            <input type="number" placeholder="if no limit put NIL">
+
+        </div>
+
+         <!-- Save Button -->
+        <button class="save">Save Activity</button>
+
+    </div>
+
+</body>
+</html>
