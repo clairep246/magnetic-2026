@@ -1,6 +1,6 @@
-body{
-    margin:0;
-    font-family: Arial, sans-serif;
+body {
+    font-family: 'Fredoka', sans-serif;
+    background-color: #fff1e4;
 }
 
 .Login{
@@ -16,7 +16,6 @@ body{
     justify-content:center;
     align-items:center;
     padding:60px;
-    background:#f4f8f7;
 }
 
 .box{
@@ -26,11 +25,11 @@ body{
 .box h1{
     font-size:40px;
     margin-bottom:15px;
-    color:#111;
+    color:#3E07AC;
 }
 
 .subtitle{
-    color:#777;
+    color:#3E07AC;
     margin-bottom:20px;
 }
 
@@ -54,32 +53,32 @@ button{
     padding:18px;
     border:none;
     border-radius:12px;
-    background:#8277b9;
+    background:#AB9EE2;
     color:white;
     font-size:18px;
     font-weight:bold;
     cursor:pointer;
-    transition:0.3s;
 }
 
 button:hover{
-    opacity:0.9;
+    transform: translateY(-3px);
+    background-color: #654c91;
 }
 
 .switch-page{
     margin-top:25px;
     text-align:center;
-    color:#666;
+    color: #3E07AC;
 }
 
 .switch-page a{
-    color:#8170b0;
+    color:#3E07AC;
     text-decoration:none;
     font-weight:bold;
 }
 
 .switch-page a:hover {
-    color:#4e4679;
+    text-decoration: underline;
 }
 
 /* RIGHT SIDE */

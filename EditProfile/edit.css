@@ -1,14 +1,11 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #F4F8F7;
+    font-family: 'Fredoka', sans-serif;
+    background-color: #fff1e4;
 }
 
 /*Nav bar*/
 .navbar {
     width: 98%;
-    background-color: white;
-    border-bottom: 1px solid #ddd;
-    padding-left: 30px;
 
     display: flex;
     justify-content: space-between;
@@ -18,24 +15,25 @@ body {
 .logo img {
     width: 140px;
     height: auto;
+    padding-left: 10px;
 }
 
 .links {
     display: flex;
     gap: 30px;
     align-items: center;
-    padding-right: 40px;
+    padding-right: 20px;
 }
 
 .links a {
     text-decoration: none;
-    color: #333;
+    color: #3e07ac;
     font-size: 16px;
     transition: 0.3s;
 }
 
 .links a:hover {
-    color: #305281;
+    text-decoration: underline;
 }
 
 
@@ -55,7 +53,7 @@ body {
 .top button {
     padding: 6px 12px;
     cursor: pointer;
-    background: #2d6a4f;
+    background: #AB9EE2;
     color: white;
     border: none;
     border-radius: 8px;
@@ -63,7 +61,7 @@ body {
 }
 
 .top button:hover {
-    background: #1b4332;
+    background: #706799;
 }
 
 .profile-pic {
@@ -97,6 +95,7 @@ body {
 
 label {
     font-weight: bold;
+    color:#3e07ac;
 }
 
 input {
@@ -129,7 +128,7 @@ select {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
-    background: #2d6a4f;
+    background: #AB9EE2;
     color: white;
     border: none;
     border-radius: 8px;
@@ -137,5 +136,5 @@ select {
 }
 
 .save:hover {
-    background: #1b4332;
+    background: #706799;
 }
