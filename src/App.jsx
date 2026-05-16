@@ -1,18 +1,35 @@
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { supabase } from './supabaseClient'
 
 export default function App() {
-  useEffect(() => {
-    console.log("useEffect is running")
+  const [todos, setTodos] = useState([])
+  const [error, setError] = useState(null)
 
-    async function test() {
-      const result = await supabase.from('test').select('*')
-      console.log(result)
+  useEffect(() => {
+    async function loadTodos() {
+      const { data, error } = await supabase.from('todos').select()
+
+      if (error) {
+        setError(error.message)
+        return
+      }
+
+      setTodos(data ?? [])
     }
 
-    test()
+    loadTodos()
   }, [])
 
-  return <h1>Check console</h1>
+  if (error) {
+    return <p>Unable to load todos: {error}</p>
+  }
+
+  return (
+    <ul>
+      {todos.map((todo) => (
+        <li key={todo.id}>{todo.name}</li>
+      ))}
+    </ul>
+  )
 }
