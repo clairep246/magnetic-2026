@@ -1,63 +1,71 @@
 body {
     font-family: 'Fredoka', sans-serif;
     background-color: #fff1e4;
+    margin: 0
 }
 
 .Login{
-    display:flex;
-    height:100%;         
-    width:100%;          
+    display: flex;   
 }
 
-/* LEFT SIDE */
-.LoginSection{
-    width:50%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    padding:60px;
+/* Left */
+.Left {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 60px;
+    text-align: center;
+}
+
+.Left img {
+    width: 200px;
+    height: auto;
+    margin-bottom: -50px;
 }
 
 .box{
-    width:100%;
+    width: 100%;
+    gap: 10px;
 }
 
 .box h1{
-    font-size:40px;
-    margin-bottom:15px;
-    color:#3E07AC;
+    font-size: 40px;
+    color: #3E07AC;
 }
 
 .subtitle{
-    color:#3E07AC;
-    margin-bottom:20px;
+    color: #3E07AC;
+    margin-top: -10px;
+    margin-bottom: 20px;
 }
 
 form{
-    display:flex;
-    flex-direction:column;
-    gap:20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 input{
-    width:100%;
-    padding:18px 20px;
-    border:none;
-    border-radius:12px;
-    background:white;
-    font-size:16px;
+    width: 100%;
+    padding: 18px 20px;
+    border: none;
+    border-radius: 12px;
+    background: white;
+    font-size: 16px;
 }
 
 button{
-    margin-top:10px;
-    padding:18px;
-    border:none;
-    border-radius:12px;
-    background:#AB9EE2;
-    color:white;
-    font-size:18px;
-    font-weight:bold;
-    cursor:pointer;
+    margin-top: 10px;
+    padding: 18px;
+    border: none;
+    border-radius: 12px;
+    background: #AB9EE2;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
 button:hover{
@@ -66,23 +74,23 @@ button:hover{
 }
 
 .switch-page{
-    margin-top:25px;
-    text-align:center;
+    margin-top: 25px;
+    text-align: center;
     color: #3E07AC;
 }
 
 .switch-page a{
-    color:#3E07AC;
-    text-decoration:none;
-    font-weight:bold;
+    color: #3E07AC;
+    text-decoration: none;
+    font-weight: bold;
 }
 
 .switch-page a:hover {
     text-decoration: underline;
 }
 
-/* RIGHT SIDE */
-.Image{
+/* Right */
+.Right {
     width:50%;
     background:#d8d8de;
     display:flex;
@@ -92,21 +100,18 @@ button:hover{
 
 /* MOBILE */
 @media(max-width:900px){
-
-    .Login{
-        flex-direction:column;
+    .Login {
+        width: 100%;
+        margin-top: 25%;
+        align-items: center;
+        justify-content: center;
     }
 
-    .LoginSection,
-    .Image{
-        width:100%;
+    .Left {
+        width: 100%;
     }
-
-    .Image{
-        min-height:250px;
-    }
-
-    .box h1{
-        font-size:36px;
+    
+    .Right {
+        width: 0;
     }
 }

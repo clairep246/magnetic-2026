@@ -4,17 +4,16 @@ body {
 }
 
 .logo {
-    width: 98%;
-
+    width: 100%;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: flex-start;
 }
+
 /*Image on top*/
 .logo img {
     width: 200px;
     height: auto;
-    padding-left: 10px;
+    margin-left: 10px;
 }
 
 .Welcome {
@@ -37,13 +36,13 @@ body {
 }
 
 .Left h1 {
-    font-size:60px;
-    color:#3E07AC;
+    font-size: 60px;
+    color: #3E07AC;
     margin-bottom: 0px;
 }
 
 .Left p {
-    font-size: 30px;
+    font-size: 25px;
     color: #5e35b1;
     margin-bottom: 30px;
 }
@@ -56,9 +55,9 @@ body {
     background: #AB9EE2;
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 20px;
     cursor: pointer;
-    align-self: center;
+    transition: 0.3s;
     text-decoration: none;
 }
 
@@ -67,14 +66,43 @@ body {
     background-color: #654c91;
 }
 
-/* Image Section */
 .Right {
     width: 50%;
     display: flex;
-    justify-content: flex-end;
+    align-items: flex-end;
 }
 
 .Right img {
-    max-width: 100%;
+    width: 100%;
     height: auto;
+}
+
+@media (width <= 600px) {
+    body {
+        margin: 0;
+    }
+    .logo {
+        justify-content: center;
+
+    }
+
+    .logo img {
+        width: 300px;
+        height: auto;
+    }  
+
+    .Welcome {
+        flex-direction: column-reverse;
+        gap: 20px;
+        margin-top: -10%;
+    }
+
+    .Left {
+        width: 100%;
+    }
+
+    .Right {
+        width: 100%;
+    }
+    
 }
