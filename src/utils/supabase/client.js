@@ -1,4 +1,4 @@
-import { createBrowserClient } from '@supabase/ssr'
+import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 const supabaseKey =
@@ -11,5 +11,5 @@ export const createClient = () => {
     )
   }
 
-  return createBrowserClient(supabaseUrl, supabaseKey)
+  return createSupabaseClient(supabaseUrl, supabaseKey)
 }
