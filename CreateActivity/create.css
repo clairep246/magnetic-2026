@@ -5,7 +5,7 @@ body {
 
 /*Nav bar*/
 .navbar {
-    width: 98%;
+    width: 100%;
     background-color: white;
     border-bottom: 1px solid #ddd;
     padding-left: 30px;
