@@ -6,6 +6,7 @@ body {
 
 .Login{
     display: flex;   
+    height: 100%;
 }
 
 /* Left */
@@ -96,6 +97,11 @@ button:hover{
     display:flex;
     justify-content:center;
     align-items:center;
+}
+
+.Right img{
+    width: 100%;
+    height: auto;
 }
 
 /* MOBILE */
