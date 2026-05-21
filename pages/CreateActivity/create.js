@@ -40,6 +40,7 @@ function selectedInterests(button) {
     }
 
     await supabase.from("Activity").insert([activityData]);
+    console.log("Activity created")
  }
 
 document.querySelectorAll(".interests button").forEach( button => {
