@@ -20,7 +20,7 @@ function selectedInterests(button) {
 
  //Storing in the database 
  async function saveActivity() {
-    const { supabase } = await import("../../src/supabaseClient.js");
+    import { supabase } from "../../src/supabaseClient.js";
 
     const name = document.getElementById("name").value;
     const description = document.getElementById("description").value;
@@ -47,5 +47,5 @@ document.querySelectorAll(".interests button").forEach( button => {
     button.addEventListener("click", () => selectedInterests(button));
 });
 
-document.getElementById("saveActivity").addEventListener("click", () => saveActivity);
+document.getElementById("saveActivity").addEventListener("click", () => saveActivity());
 
