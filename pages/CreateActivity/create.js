@@ -10,42 +10,60 @@ function selectedInterests(button) {
     } else {
         store.push(interest);
     }
-    //Debugging
+    /*Debugging
     console.log(store);
     const debugText = document.getElementById("check");
 
     debugText.textContent =
-        "Selected Interests: " + store.join(", ");
+        "Selected Interests: " + store.join(", ");*/
  }
 
- //Storing in the database 
- async function saveActivity() {
-    import { supabase } from "../../src/supabaseClient.js";
+async function saveActivity() {
+    const save = document.getElementById("saveActivity");
+    save.textContent = "Saving...";
 
-    const name = document.getElementById("name").value;
-    const description = document.getElementById("description").value;
-    const location = document.getElementById("location").value
-    const date = document.getElementById("date").value
-    const time = document.getElementById("time").value
-    const participants = document.getElementById("participants").value
+    try {
+        const { supabase }= await import("../../src/supabaseClient.js");
+  
+        const name = document.getElementById("name").value;
+        const description = document.getElementById("description").value;
+        const location = document.getElementById("location").value
+        const date = document.getElementById("date").value
+        const time = document.getElementById("time").value
+        const participants = document.getElementById("participants").value
 
-    const activityData = {
-        name: name,
-        description: description,
-        location: location,
-        time: time,
-        date: date,
-        interests: store,
-        participants: participants,
+        const activityData = {
+            name: name,
+            description: description,
+            location: location,
+            time: time,
+            date: date,
+            interests: store,
+            participants: participants,
+        }
+
+        const { error } = await supabase.from("Activity").insert([activityData]);
+        if (error) {
+            throw error;
+        }
+
+        alert("Activity successfully created!");
+        window.location.href = "/"; 
+
+    } catch (error) {
+        console.error("Save failed:", error);
+        alert("Failed to save activity.");
+
+    } finally {
+        save.textContent = "Save Activity";
     }
-
-    await supabase.from("Activity").insert([activityData]);
-    console.log("Activity created")
- }
+}
 
 document.querySelectorAll(".interests button").forEach( button => {
+
     button.addEventListener("click", () => selectedInterests(button));
-});
+    
+    });
 
 document.getElementById("saveActivity").addEventListener("click", () => saveActivity());
 
