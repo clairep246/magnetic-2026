@@ -17,6 +17,7 @@ export default defineConfig({
         profile: resolve(root, 'pages/Profile/profile.html'),
         editProfile: resolve(root, 'pages/EditProfile/edit.html'),
         createActivity: resolve(root, 'pages/CreateActivity/create.html'),
+        activityPage: resolve(root, 'pages/ActivityPage/activity.html'),
         activityBrowser: resolve(root, 'pages/ActivityBrowser/browser.html'),
       },
     },

@@ -1,3 +1,4 @@
+import { supabase } from "../../src/supabaseClient.js";
 //Interest selection
 let store = [];
 
@@ -23,8 +24,6 @@ async function saveActivity() {
     save.textContent = "Saving...";
 
     try {
-        const { supabase }= await import("../../src/supabaseClient.js");
-  
         const name = document.getElementById("name").value;
         const description = document.getElementById("description").value;
         const location = document.getElementById("location").value
@@ -42,17 +41,57 @@ async function saveActivity() {
             participants: participants,
         }
 
-        const { error } = await supabase.from("Activity").insert([activityData]);
+        if (!name) {
+            alert("Please enter an activity name");
+            return;
+        }
+
+        if (!location) {
+            alert("Please enter a location");
+            return;
+        }
+
+        if (!date) {
+            alert("Please select a date");
+            return;
+        }
+
+        const storedDate = new Date(date);
+        const today = new Date();
+        today.setHours(0,0,0,0);
+        storedDate.setHours(0,0,0,0);
+
+        if (storedDate < today) {
+            alert("Cannot choose past dates. Please choose a future date");
+            return;
+}
+        if (!time) {
+            alert("Please select a time");
+            return;
+        }
+
+        if (!participants) {
+            alert("Please enter number of participants");
+            return;
+        }
+
+        if (store.length === 0) {
+            alert("Please select at least one interest");
+            return;
+        }
+
+        const { data, error } = await supabase.from("Activity").insert([activityData]).select();
         if (error) {
             throw error;
         }
 
         alert("Activity successfully created!");
-        window.location.href = "/"; 
+        const newActivity = data[0];
+        window.location.href = `../ActivityPage/activity.html?id=${newActivity.id}`; 
 
     } catch (error) {
-        console.error("Save failed:", error);
-        alert("Failed to save activity.");
+        console.error("Save activity failed", error);
+        alert("Failed to save activity. Please try again");
 
     } finally {
         save.textContent = "Save Activity";
@@ -66,4 +105,3 @@ document.querySelectorAll(".interests button").forEach( button => {
     });
 
 document.getElementById("saveActivity").addEventListener("click", () => saveActivity());
-
