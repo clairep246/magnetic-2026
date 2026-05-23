@@ -1,15 +1,10 @@
+import { supabase } from "../../src/supabaseClient.js";
 const details = new URLSearchParams(window.location.search);
 retrieveDetails();
 
 async function retrieveDetails() {
     try {
-        const { supabase } = await import("../../src/supabaseClient.js");
-
-        const { data, error } = await supabase
-        .from("Activity")
-        .select('*')
-        .eq('id', details.get('id'))
-        .single()
+        const { data, error } = await supabase.from("Activity").select('*').eq('id', details.get('id')).single();
 
         if (error) {
             throw error;

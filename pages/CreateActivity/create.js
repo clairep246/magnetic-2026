@@ -3,7 +3,7 @@ import { supabase } from "../../src/supabaseClient.js";
 let store = [];
 
 function selectedInterests(button) {
-    const interest = button.textContent.trim();
+    const interest = button.textContent;
     button.classList.toggle("selected");
 
     if (store.includes(interest)) {
@@ -64,7 +64,8 @@ async function saveActivity() {
         if (storedDate < today) {
             alert("Cannot choose past dates. Please choose a future date");
             return;
-}
+        }
+        
         if (!time) {
             alert("Please select a time");
             return;
@@ -99,9 +100,7 @@ async function saveActivity() {
 }
 
 document.querySelectorAll(".interests button").forEach( button => {
-
-    button.addEventListener("click", () => selectedInterests(button));
-    
+    button.addEventListener("click", () => selectedInterests(button)); 
     });
 
 document.getElementById("saveActivity").addEventListener("click", () => saveActivity());
