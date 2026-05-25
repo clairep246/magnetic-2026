@@ -1,58 +1,74 @@
 body {
     font-family: 'Fredoka', sans-serif;
-    background-color: #fff1e4;
+    background-image: url("/images/activity_background.png");
+    height: 100vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 /*Nav bar*/
 .navbar {
-    width: 98%;
-
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-left: 20px;
 }
 
 .logo img {
     width: 140px;
     height: auto;
-    padding-left: 10px;
 }
 
 .links {
     display: flex;
     gap: 30px;
     align-items: center;
-    padding-right: 20px;
+    padding-right: 60px;
 }
 
 .links a {
     text-decoration: none;
-    color: #3e07ac;
+    font-weight: bold;
+    color:#3E07AC;
     font-size: 16px;
+    cursor: pointer;
     transition: 0.3s;
 }
 
 .links a:hover {
     text-decoration: underline;
+    transition-duration: 2s;
 }
-
 
 /*Edit Profile*/
 .EditProfile {
-    max-width: 98%;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
     padding-left: 30px;
     padding-right: 30px;
+    padding-bottom: 20px;
 }
 
 .top {
     display: flex;
-    align-items: center;
-    gap: 430px;
+    flex-direction: row;
+    gap: 455px;
 }
 
-.top button {
-    padding: 6px 12px;
-    cursor: pointer;
+.top h1 {
+    color:#3E07AC;
+}
+
+.save {
+    width: 80px;
+    height: 30px;
+    margin-top: 20px;
     background: #AB9EE2;
     color: white;
     border: none;
@@ -60,13 +76,14 @@ body {
     cursor: pointer;
 }
 
-.top button:hover {
+.save:hover {
     background: #706799;
 }
 
+
 .profile-pic {
-    margin-top: 15px;
     text-align: center;
+    margin-bottom: 15px;
 }
 
 .profile-pic img {
@@ -86,11 +103,46 @@ body {
     margin-bottom: 10px;
 }
 
-
 .EditSection {
+    width: 100%;
+    display: flex;
+    flex-direction: row;    
+    flex-wrap: wrap;
+    gap: 25px;
+    align-items: flex-start;
+}
+
+.col1, .col2, .col3 {
+    flex: 1;
     display: flex;
     flex-direction: column;
+    gap: 15px;
+}
+
+.interests {
+    width: auto;
+    display: flex;
+    flex-wrap: wrap;
     gap: 10px;
+}
+
+.interests button {
+    padding: 12px 20px;
+    background:#AB9EE2;
+    color: white;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.interests button:hover {
+    transform: translateY(-3px);
+}
+
+.interests button.selected {
+    background-color: #5d4da4;
+    color: white;
 }
 
 label {
@@ -99,16 +151,18 @@ label {
 }
 
 input {
+    margin-top: -10px;
     padding: 8px;
     border: 1px solid #ccc;
-    border-radius: 51px;
+    border-radius: 12px;
 }
 
 textarea {
+    margin-top: -10px;
     padding: 8px;
     border: 1px solid #ccc;
-    border-radius: 51px;
-    height: 30px;
+    border-radius: 12px;
+    height: 100px;
 }
 
 textarea::placeholder {
@@ -116,25 +170,10 @@ textarea::placeholder {
 }
 
 select {
+    margin-top: -10px;
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 6px;
     background: white;
     font-size: 14px;
-}
-
-.save {
-    margin-top: 20px;
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    background: #AB9EE2;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-.save:hover {
-    background: #706799;
 }

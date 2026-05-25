@@ -19,6 +19,36 @@ function selectedInterests(button) {
         "Selected Interests: " + store.join(", ");*/
  }
 
+ function previewActivity() {
+    const name = document.getElementById("name").value;
+    const description = document.getElementById("description").value;
+    const location = document.getElementById("location").value
+    const date = document.getElementById("date").value
+    const time = document.getElementById("time").value
+    const participants = document.getElementById("participants").value
+
+    document.getElementById("previewName").textContent = name;
+    document.getElementById('previewDescription').textContent = description;
+    document.getElementById('previewLocation').textContent = location;
+    document.getElementById('previewParticipants').textContent = participants;
+    document.getElementById('previewInterests').textContent = store;
+
+    const formattedTime = new Date(`2026-01-01T${time}`).toLocaleTimeString(navigator.language, {
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true
+        });
+        document.getElementById('previewTime').textContent = formattedTime;
+
+        const formattedDate = new Date(date).toLocaleDateString(navigator.language, {
+             day: 'numeric',
+             month: 'long',
+             year: 'numeric'
+        });
+
+        document.getElementById('previewDate').textContent = formattedDate;
+ }
+
 async function saveActivity() {
     const save = document.getElementById("saveActivity");
     save.textContent = "Saving...";
@@ -88,7 +118,7 @@ async function saveActivity() {
 
         alert("Activity successfully created!");
         const newActivity = data[0];
-        window.location.href = `../ActivityPage/activity.html?id=${newActivity.id}`; 
+        window.location.href = `../ActivityPage/activity.html`; 
 
     } catch (error) {
         console.error("Save activity failed", error);
@@ -103,4 +133,5 @@ document.querySelectorAll(".interests button").forEach( button => {
     button.addEventListener("click", () => selectedInterests(button)); 
     });
 
-document.getElementById("saveActivity").addEventListener("click", () => saveActivity());
+document.getElementById('preview').addEventListener("click", previewActivity);
+document.getElementById("saveActivity").addEventListener("click", saveActivity);

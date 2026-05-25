@@ -11,14 +11,14 @@
     <!--Nav Bar-->
     <nav class="navbar">
 
-        <a href="/" class="logo">
+        <a class="logo">
             <img src="/images/logo.png" alt="Logo">
         </a>
 
         <div class="links">
-            <a href="/">Home</a>
-            <a href="create.html">Create Activity</a>
+            <a style="text-decoration: underline;">Create Activity</a>
             <a href="/pages/ActivityBrowser/browser.html">Browse Activities</a>
+            <a href="/pages/ActivityPage/activity.html">Your Activities</a>
             <a href="/">Friends</a>
             <a href="/pages/Profile/profile.html">Profile</a>
        
@@ -28,61 +28,85 @@
     <!--Create Activity section-->
     <div class="CreateActivity">
 
-        <!-- Top Section -->
-        <div class="top">
-            <button>Back</button>
-            <h1>Create Activity</h1>
-        </div>
-
         <!-- Edit Section-->
         <div class="EditSection">
-
-            <!-- Name -->
-            <label>Activity Name</label>
-            <input id="name" type="text" placeholder="Enter activity name" maxlength="100">
-
-            <!-- About -->
-            <label>Description</label>
-            <textarea id="description" placeholder="Description of activity" maxlength="1000"></textarea>
-
-            <!--Location-->
-            <label>Location</label>
-            <input id="location" type="text" placeholder="eg NUS, Marina Bay" maxlength="100">
-
-            <!-- Date -->
-            <label>Date</label>
-            <input id="date" type="date">
-
-            <!--Time-->
-            <label>Time</label>
-            <input id="time" type="time">
-            
-            <!--Interests-->
-            <label>Interests</label>
-            <div class="interests">
-                <button type="button">Technology</button>
-                <button type="button" >Gaming</button>
-                <button type="button">Sports</button>
-                <button type="button">Music</button>
-                <button type="button">Arts and Culture</button>
-                <button type="button">Film and TV</button>
-                <button type="button">Food</button>
-                <button type="button">Travel</button>
-                <button type="button">Fashion</button>
-                <button type="button">Science</button>
-                <button type="button">Nature</button>
-                <button type="button">Volunteering</button>
-                <button type="button">Others</button>
-                <!--<p id="check">Selected: </p>-->
+            <div class="left">
+                <h1>Preview</h1>
+            <div class="leftBox">
+                <h1 id="previewName">Name of activity</h1>
+                <p class='label'>Description:
+                    <span id="previewDescription"> </span>
+                </p>
+                <p class="label">Interests:
+                    <span id="previewInterests"> </span>
+                 </p>
+                <p class="label">Location:
+                    <span id="previewLocation"> </span>
+                </p>
+                <p class="label">Date:
+                    <span id="previewDate"> </span>
+                </p>
+                <p class="label">Time:
+                    <span id="previewTime"> </span>
+                </p>
+                <p class="label">Number of participants:
+                    <span id="previewParticipants">  </span>
+                </p>  
+            </div>
             </div>
 
-            <label>Max number of participants</label>
-            <input id="participants" type="number" placeholder="if no limit put 0">
+            <div class="right">
+                <!-- Name -->
+                <label>Activity Name</label>
+                <input id="name" type="text" placeholder="Enter activity name" maxlength="100">
 
+                <!-- About -->
+                <label>Description</label>
+                <textarea id="description" placeholder="Description of activity" maxlength="260"></textarea>
+
+                <!--Location-->
+                <label>Location</label>
+                <input id="location" type="text" placeholder="eg NUS, Marina Bay" maxlength="10">
+
+                <!-- Date -->
+                <label>Date</label>
+                <input id="date" type="date">
+
+                <!--Time-->
+                <label>Time</label>
+                <input id="time" type="time">
+                
+                <!--Interests-->
+                <label>Interests</label>
+                <div class="interests">
+                    <button type="button">Technology</button>
+                    <button type="button" >Gaming</button>
+                    <button type="button">Sports</button>
+                    <button type="button">Music</button>
+                    <button type="button">Arts and Culture</button>
+                    <button type="button">Film and TV</button>
+                    <button type="button">Food</button>
+                    <button type="button">Travel</button>
+                    <button type="button">Fashion</button>
+                    <button type="button">Science</button>
+                    <button type="button">Nature</button>
+                    <button type="button">Volunteering</button>
+                    <button type="button">Others</button>
+                    <!--<p id="check">Selected: </p>-->
+                </div>
+
+                <label>Max number of participants</label>
+                <input id="participants" type="number" placeholder="if no limit put 0">
+
+                 <!-- Save Button -->
+                  <div class="save">
+                        <button id="saveActivity" type="button">Save Activity</button>
+                        <button id="preview" type="button">Preview Activity</button>
+                   </div>
+            </div>
         </div>
 
-         <!-- Save Button -->
-        <button id="saveActivity" class="save">Save Activity</button>
+        
 
     </div>
 

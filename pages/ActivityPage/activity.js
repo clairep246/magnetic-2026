@@ -1,39 +1,113 @@
 import { supabase } from "../../src/supabaseClient.js";
-const details = new URLSearchParams(window.location.search);
-retrieveDetails();
 
-async function retrieveDetails() {
+let index = 0;
+let activities = []
+
+async function displayActivities() {
     try {
-        const { data, error } = await supabase.from("Activity").select('*').eq('id', details.get('id')).single();
+        const {data, error} = await supabase.from("Activity").select("*").eq("name","Test");
 
         if (error) {
             throw error;
         }
+        
+        activities = data;
 
-        //update the text
-        document.getElementById('createdBy').textContent = data.id;
-        document.getElementById('title').textContent = data.name;
-        document.getElementById('description').textContent = `\n data.description`;
-        document.getElementById('interests').textContent = `${(data.interests ?? []).join(', ')}`;
-        document.getElementById('location').textContent = data.location;
-        document.getElementById('participants').textContent = data.participants;
+        //creating the activities list 
+        const container = document.getElementById("activityContainer");
+        container.innerHTML = "";
 
-        const formattedTime = new Date(`2026-01-01T${data.time}`).toLocaleTimeString(navigator.language, {
-            hour: 'numeric',
-            minute: '2-digit',
-            hour12: true
-        });
-        document.getElementById('time').textContent = formattedTime;
+        for (let i = index; i < index + 3; i++ ) {
+            //no more activity by user 
+            if (i >= activities.length) {
+                break;
+            }
+            const activity = activities[i];
 
-        const formattedDate = new Date(data.date).toLocaleDateString(navigator.language, {
-             day: 'numeric',
-             month: 'long',
-             year: 'numeric'
-        });
+            const formattedDate = new Date(activity.date).toLocaleDateString(navigator.language, {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
 
-        document.getElementById('date').textContent = formattedDate;
+            const formattedTime = new Date(`2026-01-01T${activity.time}`).toLocaleTimeString(navigator.language, {
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+            });
 
-     } catch (error) {
-        console.error("Create activity page failed:", error);
+            //creating each card
+            const activityBox = document.createElement("div");
+            activityBox.innerHTML = `
+
+                <div class="activityBox">
+
+                    <h1>${activity.name}</h1>
+
+                    <p class="label">Description:
+                        <span class='description'>${activity.description}</span>
+                    </p>
+
+                    <p class="label">Interests:
+                        <span>${activity.interests.join(", ")}</span>
+                    </p>
+
+                    <p class="label">Location:
+                        <span>${activity.location}</span>
+                    </p>
+
+                    <p class="label">Date:
+                        <span>${formattedDate}</span>
+                    </p>
+
+                    <p class="label">Time:
+                        <span>${formattedTime}</span>
+                    </p>
+
+                    <p class="label">Number of participants:
+                        <span>${activity.participants}</span>
+                    </p>
+
+                </div>
+            `;
+            container.appendChild(activityBox);
+            console.log(activities);
+        }
+
+        //Button states for back and forth 
+        if (index === 0) {
+            document.getElementById("prevButton").disabled = true;
+        } else {
+            document.getElementById("prevButton").disabled = false;
+        }
+
+        if (index + 3 >= activities.length) {
+            document.getElementById("nextButton").disabled = true;
+        } else {
+            document.getElementById("nextButton").disabled = false;
+        }
+
+    } catch (error) {
+        console.log("Failed to get activities:" + error);
     }
 }
+
+function nextActivities() {
+    if (index + 3 < activities.length) {
+        index += 3;
+        displayActivities();
+    }
+}
+
+function prevActivities() {
+    if (index - 3 >= 0) {
+        index -= 3;
+        displayActivities();
+    }
+
+}
+
+displayActivities();
+document.getElementById("nextButton").addEventListener("click", nextActivities);
+document.getElementById("prevButton").addEventListener("click", prevActivities);
+

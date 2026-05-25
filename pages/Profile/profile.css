@@ -1,18 +1,22 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #F4F8F7;
+    font-family: 'Fredoka', sans-serif;
+    background-image: url("/images/activity_background.png");
+    height: 100vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 /*Nav bar*/
 .navbar {
-    width: 98%;
-    background-color: white;
-    border-bottom: 1px solid #ddd;
-    padding-left: 30px;
-
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-left: 20px;
 }
 
 .logo img {
@@ -24,16 +28,109 @@ body {
     display: flex;
     gap: 30px;
     align-items: center;
-    padding-right: 40px;
+    padding-right: 60px;
 }
 
 .links a {
     text-decoration: none;
-    color: #333;
+    font-weight: bold;
+    color:#3E07AC;
     font-size: 16px;
+    cursor: pointer;
     transition: 0.3s;
 }
 
 .links a:hover {
-    color: #305281;
+    text-decoration: underline;
+    transition-duration: 2s;
+}
+
+/*Edit Profile*/
+.EditProfile {
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 20px;
+}
+
+.top {
+    display: flex;
+    flex-direction: row;
+    gap: 455px;
+}
+
+.top h1 {
+    color:#3E07AC;
+}
+
+.save {
+    width: 80px;
+    height: 30px;
+    margin-top: 20px;
+    background: #AB9EE2;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.save:hover {
+    background: #706799;
+}
+
+
+.profile-pic {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.profile-pic img {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ccc;
+}
+
+
+.EditSection {
+    width: 100%;
+    display: flex;
+    flex-direction: row;    
+    flex-wrap: wrap;
+    gap: 25px;
+    align-items: flex-start;
+}
+
+.col1, .col2, .col3 {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    flex-wrap: wrap;
+    min-width: 0;
+}
+
+.interests {
+    width: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+label {
+    font-weight: bold;
+    color:#3e07ac;
+    font-size: 20px;
+}
+
+span {
+    margin-top: -5px;
+}
+
+.about {
+    display: block;
+    overflow-wrap: break-word;
 }

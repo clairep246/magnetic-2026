@@ -4,23 +4,72 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="profile.css">
     <title>Profile</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <script type="module" src="edit.js"></script>
+
+
 </head>
 <body>
+    <!--Nav bar-->
     <nav class="navbar">
 
         <a href="/" class="logo">
             <img src="/images/logo.png" alt="Logo">
         </a>
-
+        
         <div class="links">
-            <a href="/">Home</a>
             <a href="/pages/CreateActivity/create.html">Create Activity</a>
             <a href="/pages/ActivityBrowser/browser.html">Browse Activities</a>
+            <a href="/pages/ActivityPage/activity.html">Your activities</a>
             <a href="#">Friends</a>
-            <a href="profile.html">Profile</a>
+            <a style="text-decoration: underline">Profile</a>
         
         </div>
-
     </nav>
+
+    <!--Edit Section-->
+    <div class="EditProfile">
+        <div class="profile-pic">
+            <img src="/images/people.png" id="preview" alt="Profile Image">
+        </div>
+
+        <div class="EditSection">
+            <div class="col1">
+                <!-- Name -->
+                <label>Name</label>
+                <span id="name"> Testing </span>
+
+                <!-- About -->
+                <label>About</label>
+                <span id="about" class="about"> Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec qu</span>
+            </div>
+
+            <div class="col2">
+                <label>Telegram Handle</label>
+                <span id="telegram"> @Sample </span>
+
+                 <!-- Residence -->
+                <label>Residences</label>
+                <span id="residences"> </span>
+
+                <!--year of study -->
+                <label>Year of study</label>
+                <span id="year"> </span>
+            </div>
+
+            <div class="col3">
+                <!-- Course -->
+                <label>Course</label>
+                <span id="course"> Hello </span>
+                
+                <!--Interests-->
+                <label>Interests</label>
+                <span id="interests"> </span>
+           
+        </div>
+
+        </div>
+    </div>
+
 </body>
 </html>

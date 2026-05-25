@@ -4,60 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="activity.css">
-    <title>Title</title>
+    <title>Your activities</title>
     <script type="module" src="activity.js"></script>
 </head>
 <body>
     <!--Nav Bar-->
     <nav class="navbar">
 
-        <a href="/" class="logo">
+        <a class="logo">
             <img src="/images/logo.png" alt="Logo">
         </a>
 
         <div class="links">
-            <a href="/">Home</a>
             <a href="/pages/CreateActivity/create.html">Create Activity</a>
             <a href="/pages/ActivityBrowser/browser.html">Browse Activities</a>
+            <a style="text-decoration: underline;">Your activities</a>
             <a href="/">Friends</a>
             <a href="/pages/Profile/profile.html">Profile</a>
-       
         </div>
     </nav>
 
-    <!--Actual activity Section-->  
-    <div class="Activity">
-
-        <!-- Top Section -->
-        <div class="top">
-            <button>Back</button>
+    <div class="activityPage">
+         <div class="activityContainer" id="activityContainer">
+            </div>
+        <div class="buttons">
+            <button id="prevButton" type="button">Back</button>
+            <button id="nextButton" type="button">Next</button>
         </div>
-
-        <div class="DetailsSection">
-            <h1 id="title">Title</h1>
-            <p class='label'>Created by:
-                 <span id="createdBy">-</span>
-            </p>
-            <p class='label'>Description:
-                 <span id="description">Description:</span>
-            </p>
-            <p class="label">Interests:
-                 <span id="interests">Interests: </span>
-            </p>
-            <p class="label">Location:
-                 <span id="location">Location: </span>
-            </p>
-            <p class="label">Date:
-                 <span id="date">Date: </span>
-            </p>
-           <p class="label">Time:
-                 <span id="time">Time: </span>
-           </p>
-           <p class="label">Number of participants:
-            <span id="participants">Number of participants: </span>
-           </p>
-        </div>
-
     </div>
+   
+
 </body>
 </html>

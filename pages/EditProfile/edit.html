@@ -5,6 +5,8 @@
     <link rel="stylesheet" href="edit.css">
     <title>Edit profile</title>
     <link href="https://googleapis.com" rel="stylesheet">
+    <script type="module" src="edit.js"></script>
+
 
 </head>
 <body>
@@ -30,113 +32,137 @@
 
         <!-- Top Section -->
         <div class="top">
-            <button>Back</button>
+            <button class="save">Save</button>
             <h1>Edit Profile</h1>
         </div>
 
         <div class="profile-pic">
-
             <img src="#" id="preview" alt="Profile Image">
-
-            <div class="uploadFile">
-                <label>Upload Profile Photo</label>
-                <input type="file" accept="image/*">
-            </div>
-
         </div>
 
         <div class="EditSection">
+            <div class="col1">
+                <label>Upload Profile Photo</label>
+                <input type="file" accept="image/*">
 
-            <!-- Name -->
-            <label>Name</label>
-            <input type="text" placeholder="Enter your name">
+                <!-- Name -->
+                <label>Name</label>
+                <input type="text" placeholder="Enter your name">
 
-            <!-- About -->
-            <label>About</label>
-            <textarea placeholder="Write something about yourself..."></textarea>
+                <!-- About -->
+                <label>About</label>
+                <textarea placeholder="Write something about yourself..." maxlength="100"></textarea>
+            </div>
 
-            <!-- Course -->
-            <label>Course</label>
+            <div class="col2">
+                <label>Telegram Handle</label>
+                <input type="text">
 
-            <select name="Majors" id="Major">
+                 <!-- Residence -->
+                <label>Residences</label>
+                <select name="Residence" id="Residence">
 
-                <option value="">Select your major</option>
+                    <option value="">Select your residence</option>
+                    <option>NIL</option>
 
-                <option>Computing</option>
-                <option>Business</option>
-                <option>Engineering</option>
-                <option>Sciences</option>
-                <option>Humanities and Social Sciences</option>
-                <option>Medicine</option>
-                <option>Law</option>
-                <option>Prefer not to say</option>
+                    <!-- Halls -->
+                    <optgroup label="Halls of Residence">
 
-            </select>
+                        <option>Eusoff Hall</option>
+                        <option>Kent Ridge Hall</option>
+                        <option>King Edward VII Hall</option>
+                        <option>Raffles Hall</option>
+                        <option>Sheares Hall</option>
+                        <option>Temasek Hall</option>
 
-            <!-- Interests -->
-            <label>Interests</label>
-            <input type="text" placeholder="e.g. music, sports, coding">
+                    </optgroup>
 
-            <!-- Residence -->
-            <label>Residences</label>
+                    <!-- Houses -->
+                    <optgroup label="Houses">
 
-            <select name="Residence" id="Residence">
+                        <option>Helix House</option>
+                        <option>Lighthouse House</option>
+                        <option>Pioneer House</option>
+                        <option>Valour House</option>
 
-                <option value="">Select your residence</option>
-                <option>NIL</option>
+                    </optgroup>
 
-                <!-- Halls -->
-                <optgroup label="Halls of Residence">
+                    <!-- Residential Colleges -->
+                    <optgroup label="Residential Colleges">
 
-                    <option>Eusoff Hall</option>
-                    <option>Kent Ridge Hall</option>
-                    <option>King Edward VII Hall</option>
-                    <option>Raffles Hall</option>
-                    <option>Sheares Hall</option>
-                    <option>Temasek Hall</option>
+                        <option>NUS College Residences</option>
+                        <option>College of Alice & Peter Tan (CAPT)</option>
+                        <option>Residential College 4 (RC4)</option>
+                        <option>Ridge View Residential College (RVRC)</option>
+                        <option>Tembusu College</option>
+                        <option>Acacia College</option>
 
-                </optgroup>
+                    </optgroup>
 
-                <!-- Houses -->
-                <optgroup label="Houses">
+                    <!-- Student Residences -->
+                    <optgroup label="Student Residences">
 
-                    <option>Helix House</option>
-                    <option>Lighthouse House</option>
-                    <option>Pioneer House</option>
-                    <option>Valour House</option>
+                        <option>Prince George’s Park Residences (PGPR)</option>
+                        <option>UTown Residence</option>
 
-                </optgroup>
+                    </optgroup>
 
-                <!-- Residential Colleges -->
-                <optgroup label="Residential Colleges">
+                </select>
 
-                    <option>NUS College Residences</option>
-                    <option>College of Alice & Peter Tan (CAPT)</option>
-                    <option>Residential College 4 (RC4)</option>
-                    <option>Ridge View Residential College (RVRC)</option>
-                    <option>Tembusu College</option>
-                    <option>Acacia College</option>
+                <!--year of study -->
+                <label>Year of study</label>
+                <select name="Year" id="Year">
+                    <option>Year 1</option>
+                    <option>Year 2</option>
+                    <option>Year 3</option>
+                    <option>Year 4</option>
+                    <option>Graduate</option>
+                    <option>Prefer not to say</option>
+                </select>
+            </div>
 
-                </optgroup>
+            <div class="col3">
+                <!-- Course -->
+                <label>Course</label>
 
-                <!-- Student Residences -->
-                <optgroup label="Student Residences">
+                <select name="Majors" id="Major">
 
-                    <option>Prince George’s Park Residences (PGPR)</option>
-                    <option>UTown Residence</option>
+                    <option value="">Select your major</option>
 
-                </optgroup>
+                    <option>Computing</option>
+                    <option>Business</option>
+                    <option>Engineering</option>
+                    <option>Sciences</option>
+                    <option>Humanities and Social Sciences</option>
+                    <option>Medicine</option>
+                    <option>Law</option>
+                    <option>Prefer not to say</option>
 
-            </select>
-
-            <!-- Location -->
-            <label>Location</label>
-            <input type="text" placeholder="your location e.g. Jurong or put NIL">
-
+                </select>
+                
+                <!--Interests-->
+                <label>Interests</label>
+                <div class="interests">
+                    <button type="button">Technology</button>
+                    <button type="button" >Gaming</button>
+                    <button type="button">Sports</button>
+                    <button type="button">Music</button>
+                    <button type="button">Arts and Culture</button>
+                    <button type="button">Film and TV</button>
+                    <button type="button">Food</button>
+                    <button type="button">Travel</button>
+                    <button type="button">Fashion</button>
+                    <button type="button">Science</button>
+                    <button type="button">Nature</button>
+                    <button type="button">Volunteering</button>
+                    <button type="button">Others</button>
+                    <!--<p id="check">Selected: </p>-->
+                </div>
+           
         </div>
 
-        <button class="save">Save Profile</button>
-
+        </div>
     </div>
+
 </body>
 </html>
