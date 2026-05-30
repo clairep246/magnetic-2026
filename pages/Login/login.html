@@ -20,10 +20,13 @@
                 <p class="subtitle">Sign in to continue</p>
 
                 <form>
-                    <input type="email" placeholder="Email">
-                    <input type="password" placeholder="Password">
+                    <input id="email" type="email" placeholder="Email">
+                    <input id="password" type="password" placeholder="Password">
 
-                    <button type="submit">Sign In</button>
+                    <button id="loginBtn" type="button">
+                        Sign In
+                    </button>
+
                 </form>
 
                 <p class="switch-page">
@@ -52,5 +55,7 @@
         const index = Math.floor(Math.random() * messages.length);
         document.getElementById("welcome_message").textContent = messages[index];
     </script>
+
+<script type="module" src="./login.js"></script>
 </body>
 </html>
