@@ -51,6 +51,7 @@ body {
     flex-direction: column;
     width: 100%;
     margin-top: 10px;
+    margin-bottom: 20px;
     align-items: center;
     gap: 30px;
 }
@@ -62,7 +63,7 @@ body {
     flex-wrap: wrap;
     justify-content: center;
     align-items: stretch; 
-    gap: 40px;
+    gap: 30px;
 }
 
 /* Each box */
@@ -84,7 +85,7 @@ body {
 .activityBox h1 {
     font-weight: bold;
     color: black;
-    font-size: 25px;
+    font-size: 20px;
     align-self: center;
 }
 
@@ -92,20 +93,20 @@ body {
     font-weight: bold;
     color: white;
     margin: 0px;
-    font-size: 15px;
+    font-size: 14px;
 }
 
 .activityBox span {
     display: block;
     color: black;
     margin-top: 3px;
-    font-size: 13px;
+    font-size: 11px;
 }
 
 .description {
     display: block;
     width: 100%;
-    height: 60px;
+    height: 45px;
     margin-bottom: 15px;
 }
 
