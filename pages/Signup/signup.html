@@ -4,6 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="signup.css">
     <link href="https://googleapis.com" rel="stylesheet">
+    <script type="module" src="./signup.js"></script>
     <title>Login / Signup</title>
 </head>
 
@@ -17,12 +18,12 @@
                 <h1>Welcome!</h1>
                 <p class="subtitle">Please fill in your details</p>
 
-                <form>
-                    <input type="Name" placeholder="Name">
-                    <input type="email" placeholder="Email">
-                    <input type="password" placeholder="Password">
+                <form id="signupForm">
+                    <input type="name" placeholder="Name" id="name">
+                    <input type="email" placeholder="Email" id="email">
+                    <input type="password" placeholder="Password" id="password">
 
-                    <button type="submit">Create Account</button>
+                    <button type="button" id="signUp">Create Account</button>
                 </form>
 
                 <p class="switch-page">
@@ -38,6 +39,5 @@
             <img src="/images/dancing.png">
         </div>
     </div>
-
 </body>
 </html>
