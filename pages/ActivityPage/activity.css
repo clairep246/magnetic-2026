@@ -93,14 +93,14 @@ body {
     font-weight: bold;
     color: white;
     margin: 0px;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .activityBox span {
     display: block;
     color: black;
     margin-top: 3px;
-    font-size: 11px;
+    font-size: 14px;
 }
 
 .description {
@@ -125,7 +125,7 @@ button {
     border-radius: 12px;
     background: #AB9EE2;
     color: white;
-    font-size: 18px;
+    font-size: 14px;
     font-weight: bold;
     cursor: pointer;
     width: 100%;
