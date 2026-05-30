@@ -6,11 +6,12 @@ let activities = []
 async function displayActivities() {
     try {
         //Get user 
-        const {data: { user }, error: AuthError} = await supabase.auth.getUser();
+        const {data: { user }, error: authError} = await supabase.auth.getUser();
 
-        if (AuthError) {
+        if (authError) {
             throw new Error("User not authenticated");
         }
+
         //Get Activities by user
         const {data, error: GetError} = await supabase.from("Activity").select("*").eq("created_by", user.id);
         
@@ -23,6 +24,16 @@ async function displayActivities() {
         //creating the activities list 
         const container = document.getElementById("activityContainer");
         container.innerHTML = "";
+
+        if (activities.length === 0) {
+            const empty = document.createElement("p");
+            empty.textContent = "No activities have been created.";
+            container.appendChild(empty);
+
+            document.getElementById("nextButton").disabled = true;
+            document.getElementById("prevButton").disabled = true;
+            return;
+        }
 
         for (let i = index; i < index + 3; i++ ) {
             //no more activity by user 
@@ -75,8 +86,26 @@ async function displayActivities() {
                         <span>${activity.participants}</span>
                     </p>
 
+                    <button class="editButton">Edit</button>
+                    <button class="deleteButton">Delete</button>
+
                 </div>
             `;
+
+            activityBox.querySelector(".deleteButton").addEventListener("click", async () => {
+                const confirmation = confirm("Are you sure you want to delete this activity?");
+                if (!confirmation) {
+                    return;
+                }
+
+                await deleteActivity(activity.id);
+                displayActivities();
+            });
+
+            activityBox.querySelector(".editButton").addEventListener("click", () => {
+                editActivity(activity.id);
+            });
+
             container.appendChild(activityBox);
             console.log(activities);
         }
@@ -111,10 +140,27 @@ function prevActivities() {
         index -= 3;
         displayActivities();
     }
+}
 
+function editActivity(activityID) {
+    window.location.href = `../CreateActivity/create.html?activityID=${activityID}`;
+}
+
+async function deleteActivity(activityID) {
+   try {
+        const {error} = await supabase.from('Activity').delete().eq('id', activityID);
+        alert("Activity successfully deleted!");
+
+        if (error) {
+            throw new Error("Failed to delete activity");
+}
+   } catch (error) {
+        console.log("Fail to delete activity:" +error);
+   }
 }
 
 displayActivities();
 document.getElementById("nextButton").addEventListener("click", nextActivities);
 document.getElementById("prevButton").addEventListener("click", prevActivities);
+
 

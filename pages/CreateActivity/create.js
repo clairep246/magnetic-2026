@@ -1,7 +1,15 @@
 import { supabase } from "../../src/supabaseClient.js";
-//Interest selection
-let store = [];
 
+let store = [];
+const activityDetails = new URLSearchParams(window.location.search);
+const activityID = activityDetails.get("activityID");
+let isEditing = false;
+
+if (activityID !== null) {
+    isEditing = true;
+}
+
+//Selecting of interests buttons to be stored 
 function selectedInterests(button) {
     const interest = button.textContent;
     button.classList.toggle("selected");
@@ -19,6 +27,7 @@ function selectedInterests(button) {
         "Selected Interests: " + store.join(", ");*/
  }
 
+ //preview of activity details before saving
  function previewActivity() {
     const name = document.getElementById("name").value;
     const description = document.getElementById("description").value;
@@ -49,15 +58,48 @@ function selectedInterests(button) {
         document.getElementById('previewDate').textContent = formattedDate;
  }
 
+ //For editing mode: load the data of activity 
+ async function loadActivityDetails() {
+    try {
+        if (!isEditing) {
+            return;
+        }
+
+        const {data, error: getError} = await supabase.from("Activity").select("*").eq("id",activityID).single();
+        if (getError) {
+            throw new Error("Failed to get activity details");
+        }
+
+        //pre fill in 
+        document.getElementById("name").value = data.name;
+        document.getElementById("description").value = data.description;
+        document.getElementById("location").value = data.location;
+        document.getElementById("date").value = data.date;
+        document.getElementById("time").value = data.time;
+        document.getElementById("participants").value = data.participants;
+
+        store = data.interests;
+        document.querySelectorAll(".interests button").forEach( button => {
+            if (store.includes(button.textContent)) {
+                button.classList.toggle("selected");
+            }
+        });
+
+    } catch (error) {
+        console.log("Failed to load activity details:" + error);
+    }
+}
+
+//Saving activity
 async function saveActivity() {
     const save = document.getElementById("saveActivity");
-    save.textContent = "Saving...";
+    save.textContent = isEditing ? "Updating..." : "Saving...";
 
     try {
         //UserID
-        const { data: { user }, error: AuthError} = await supabase.auth.getUser();
+        const { data: { user }, error: authError} = await supabase.auth.getUser();
 
-        if (AuthError) {
+        if (authError) {
             throw new Error("User not authenticated");
         }
 
@@ -120,14 +162,27 @@ async function saveActivity() {
             return;
         }
 
-        const { data, error: InsertError } = await supabase.from("Activity").insert([activityData]).select();
-        if (InsertError) {
-            throw new Error("Did not insert into database");
+        //The work 
+        if (isEditing) {
+            const { error: updateError } = await supabase.from("Activity").update(activityData).eq("id", activityID).select();
+            if (updateError) {
+                throw new Error("Failed to update activity");
+            }
+            alert("Activity successfully updated!");
+            window.location.href = `../ActivityPage/activity.html`; 
+            return;
+
+        } else {
+            const { data, error: InsertError } = await supabase.from("Activity").insert([activityData]).select();
+            if (InsertError) {
+                throw new Error("Did not insert into database");
+            }
+
+            alert("Activity successfully created!");
+            const newActivity = data[0];
+            window.location.href = `../ActivityPage/activity.html`; 
         }
 
-        alert("Activity successfully created!");
-        const newActivity = data[0];
-        window.location.href = `../ActivityPage/activity.html`; 
 
     } catch (error) {
         console.log("Failed to save activity:" + error);
@@ -144,3 +199,4 @@ document.querySelectorAll(".interests button").forEach( button => {
 
 document.getElementById('preview').addEventListener("click", previewActivity);
 document.getElementById("saveActivity").addEventListener("click", saveActivity);
+loadActivityDetails();
