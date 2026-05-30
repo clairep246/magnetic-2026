@@ -6,16 +6,16 @@ let activities = []
 async function displayActivities() {
     try {
         //Get user 
-        const {data: { user }, error: userError} = await supabase.auth.getUser();
+        const {data: { user }, error: AuthError} = await supabase.auth.getUser();
 
-        if (userError) {
+        if (AuthError) {
             throw new Error("User not authenticated");
         }
         //Get Activities by user
-        const {data, error} = await supabase.from("Activity").select("*").eq("created_by", user.id);
+        const {data, error: GetError} = await supabase.from("Activity").select("*").eq("created_by", user.id);
         
-        if (error) {
-            throw error;
+        if (GetError) {
+            throw new Error("Failed to get activities");
         }
         
         activities = data;
@@ -95,7 +95,7 @@ async function displayActivities() {
         }
 
     } catch (error) {
-        console.log("Failed to get activities:" + error);
+        console.log("Failed to display activities:" + error);
     }
 }
 
@@ -107,7 +107,7 @@ function nextActivities() {
 }
 
 function prevActivities() {
-    if (index - 3 >= 0) {
+    if (index >= 0) {
         index -= 3;
         displayActivities();
     }

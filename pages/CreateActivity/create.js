@@ -55,9 +55,9 @@ async function saveActivity() {
 
     try {
         //UserID
-        const { data: { user }, error: UserError} = await supabase.auth.getUser();
+        const { data: { user }, error: AuthError} = await supabase.auth.getUser();
 
-        if (UserError) {
+        if (AuthError) {
             throw new Error("User not authenticated");
         }
 
@@ -120,9 +120,9 @@ async function saveActivity() {
             return;
         }
 
-        const { data, error } = await supabase.from("Activity").insert([activityData]).select();
-        if (error) {
-            throw error;
+        const { data, error: InsertError } = await supabase.from("Activity").insert([activityData]).select();
+        if (InsertError) {
+            throw new Error("Did not insert into database");
         }
 
         alert("Activity successfully created!");
@@ -130,7 +130,7 @@ async function saveActivity() {
         window.location.href = `../ActivityPage/activity.html`; 
 
     } catch (error) {
-        console.error("Save activity failed", error);
+        console.log("Failed to save activity:" + error);
         alert("Failed to save activity. Please try again");
 
     } finally {
