@@ -63,14 +63,14 @@ body {
     flex-wrap: wrap;
     justify-content: center;
     align-items: stretch; 
-    gap: 10px;
+    gap: 20px;
 }
 
 /* Each box */
 .activityBox {
-    padding: 15px;
-    width: 200px;
-    min-width: 150px;
+    padding: 18px;
+    width: 280px;
+    min-width: 200px;
     background: #D7C0E8;
     display: flex;
     flex-direction: column;
