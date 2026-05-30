@@ -6,7 +6,7 @@ let activities = []
 async function displayActivities() {
     try {
         const {data, error} = await supabase.from("Activity").select("*").eq("name","Test");
-
+        
         if (error) {
             throw error;
         }
