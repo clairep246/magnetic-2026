@@ -127,6 +127,7 @@ textarea {
     border: 1px solid #7466b2;
     border-radius: 6px;
     height: 80px;
+    font-family: 'Fredoka', sans-serif;
 }
 
 textarea::placeholder {
