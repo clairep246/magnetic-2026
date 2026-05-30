@@ -29,7 +29,7 @@ async function login() {
 
     alert("Login successful!");
 
-    window.location.href = "../Profile/profile.html";
+    window.location.href = "../ActivityBrowser/browser.html";
 }
 
 document.getElementById("loginBtn")

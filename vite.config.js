@@ -19,6 +19,7 @@ export default defineConfig({
         createActivity: resolve(root, 'pages/CreateActivity/create.html'),
         activityPage: resolve(root, 'pages/ActivityPage/activity.html'),
         activityBrowser: resolve(root, 'pages/ActivityBrowser/browser.html'),
+        friends: resolve(root, 'pages/Friends/friend.html'),
       },
     },
   },
