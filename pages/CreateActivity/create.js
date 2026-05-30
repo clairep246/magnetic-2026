@@ -54,6 +54,14 @@ async function saveActivity() {
     save.textContent = "Saving...";
 
     try {
+        //UserID
+        const { data: { user }, error: UserError} = await supabase.auth.getUser();
+
+        if (UserError) {
+            throw new Error("User not authenticated");
+        }
+
+        //Activity data
         const name = document.getElementById("name").value;
         const description = document.getElementById("description").value;
         const location = document.getElementById("location").value
@@ -62,6 +70,7 @@ async function saveActivity() {
         const participants = document.getElementById("participants").value
 
         const activityData = {
+            created_by: user.id,
             name: name,
             description: description,
             location: location,

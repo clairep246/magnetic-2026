@@ -5,7 +5,14 @@ let activities = []
 
 async function displayActivities() {
     try {
-        const {data, error} = await supabase.from("Activity").select("*").eq("name","Test");
+        //Get user 
+        const {data: { user }, error: userError} = await supabase.auth.getUser();
+
+        if (userError) {
+            throw new Error("User not authenticated");
+        }
+        //Get Activities by user
+        const {data, error} = await supabase.from("Activity").select("*").eq("created_by", user.id);
         
         if (error) {
             throw error;
