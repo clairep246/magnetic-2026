@@ -173,6 +173,7 @@ async function saveActivity() {
             if (updateError) {
                 throw new Error("Failed to update activity");
             }
+
             alert("Activity successfully updated!");
             window.location.href = `../ActivityPage/activity.html`; 
             return;
@@ -194,7 +195,7 @@ async function saveActivity() {
         alert("Failed to save activity. Please try again");
 
     } finally {
-        save.textContent = "Save Activity";
+        save.textContent = "Saved";
     }
 }
 

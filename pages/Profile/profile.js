@@ -4,31 +4,42 @@ async function displayProfile() {
     try {
         const {data: { user }, error: authError} = await supabase.auth.getUser();
     
-    if (authError) {
+    if (authError || !user) {
         throw new Error("User not authenticated");
     }
     
-    const {data, error: GetError} = await supabase.from("Profile").select("*").eq("created_by", user.id);
+    const {data: profiles, error: GetError} = await supabase
+        .from("Profile")
+        .select("*")
+        .eq("created_by", user.id)
+        .limit(1);
 
     if (GetError) {
             throw new Error("Failed to load profile");
         }
 
-    document.getElementById("name").value = data[0].name || "";
-    document.getElementById("about").value = data[0].about || "";
-    document.getElementById("telegramHandle").value = data[0].telegram_handle || "";
-    document.getElementById("residence").value = data[0].residences || "";
-    document.getElementById("year").value = data[0].year_of_study || "";
-    document.getElementById("major").value = data[0].course || "";
-    
-    const interests = data[0].interests || [];
-    document.querySelectorAll(".interests button").forEach(button => {
-        if (interests.includes(button.textContent)) {
-            button.classList.add("selected");
-        }
-    });
 
-    }catch  (error) {
-    console.log("Failed to load profile:", error);
+    const profile = profiles[0];
+
+    if (!profile) {
+        console.log("No profile found for current user");
+        return;
+    }
+
+    document.getElementById("name").textContent = profile.name || "";
+    document.getElementById("about").textContent = profile.about || "";
+    document.getElementById("telegram").textContent = profile.telegram || "";
+    document.getElementById("residences").textContent = profile.residences || "";
+    document.getElementById("year").textContent = profile.year_of_study || "";
+    document.getElementById("major").textContent = profile.major || "";
+    document.getElementById("interests").textContent = Array.isArray(profile.interest)
+        ? profile.interest.join(", ")
+        : "";
+
+    console.log("Profile loaded successfully");
+    } catch (error) {
+        console.log("Failed to load profile:", error);
     }
 }
+
+displayProfile();

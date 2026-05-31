@@ -36,7 +36,7 @@ async function signup() {
     }
 
     alert("Signup successful!");
-    window.location.href = "../Login/login.html";
+    window.location.href = "../EditProfile/edit.html";
 }
 
 document.getElementById("signUp").addEventListener("click", () => signup());
