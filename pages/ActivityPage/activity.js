@@ -3,6 +3,20 @@ import { supabase } from "../../src/supabaseClient.js";
 let index = 0;
 let activities = []
 
+//sign out
+async function signOut() {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+        alert("Could not sign out. Please try again.");
+        return;
+    }
+
+    alert("Successfully signed out!");
+    window.location.href = "../Login/login.html";
+}
+
+//display activities by user
 async function displayActivities() {
     try {
         //Get user 
@@ -13,9 +27,9 @@ async function displayActivities() {
         }
 
         //Get Activities by user
-        const {data, error: GetError} = await supabase.from("Activity").select("*").eq("created_by", user.id);
+        const {data, error: getError} = await supabase.from("Activity").select("*").eq("created_by", user.id);
         
-        if (GetError) {
+        if (getError) {
             throw new Error("Failed to get activities");
         }
         
@@ -162,5 +176,5 @@ async function deleteActivity(activityID) {
 displayActivities();
 document.getElementById("nextButton").addEventListener("click", nextActivities);
 document.getElementById("prevButton").addEventListener("click", prevActivities);
-
+document.getElementById("signout").addEventListener("click", signOut);
 

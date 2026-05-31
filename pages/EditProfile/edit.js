@@ -15,12 +15,25 @@ function selectedInterests(button) {
     }
 }
 
+//sign out
+async function signOut() {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+        alert("Could not sign out. Please try again.");
+        return;
+    }
+
+    alert("Successfully signed out!");
+    window.location.href = "../Login/login.html";
+}
+
 // For editing mode
 async function loadProfileDetails() {
     try {
         const { data: { user }, error: authError } = await supabase.auth.getUser();
 
-        if (authError || !user) {
+        if (authError) {
             throw new Error("User not authenticated");
         }
 
@@ -44,7 +57,7 @@ async function loadProfileDetails() {
             return;
         }
 
-        // Pre-fill profile details
+        // Pre-fill in 
         document.getElementById("name").value = profile.name || "";
         document.getElementById("about").value = profile.about || "";
         document.getElementById("telegramHandle").value = profile.telegram || "";
@@ -61,7 +74,7 @@ async function loadProfileDetails() {
         });
 
     } catch (error) {
-        console.log("Failed to load profile details:" + error);
+        console.log("Failed to prefill profile:" + error);
     }
 }
 
@@ -71,14 +84,12 @@ async function saveProfile() {
     saveButton.textContent = isEditing ? "Updating..." : "Saving...";
 
     try {
-        // UserID
         const { data: { user }, error: authError } = await supabase.auth.getUser();
 
-        if (authError || !user) {
+        if (authError) {
             throw new Error("User not authenticated");
         }
 
-        // Profile data
         const name = document.getElementById("name").value;
         const about = document.getElementById("about").value;
         const telegramHandle = document.getElementById("telegramHandle").value;
@@ -117,7 +128,6 @@ async function saveProfile() {
             return;
         }
 
-        // The work
         if (isEditing) {
             const { error: updateError } = await supabase
                 .from("Profile")
@@ -140,7 +150,7 @@ async function saveProfile() {
                 .select();
 
             if (insertError) {
-                throw new Error("Fail to profile insert into database");
+                throw new Error("Fail to insert profile into database");
             }
 
             alert("Profile successfully created!");
@@ -161,4 +171,5 @@ document.querySelectorAll(".interests button").forEach(button => {
 });
 
 document.getElementById("save").addEventListener("click", saveProfile);
+document.getElementById("signout").addEventListener("click", signOut);
 loadProfileDetails();

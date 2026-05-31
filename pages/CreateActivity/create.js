@@ -9,6 +9,19 @@ if (activityID !== null) {
     isEditing = true;
 }
 
+//sign out
+async function signOut() {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+        alert("Could not sign out. Please try again.");
+        return;
+    }
+
+    alert("Successfully signed out!");
+    window.location.href = "../Login/login.html";
+}
+
 //Selecting of interests buttons to be stored 
 function selectedInterests(button) {
     const interest = button.textContent;
@@ -179,9 +192,9 @@ async function saveActivity() {
             return;
 
         } else {
-            const { data, error: InsertError } = await supabase.from("Activity").insert([activityData]).select();
-            if (InsertError) {
-                throw new Error("Did not insert into database");
+            const { data, error: insertError } = await supabase.from("Activity").insert([activityData]).select();
+            if (insertError) {
+                throw new Error("Failed to insert activity into database");
             }
 
             alert("Activity successfully created!");
@@ -205,4 +218,5 @@ document.querySelectorAll(".interests button").forEach( button => {
 
 document.getElementById('preview').addEventListener("click", previewActivity);
 document.getElementById("saveActivity").addEventListener("click", saveActivity);
+document.getElementById("signout").addEventListener("click", signOut);
 loadActivityDetails();

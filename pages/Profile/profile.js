@@ -1,5 +1,19 @@
 import { supabase } from "../../src/supabaseClient.js";
 
+//sign out
+async function signOut() {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+        alert("Error signing out: " + error.message);
+        return;
+    }
+
+    alert("Successfully signed out!");
+    window.location.href = "../Login/login.html";
+}
+
+//display profile details
 async function displayProfile() {
     try {
         const {data: { user }, error: authError} = await supabase.auth.getUser();
@@ -8,16 +22,14 @@ async function displayProfile() {
         throw new Error("User not authenticated");
     }
     
-    const {data: profiles, error: GetError} = await supabase
+    const {data: profiles, error: getError} = await supabase
         .from("Profile")
         .select("*")
-        .eq("created_by", user.id)
-        .limit(1);
+        .eq("created_by", user.id);
 
-    if (GetError) {
+    if (getError) {
             throw new Error("Failed to load profile");
         }
-
 
     const profile = profiles[0];
 
@@ -42,4 +54,5 @@ async function displayProfile() {
     }
 }
 
+document.getElementById("signout").addEventListener("click", signOut);
 displayProfile();
