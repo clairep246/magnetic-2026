@@ -125,6 +125,7 @@ textarea {
     border: 1px solid #ccc;
     border-radius: 12px;
     height: 100px;
+    font-family: 'Fredoka', sans-serif;
 }
 
 textarea::placeholder {
