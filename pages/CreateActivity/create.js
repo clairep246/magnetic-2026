@@ -157,6 +157,11 @@ async function saveActivity() {
             return;
         }
 
+        if (participants <= 0) {
+            alert("Number of participants must be greater than 0");
+            return;
+        }
+
         if (store.length === 0) {
             alert("Please select at least one interest");
             return;
