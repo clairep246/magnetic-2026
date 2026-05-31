@@ -13,11 +13,12 @@
     <!--Nav bar-->
     <nav class="navbar">
 
-        <a class="logo">
+        <a href="/" class="logo">
             <img src="/images/logo.png" alt="Logo">
         </a>
         
         <div class="links">
+            <a href="/">Home</a>
             <a href="/pages/CreateActivity/create.html">Create Activity</a>
             <a href="/pages/ActivityBrowser/browser.html">Browse Activities</a>
             <a href="/pages/Friends/friend.html">Friends</a>
@@ -35,20 +36,20 @@
 
                 <!-- Name -->
                 <label>Name</label>
-                <input type="text" placeholder="Enter your name">
+                <input id="name" type="text" placeholder="Enter your name">
 
                 <!-- About -->
                 <label>About</label>
-                <textarea placeholder="Write something about yourself..." maxlength="100"></textarea>
+                <textarea id="about" placeholder="Write something about yourself..." maxlength="100"></textarea>
             </div>
 
             <div class="col2">
                 <label>Telegram Handle</label>
-                <input type="text">
+                <input id="telegramHandle" type="text">
 
                  <!-- Residence -->
                 <label>Residences</label>
-                <select name="Residence" id="Residence">
+                <select name="Residence" id="residence">
 
                     <option value="">Select your residence</option>
                     <option>NIL</option>
@@ -99,7 +100,7 @@
 
                 <!--year of study -->
                 <label>Year of study</label>
-                <select name="Year" id="Year">
+                <select name="Year" id="year">
                     <option>Year 1</option>
                     <option>Year 2</option>
                     <option>Year 3</option>
@@ -113,7 +114,7 @@
                 <!-- Course -->
                 <label>Course</label>
 
-                <select name="Majors" id="Major">
+                <select name="Majors" id="major">
 
                     <option value="">Select your major</option>
 
