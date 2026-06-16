@@ -1,0 +1,60 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="recc.css">
+    <title>Recommendations</title>
+    <script type="module" src="recc.js"></script>
+</head>
+<body>
+    <!--Nav Bar-->
+    <nav class="navbar">
+
+        <a class="logo">
+            <img src="/images/logo.png" alt="Logo">
+        </a>
+
+        <div class="links">
+            <a style="text-decoration: underline;">Recommendations</a>
+            <a href="/pages/ActivityBrowser/browser.html">Browse Activities</a>
+             <div class="dropDown">
+                <a>Your activities</a>
+                <div class="dropDownContent">
+                    <a href="/pages/CreateActivity/create.html">Create an activity</a>
+                    <a href="/pages/ActivityPage/activity.html">Your created activities</a>
+                </div>
+            </div>
+            <a href="/pages/Friends/friend.html">Friends</a>
+            <a href="/pages/Profile/profile.html">Profile</a>
+            <div class="dropDown">
+                <a>Setting</a>
+                <div class="dropDownContent">
+                    <a href="/pages/EditProfile/edit.html">Edit profile</a>
+                    <a id="change">Change Password / Email</a>
+                    <a id="signout">Sign out</a>
+                </div>
+            </div>
+       
+        </div>
+    </nav>
+
+    <!--Change password-->
+    <div id="changeEmailPassword" class="popup">
+        <div class="popupContent">
+            <span class="close" id="close">&times;</span>
+            <h2 style="text-align: center;">Change Email / Password</h2>
+
+            <input type="email" id="newEmail" placeholder="Enter new email">
+            <input type="password" id="newPassword" placeholder="Enter new password">
+            <input type="password" id="confirmPassword" placeholder="Confirm new password">
+
+            <button id="saveBtn" type="button">Save</button>
+        </div>
+    </div>
+
+    <div class="recommendationPage">
+        <h2>Location</h2>
+        <p id="locationTest"></p>
+    </div>
+</body>
+</html>
