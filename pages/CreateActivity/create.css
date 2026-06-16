@@ -44,6 +44,112 @@ body {
     transition-duration: 2s;
 }
 
+.dropDown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropDownContent {
+    display:none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #AB9EE2;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.dropDownContent a {
+    text-decoration: none;
+    font-weight: bold;
+    color:#ffffff;
+    font-size: 16px;
+    cursor: pointer;
+    border-bottom: 2px solid #654c91;
+    padding: 5px;
+}
+
+.dropDownContent a:last-child {
+    border-bottom: none;
+}
+
+.dropDown:hover .dropDownContent {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 5px;
+    padding: 10px 0;
+    margin: 2px;
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.popupContent {
+    display: flex;
+    flex-direction: column;
+    background-color:white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;          
+    max-width: 400px;
+}
+
+.popupContent h2 {
+    margin:0
+}
+
+.popupContent input {
+    margin-top: 10px;
+}
+
+.close {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    font-size: 20px;
+    border: 1px solid black;
+    border-radius: 50%;
+    margin-bottom: 8px;
+}
+
+.close:hover {
+    background-color: #AB9EE2;
+    border-radius: 50%;
+}
+
+.popupContent button {
+    padding: 12px 14px;
+    border: none;
+    border-radius: 12px;
+    background: #AB9EE2;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    transition: 0.3s;
+    margin-top: 10px;
+}
+
+.popupContent button:hover {
+    transform: translateY(-3px);
+    background-color: #654c91;
+}
+
+
 /*----------Create Activity----------*/
 .CreateActivity {
     max-width: 98%;

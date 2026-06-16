@@ -16,44 +16,72 @@
         </a>
 
         <div class="links">
-            <a style="text-decoration: underline;">Create Activity</a>
+            <a href="/pages/Recc/recc.html">Recommendations</a>
             <a href="/pages/ActivityBrowser/browser.html">Browse Activities</a>
-            <a href="/pages/ActivityPage/activity.html">Your Activities</a>
+             <div class="dropDown">
+                <a>Your activities</a>
+                <div class="dropDownContent">
+                    <a style="text-decoration: underline;">Create an activity</a>
+                    <a href="/pages/ActivityPage/activity.html">Your created activities</a>
+                </div>
+            </div>
             <a href="/pages/Friends/friend.html">Friends</a>
             <a href="/pages/Profile/profile.html">Profile</a>
-            <a id="signout">Sign out</a>
-       
+            <!--<a id="signout">Sign out</a>-->
+            <div class="dropDown">
+                <a>Setting</a>
+                <div class="dropDownContent">
+                    <a href="/pages/EditProfile/edit.html">Edit profile</a>
+                    <a id="change" >Change Password / Email</a>
+                    <a id="signout">Sign out</a>
+                </div>
+
+            </div>
         </div>
     </nav>
 
+    <!--Change password-->
+    <div id="changeEmailPassword" class="popup">
+        <div class="popupContent">
+            <span class="close" id="close">&times;</span>
+            <h2 style="text-align: center;">Change Email / Password</h2>
+
+            <input type="email" id="newEmail" placeholder="Enter new email">
+            <input type="password" id="newPassword" placeholder="Enter new password">
+            <input type="password" id="confirmPassword" placeholder="Confirm new password">
+
+            <button id="saveBtn" type="button">Save</button>
+        </div>
+    </div>
     <!--Create Activity section-->
     <div class="CreateActivity">
 
         <!-- Edit Section-->
         <div class="EditSection">
+
             <div class="left">
                 <h1>Preview</h1>
-            <div class="leftBox">
-                <h1 id="previewName">Name of activity</h1>
-                <p class='label'>Description:
-                    <span id="previewDescription"> </span>
-                </p>
-                <p class="label">Interests:
-                    <span id="previewInterests"> </span>
-                 </p>
-                <p class="label">Location:
-                    <span id="previewLocation"> </span>
-                </p>
-                <p class="label">Date:
-                    <span id="previewDate"> </span>
-                </p>
-                <p class="label">Time:
-                    <span id="previewTime"> </span>
-                </p>
-                <p class="label">Number of participants:
-                    <span id="previewParticipants">  </span>
-                </p>  
-            </div>
+                <div class="leftBox">
+                    <h1 id="previewName">Name of activity</h1>
+                    <p class='label'>Description:
+                        <span id="previewDescription"> </span>
+                    </p>
+                    <p class="label">Interests:
+                        <span id="previewInterests"> </span>
+                    </p>
+                    <p class="label">Location:
+                        <span id="previewLocation"> </span>
+                    </p>
+                    <p class="label">Date:
+                        <span id="previewDate"> </span>
+                    </p>
+                    <p class="label">Time:
+                        <span id="previewTime"> </span>
+                    </p>
+                    <p class="label">Number of participants:
+                        <span id="previewParticipants">  </span>
+                    </p>  
+                </div>
             </div>
 
             <div class="right">
@@ -63,11 +91,11 @@
 
                 <!-- About -->
                 <label>Description</label>
-                <textarea id="description" placeholder="Description of activity" maxlength="200"></textarea>
+                <textarea id="description" placeholder="Please add any extra info about the location here eg specific MRT entrance" maxlength="200"></textarea>
 
                 <!--Location-->
                 <label>Location</label>
-                <input id="location" type="text" placeholder="eg NUS, Marina Bay" maxlength="50">
+                <input id="location" type="text" placeholder="eg Please enter the general location here eg Paya Lebar, Marina Barrage" maxlength="50">
 
                 <!-- Date -->
                 <label>Date</label>
@@ -78,37 +106,69 @@
                 <input id="time" type="time">
                 
                 <!--Interests-->
-                <label>Interests</label>
-                <div class="interests">
-                    <button type="button">Technology</button>
-                    <button type="button" >Gaming</button>
-                    <button type="button">Sports</button>
-                    <button type="button">Music</button>
-                    <button type="button">Arts and Culture</button>
-                    <button type="button">Film and TV</button>
-                    <button type="button">Food</button>
-                    <button type="button">Travel</button>
-                    <button type="button">Fashion</button>
-                    <button type="button">Science</button>
-                    <button type="button">Nature</button>
-                    <button type="button">Volunteering</button>
-                    <button type="button">Others</button>
-                    <!--<p id="check">Selected: </p>-->
+                <div style="display: flex; flex-direction: row; gap: 5px; margin-bottom: -5px;">
+                    <label>Interests</label>
+                    <button class="close" id="interestInfobtn" 
+                        style="height: 15px; width: 15px; font-size: 12px; font-weight: bold; margin-top: 2px">i</button>
                 </div>
+                <input id="interest" type="text" placeholder="Please fill in max of 3 ONE WORD interests, separated by commas">
 
                 <label>Max number of participants</label>
                 <input id="participants" type="number" placeholder="if no limit put 0">
 
                  <!-- Save Button -->
                   <div class="save">
+                        <button id="suggest" type="button">Suggest Activity✨</button>
                         <button id="saveActivity" type="button">Save Activity</button>
                         <button id="preview" type="button">Preview Activity</button>
                    </div>
             </div>
-        </div>
-
         
+        </div>
+    </div>
 
+    <!--Interest info-->
+    <div class="popup" id="interestInfo">
+        <div class="popupContent">
+            <span class="close" id="closeInterestInfobtn">&times;</span>
+            <h2 style="text-align: center;">How are my interest stored?</h2>
+            <p>The AI will generalise your interests into these broad categories. 
+                You can choose to follow these categories or let the AI generalise it for you! :)
+            </p>
+            <ul style="margin-top:-10px">
+                <li>Sports & Fitness</li>
+                <li>Gaming</li>
+                <li>Technology</li>
+                <li>Arts & Crafts</li>
+                <li>Music</li>
+                <li>Entertainment</li>
+                <li>Learning & Knowledge</li>
+                <li>Business & Career</li>
+                <li>Food & Cooking</li>
+                <li>Travel & Outdoors</li>
+                <li>Lifestyle</li>
+                <li>Social Activities</li>
+                <li>Community Service</li>
+            </ul>
+        </div>
+    </div>
+
+    <!--Check to use own interests or key in new ones-->
+    <div class="popup" id="interestForAI">
+        <div class="popupContent">
+            <span class="close" id="closeInterestbtn">&times;</span>
+            <h2 style="text-align: center">Activity Recommendation</h2>
+            <p id="interestPopupLabel">Would you like to use your profile's interests or key in new interests for your generated activity? </p>
+            <p style="font-size:12px; margin-top: -5px; font-style:italic; color: red; font-weight: bold;">
+                Please do not click on the buttons more than once as it will overload the system. If the function fails, an alert will pop up. Thank you</p>
+
+            <button id="useMyInterests" type="button">Use my interests</button>
+            <button id="useNewInterests" type="button">Enter new interests</button>
+            
+            <input type="text" id="newInterests" placeholder="Be as generic or specific as you wish!" style="display:none">
+
+            <button id="generateActivity" style="display:none">Generate</button>
+        </div>
     </div>
 
 </body>
