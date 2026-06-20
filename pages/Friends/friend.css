@@ -43,3 +43,114 @@ body {
     text-decoration: underline;
     transition-duration: 2s;
 }
+
+/*Friends list*/
+.heading-row {
+    font-family: 'Fredoka', sans-serif;
+    color:#3E07AC;
+    font-size: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+/*Add Friends*/
+.add-friends-box{
+    background-color:#dac5ffad;
+    width: 250px;
+
+    padding: 20px;
+    border-radius: 15px;
+
+    color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.your-code-label {
+    text-align: center;
+    margin: 0;
+    font-weight: bold;
+}
+
+.enter-code-label {
+    color: #3E07AC;
+}
+
+#friend-code {
+    background-color: white;
+    border: none;
+    border-radius: 15px;
+    padding: 8px;
+}
+
+.add-cancel-buttons{
+    display: flex;
+    justify-content: space-between;
+}
+
+.add-friend-button{
+    background-color: #3e07ac5c;
+    color: white;
+    border: none;
+    padding: 10px 10px ;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.cancel-button{
+    background-color: white;
+    color: #3e07acc9;
+    border: none;
+    padding: 10px 10px ;
+    border-radius: 20px;
+}
+
+.friends-list {
+    width: 60%;
+    max-height: 500px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.friend-card {
+    background-color: white;
+    border-radius: 15px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.friend-pic {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+.friend-name {
+    font-weight: bold;
+    color: #3E07AC;
+    margin: 0;
+}
+
+.friend-interest {
+    margin: 0;
+    color: #666;
+}
+
+.all-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-left: 100px;
+    margin-right: 100px;
+    gap: 30px;
+}
