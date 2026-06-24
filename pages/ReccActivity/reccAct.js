@@ -203,6 +203,7 @@ function getRandomActivities(activities, count) {
 //display activity
 let activities = [];
 let index = 0;
+let filteredIDs = [];
 let filteredActivities = [];
 async function displayActivities() {
     try {
@@ -236,10 +237,10 @@ async function displayActivities() {
             throw getJoinedError;
         }
 
-        joinedRecords = joinedRecords.map(record => record.activity_id);
+        filteredIDs = joinedRecords.map(record => record.activity_id);
 
         const unjoinedActivities = allActivities.filter(
-            activity => !joinedActivityIds.has(activity.id)
+            activity => !filteredIDs.has(activity.id)
         );
             
         activities = getRandomActivities(unjoinedActivities, 3);
