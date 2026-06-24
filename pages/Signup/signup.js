@@ -16,6 +16,11 @@ export async function signup() {
         return;
     }
 
+    if (!email.includes("@u.nus.edu")) {
+        alert("Only valid NUS emails are allowed");
+        return;
+    }
+
     if (!password) {
         alert("Please enter your password");
         return;

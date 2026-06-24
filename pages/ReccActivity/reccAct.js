@@ -81,8 +81,12 @@ function getCurrentLocation() {
     }
 
     function success(position) {
-        console.log("Latitude: " + position.coords.latitude + "Longitude: " + position.coords.longitude);
-        return (position.coords.latitude, position.coords.longtitude)
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude; 
+        
+        console.log("Latitude: " + lat + " Longitude: " + lng);
+        
+        recommendActivity(lat, lng);
     }
 
     function error() {
@@ -91,13 +95,13 @@ function getCurrentLocation() {
 }
 
 //Recommend activity to users 
-async function recommendActivity() {
+async function recommendActivity(lat, lng) {
     const {data, error: locError} = await supabase.functions.invoke(
         "rapid-processor",
         {
             body: {
-            userLat: 1.3018970112620465,
-            userLng: 103.90757776830321,
+            userLat: lat,
+            userLng: lng,
             }
         }
         );
