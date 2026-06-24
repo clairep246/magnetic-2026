@@ -6,8 +6,7 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
-    overflow-x: hidden;
-    
+    overflow-x: hidden; 
 }
 
 /*Nav bar*/
@@ -45,6 +44,7 @@ body {
     transition-duration: 2s;
 }
 
+/*Drop down*/
 .dropDown {
     position: relative;
     display: inline-block;
@@ -83,6 +83,7 @@ body {
     margin: 2px;
 }
 
+/*Popups*/
 .popup {
     display: none;
     position: fixed;
@@ -180,9 +181,14 @@ body {
     border-radius: 12px;
     overflow: hidden; 
     gap: 8px;
-    border: 2px solid black;
     align-content: flex-start;
     justify-content: flex-start;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.activityBox:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
 .activityBox h1 {
@@ -247,6 +253,7 @@ button:disabled {
     transform: none;
 }
 
+/*No activity to show*/
 .empty {
     width: 100%;
     display: flex;

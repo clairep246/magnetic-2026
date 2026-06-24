@@ -45,6 +45,7 @@ body {
     transition-duration: 2s;
 }
 
+/*Drop down*/
 .dropDown {
     position: relative;
     display: inline-block;
@@ -185,9 +186,14 @@ body {
     border-radius: 12px;
     overflow: hidden; 
     gap: 8px;
-    border: 2px solid black;
     align-content: flex-start;
     justify-content: flex-start;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.activityBox:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
 .activityBox h1 {
@@ -258,6 +264,7 @@ button:hover {
 button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+    transform: none;
 }
 
 select {
@@ -269,6 +276,7 @@ select {
     font-size: 14px;
 }
 
+/*No empty to show*/
 .empty {
     width: 100%;
     display: flex;

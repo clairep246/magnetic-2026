@@ -16,7 +16,13 @@
         </a>
 
         <div class="links">
-            <a href="/pages/Recc/recc.html">Recommendations</a>
+            <div class="dropDown">
+                <a>Recommend Me</a>
+                <div class="dropDownContent">
+                    <a href="/pages/ReccActivity/reccAct.html">Recommend an activity</a>
+                    <a href="">Recommend users</a>
+                </div>
+            </div>
             <a href="/pages/ActivityBrowser/browser.html">Browse Activities</a>
              <div class="dropDown">
                 <a>Your activities</a>
@@ -27,15 +33,16 @@
             </div>
             <a style="text-decoration: underline;">Friends</a>
             <a href="/pages/Profile/profile.html">Profile</a>
+
             <div class="dropDown">
                 <a>Setting</a>
                 <div class="dropDownContent">
                     <a href="/pages/EditProfile/edit.html">Edit profile</a>
-                    <a id="change">Change Password / Email</a>
+                    <a id="change" >Change Password</a>
                     <a id="signout">Sign out</a>
                 </div>
+
             </div>
-       
         </div>
     </nav>
 
@@ -43,9 +50,8 @@
     <div id="changeEmailPassword" class="popup">
         <div class="popupContent">
             <span class="close" id="close">&times;</span>
-            <h2 style="text-align: center;">Change Email / Password</h2>
+            <h2 style="text-align: center;">Change Password</h2>
 
-            <input type="email" id="newEmail" placeholder="Enter new email">
             <input type="password" id="newPassword" placeholder="Enter new password">
             <input type="password" id="confirmPassword" placeholder="Confirm new password">
 
@@ -53,6 +59,6 @@
         </div>
     </div>
 
-    <div class="friendPage"></div>
+    
 </body>
 </html>

@@ -82,6 +82,7 @@ body {
     margin: 2px;
 }
 
+/*Pop ups*/
 .popup {
     display: none;
     position: fixed;
@@ -149,7 +150,6 @@ body {
     background-color: #654c91;
 }
 
-
 /*----------Create Activity----------*/
 .CreateActivity {
     max-width: 98%;
@@ -205,6 +205,7 @@ body {
     color: black;
     margin-top: 8px;
 }
+
 /*Form*/
 .right {
     width: 50%;
@@ -242,28 +243,10 @@ textarea::placeholder {
 }
 
 .interests {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-}
-
-.interests button {
-    padding: 12px 20px;
-    background:#AB9EE2;
-    color: white;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.interests button:hover {
-    transform: translateY(-3px);
-}
-
-.interests button.selected {
-    background-color: #5d4da4;
-    color: white;
+    display: flex; 
+    flex-direction: row; 
+    gap: 5px; 
+    margin-bottom: -5px;
 }
 
 .save {

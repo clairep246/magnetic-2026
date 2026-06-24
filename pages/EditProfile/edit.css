@@ -83,6 +83,7 @@ body {
     margin: 2px;
 }
 
+/*Popups*/
 .popup {
     display: none;
     position: fixed;
@@ -184,35 +185,10 @@ h1 {
     gap: 20px;
 }
 
-/*.interests {
-    width: auto;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.interests button {
-    padding: 12px 20px;
-    background:#AB9EE2;
-    color: white;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.interests button:hover {
-    transform: translateY(-3px);
-}
-
-.interests button.selected {
-    background-color: #5d4da4;
-    color: white;
-}*/
 .interests {
     width: 100%;
     display: column;
-    align-items: center;             /* Vertically center the box with the text text */
+    align-items: center;            
     gap: 15px;                  
     margin-top: -5px;
     max-height: 250px;              
@@ -220,7 +196,6 @@ h1 {
     padding: 5px;
 }
 
-/* Style the native checkbox squares */
 .interests input[type="checkbox"] {
     width: 16.5px;
     height: 16.5px;
@@ -228,7 +203,6 @@ h1 {
     cursor: pointer;
     margin: 0;    
 }
-
 
 .interests label {
     font-size: 18px;
@@ -264,7 +238,7 @@ textarea {
 }
 
 textarea::placeholder {
-    font-family: Arial, san-serif;
+    font-family: 'Fredoka', sans-serif;
 }
 
 select {
