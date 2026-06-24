@@ -263,6 +263,7 @@ button:disabled {
     height: 400px;
 }
 
+/*Toggle between modes*/
 .modeContainer {
     display: flex;
     gap: 16px;
@@ -302,10 +303,9 @@ button:disabled {
     color: black;
     font-size: 15px;
 }
-
-/* Active Mode Styling */
+/*Active*/
 .modeBtn.active{
-    border:2px solid #654c91; /* Premium Indigo Accent */
+    border:2px solid #654c91; 
     background: #AB9EE2;
     box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
     cursor: not-allowed;

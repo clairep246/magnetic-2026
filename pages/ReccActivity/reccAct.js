@@ -108,9 +108,8 @@ async function recommendActivity(lat, lng) {
     console.log(data);
     return data;
 }
-//currnet pos: 1.3018970112620465,103.90757776830321
-//logged in user join activity 
 
+//logged in user join activity 
 async function joinActivity(activityId) {
     try {
         const {data: { user }, error: authError} = await supabase.auth.getUser();
@@ -204,6 +203,7 @@ function getRandomActivities(activities, count) {
 //display activity
 let activities = [];
 let index = 0;
+let filteredActivities = [];
 async function displayActivities() {
     try {
         //Get user 
@@ -227,23 +227,21 @@ async function displayActivities() {
             throw activityError;
         }
 
-        // 2. Fetch the activities the current user has already joined
         const { data: joinedRecords, error: getJoinedError } = await supabase
             .from("Interested_activities")
-            .select("activity_ID")
+            .select("activity_id")
             .eq("user_id", user.id);
 
-        if (joinedError) throw joinedError;
+        if (getJoinedError) {
+            throw getJoinedError;
+        }
 
-        // 3. Extract the IDs into a flat array or Set for quick lookup
-        const joinedActivityIds = new Set(joinedRecords.map(record => record.activity_id));
+        joinedRecords = joinedRecords.map(record => record.activity_id);
 
-        // 4. Filter out any activity the user has already joined
         const unjoinedActivities = allActivities.filter(
             activity => !joinedActivityIds.has(activity.id)
         );
             
-        // 5. Pass only unjoined activities to your random picker
         activities = getRandomActivities(unjoinedActivities, 3);
 }
 
@@ -353,7 +351,8 @@ async function displayActivities() {
             if (interestedActivity != null) {
                 btn.textContent = "Leave Activity";
                 btn.style.opacity = "50%"; 
-                activityBox.querySelector(".joinButton").addEventListener("click", () => leaveActivity(activity.id));            
+                activityBox.querySelector(".joinButton").addEventListener("click", () => leaveActivity(activity.id));    
+
              } else {
                 activityBox.querySelector(".joinButton").addEventListener("click", () => joinActivity(activity.id));
             
@@ -366,12 +365,6 @@ async function displayActivities() {
     } catch (error) {
         console.log("Failed to display activities:" + error);
         alert("Failed to display activites")
-    }
-}
-function nextActivities() {
-    if (index + 3 < activities.length) {
-        index += 3;
-        displayActivities();
     }
 }
 

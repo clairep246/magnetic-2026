@@ -157,7 +157,7 @@ async function displayActivities() {
         const {data: { user }, error: authError} = await supabase.auth.getUser();
 
         if (authError) {
-            throw new Error("User not authenticated");
+            throw authError;
         }
 
         if (document.getElementById("filter").value === "All Activities") {

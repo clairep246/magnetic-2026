@@ -66,6 +66,7 @@ async function updateDetails() {
         console.log("Changed password saved successfully")
         alert("Changed password  successfully")
         closePopup(changePopup);
+        
     } catch (error) {
         console.log("Fail to update details", error);
         alert("Failed to update, please try again")
