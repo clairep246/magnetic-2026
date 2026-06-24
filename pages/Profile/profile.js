@@ -18,24 +18,63 @@ async function signOut() {
     }
 }
 
-//change password and email
-const open = document.getElementById("change");
-const close = document.getElementById("close");
+//open and close pop ups
+const openChangebtn = document.getElementById("change");
+const closeChangebtn = document.getElementById("close");
 const changePopup = document.getElementById("changeEmailPassword");
 const navBar = document.querySelector(".navbar");
-const mainSection = document.querySelector(".Page")
+const mainSection = document.querySelector(".Page");
 
-open.addEventListener("click", () => {
-    changePopup.style.display = "flex";
-    changePopup.style.flexDirection = "column";
-    navBar.style.opacity = "50%";
-    mainSection.style.opacity = "50%";
-});
-close.addEventListener("click", () => {
-    changePopup.style.display = "none";
-    navBar.style.opacity = "100%";
-    mainSection.style.opacity = "100%";
-});
+function openPopup(popupElement) {
+    popupElement.style.setProperty("display", "flex", "important");
+    popupElement.style.flexDirection = "column";
+    navBar.style.opacity = "0.5";
+    if (mainSection) { mainSection.style.opacity = "0.5"; }
+
+    if (typeof interestPopup !== "undefined" && popupElement == interestPopup) {
+        resetInterestPopup();
+    }
+}
+
+function closePopup(popupElement) {
+    popupElement.style.display = "none";
+    navBar.style.opacity = "1";
+    if (mainSection) { mainSection.style.opacity = "1"; }
+}
+
+openChangebtn.addEventListener("click", () => openPopup(changePopup));
+closeChangebtn.addEventListener("click", () => closePopup(changePopup));
+
+//update password
+async function updateDetails() {
+    try {
+        document.getElementById("saveBtn").textContent = "Saving"
+        const newPassword = document.getElementById("newPassword").value;
+        const confirmPass = document.getElementById("confirmPassword").value;
+
+        if (newPassword !== confirmPass) {
+            alert("Passwords do not match. Please try again");
+            return;
+        }
+
+        const {data, error: updatePasswordError} = await supabase.auth.updateUser({
+            password: newPassword,
+        })
+        if (updatePasswordError) {
+            throw updatePasswordError;
+        }
+        console.log("Changed password saved successfully")
+        alert("Changed password  successfully")
+        closePopup(changePopup);
+    } catch (error) {
+        console.log("Fail to update details", error);
+        alert("Failed to update, please try again")
+    } finally {
+        document.getElementById("saveBtn").textContent = "Save";
+    }
+
+}
+document.getElementById("saveBtn").addEventListener("click", async () => updateDetails())
 
 //display profile details
 async function displayProfile() {

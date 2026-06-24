@@ -1,19 +1,6 @@
 import { supabase } from "../../src/supabaseClient.js";
 
-let store = [];
 let isEditing = false;
-
-// Selecting of interests buttons to be stored
-function selectedInterests(button) {
-    const interest = button.textContent;
-    button.classList.toggle("selected");
-
-    if (store.includes(interest)) {
-        store = store.filter(x => x !== interest);
-    } else {
-        store.push(interest);
-    }
-}
 
 //sign out
 async function signOut() {
@@ -33,26 +20,61 @@ async function signOut() {
 }
 }
 
-//change password and email
-const open = document.getElementById("change");
-const close = document.getElementById("close");
+//open and close pop ups
+const openChangebtn = document.getElementById("change");
+const closeChangebtn = document.getElementById("close");
 const changePopup = document.getElementById("changeEmailPassword");
 const navBar = document.querySelector(".navbar");
-const mainSection = document.querySelector(".EditProfile")
+const mainSection = document.querySelector(".EditProfile");
 
-open.addEventListener("click", () => {
-    changePopup.style.display = "flex";
-    changePopup.style.flexDirection = "column";
-    navBar.style.opacity = "50%";
-    mainSection.style.opacity = "50%";
-});
-close.addEventListener("click", () => {
-    changePopup.style.display = "none";
-    navBar.style.opacity = "100%";
-    mainSection.style.opacity = "100%";
-});
+function openPopup(popupElement) {
+    popupElement.style.setProperty("display", "flex", "important");
+    popupElement.style.flexDirection = "column";
+    navBar.style.opacity = "0.5";
+    mainSection.style.opacity = "0.5"; 
+}
 
-// For editing mode
+function closePopup(popupElement) {
+    popupElement.style.display = "none";
+    navBar.style.opacity = "1";
+    mainSection.style.opacity = "1"; 
+}
+
+openChangebtn.addEventListener("click", () => openPopup(changePopup));
+closeChangebtn.addEventListener("click", () => closePopup(changePopup));
+
+//update password
+async function updateDetails() {
+    try {
+        document.getElementById("saveBtn").textContent = "Saving"
+        const newPassword = document.getElementById("newPassword").value;
+        const confirmPass = document.getElementById("confirmPassword").value;
+
+        if (newPassword !== confirmPass) {
+            alert("Passwords do not match. Please try again");
+            return;
+        }
+
+        const {data, error: updatePasswordError} = await supabase.auth.updateUser({
+            password: newPassword,
+        })
+        if (updatePasswordError) {
+            throw updatePasswordError;
+        }
+        console.log("Changed password saved successfully")
+        alert("Changed password  successfully")
+        closePopup(changePopup);
+    } catch (error) {
+        console.log("Fail to update details", error);
+        alert("Failed to update, please try again")
+    } finally {
+        document.getElementById("saveBtn").textContent = "Save";
+    }
+
+}
+document.getElementById("saveBtn").addEventListener("click", async () => updateDetails())
+
+// For editing mode: pre fill in the details
 async function loadProfileDetails() {
     try {
         const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -89,12 +111,13 @@ async function loadProfileDetails() {
         document.getElementById("year").value = profile.year_of_study || "";
         document.getElementById("major").value = profile.major || "";
 
-        
-        document.querySelectorAll(".interests button").forEach(button => {
-            if (store.includes(button.textContent)) {
-                button.classList.add("selected");
-            }
-        });
+        profile.interest.forEach(savedValue => {
+        const checkbox = document.querySelector(`input[name="interests"][value="${savedValue}"]`);
+        if (checkbox != null) {
+            checkbox.checked = true;
+        }
+    });
+
 
     } catch (error) {
         console.log("Failed to prefill profile:" + error);
@@ -149,7 +172,9 @@ async function saveProfile() {
         
         if (checked.length > 3) {
             alert(`You can only select up to 3 interests!`);
+            return;
         }
+
         if (isEditing) {
             const { error: updateError } = await supabase
                 .from("Profile")
@@ -172,12 +197,6 @@ async function saveProfile() {
             }
         }
 
-        /*await supabase.functions.invoke("new_embed", {
-                body: {
-                    userId: user.id,
-                    about: about
-                }
-                });*/
         alert(isEditing ? "Profile successfully updated!"
                         : "Profile successfully created!");
 
@@ -190,10 +209,6 @@ async function saveProfile() {
             saveButton.textContent = "Save";
         }
 }
-
-document.querySelectorAll(".interests button").forEach(button => {
-    button.addEventListener("click", () => selectedInterests(button));
-});
 
 document.getElementById("save").addEventListener("click", saveProfile);
 document.getElementById("signout").addEventListener("click", signOut);

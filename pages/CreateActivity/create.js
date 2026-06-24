@@ -27,23 +27,6 @@ async function signOut() {
 }
 
 document.getElementById("signout").addEventListener("click", signOut);
-//Selecting of interests buttons to be stored 
-function selectedInterests(button) {
-    const interest = button.textContent;
-    button.classList.toggle("selected");
-
-    if (store.includes(interest)) {
-        store = store.filter(x => x !== interest);
-    } else {
-        store.push(interest);
-    }
-    /*Debugging
-    console.log(store);
-    const debugText = document.getElementById("check");
-
-    debugText.textContent =
-        "Selected Interests: " + store.join(", ");*/
- }
 
  //preview of activity details before saving
  function previewActivity() {
@@ -58,7 +41,7 @@ function selectedInterests(button) {
     document.getElementById('previewDescription').textContent = description;
     document.getElementById('previewLocation').textContent = location;
     document.getElementById('previewParticipants').textContent = participants;
-    document.getElementById('previewInterests').textContent = store;
+    document.getElementById('previewInterests').textContent = "Interests will be replaced by generalised categories";
 
     const formattedTime = new Date(`2026-01-01T${time}`).toLocaleTimeString(navigator.language, {
             hour: 'numeric',
@@ -76,7 +59,7 @@ function selectedInterests(button) {
         document.getElementById('previewDate').textContent = formattedDate;
  }
 
- //For editing mode: load the data of activity 
+ //For editing mode: pre fill-in
  async function loadActivityDetails() {
     try {
         if (!isEditing) {
@@ -95,40 +78,11 @@ function selectedInterests(button) {
         document.getElementById("date").value = data.date;
         document.getElementById("time").value = data.time;
         document.getElementById("participants").value = data.participants;
+        document.getElementById("interest").value = data.generalised_interests;
 
-        store = data.interests;
-        document.querySelectorAll(".interests button").forEach( button => {
-            if (store.includes(button.textContent)) {
-                button.classList.toggle("selected");
-            }
-        });
 
     } catch (error) {
         console.log("Failed to load activity details:" + error);
-    }
-}
-
-//Using the AI to generalise the interests
-async function generaliseInterests(interests) {
-    try {
-        const { data: generalisedInterests, error } = await supabase.functions.invoke(
-        "clever-service",
-        {
-            body: {
-            interests,
-            },
-        }
-        );
-
-        if (error) {
-            throw error;
-            return;
-        }
-
-        console.log(generalisedInterests.interests)
-        return generalisedInterests.interests
-    } catch (error) {
-        console.log(error);
     }
 }
 
@@ -140,6 +94,7 @@ async function saveActivity() {
     try {
         //UserID
         const { data: { user }, error: authError} = await supabase.auth.getUser();
+        const userID = user.id;
 
         if (authError) {
             throw authError;
@@ -153,23 +108,10 @@ async function saveActivity() {
         const time = document.getElementById("time").value
         const interests = document.getElementById("interest").value.split(",").map(x => x.trim())
         const participants = document.getElementById("participants").value
-
-        const response = await generaliseInterests(interests);
-        const generalisedInterests = response.split(",").map(x => x.trim());
-
+        
         if (interests.length > 3) {
             alert("Please enter max 3 interests")
-        }
-        const activityData = {
-            created_by: user.id,
-            name: name,
-            description: description,
-            location: location,
-            time: time,
-            date: date,
-            interests: interests,
-            participants: participants,
-            generalised_interests: generalisedInterests
+            return;
         }
 
         if (!name) {
@@ -212,30 +154,31 @@ async function saveActivity() {
             return;
         }
 
-        //The work 
-        if (isEditing) {
-            const { error: updateError } = await supabase.from("Activity").update(activityData).eq("id", activityID).select();
-            if (updateError) {
-                throw updateError;
+        const activityData = {
+            isEditing,
+            activityID: isEditing ? activityID : null,
+            name,
+            description,
+            location,
+            date,
+            time,
+            interests,
+            participants
+        };
+
+        const { data: response, error } = await supabase.functions.invoke(
+            "smart-responder", {
+            body: activityData
+        });
+
+       
+            if(isEditing) {
+                 alert("Activity successfully updated!");
+            } else {
+                alert("Activity successfully created!");
             }
-
-            alert("Activity successfully updated!");
             window.location.href = `../ActivityPage/activity.html`; 
-            return;
-
-        } else {
-            const { data, error: insertError } = await supabase.from("Activity").insert([activityData]).select();
-            if (insertError) {
-                throw insertError;
-            }
-
-            alert("Activity successfully created!");
-            const newActivity = data[0];
-            window.location.href = `../ActivityPage/activity.html`; 
-        }
-
-
-    } catch (error) {
+        } catch (error) {
         console.log("Failed to save activity:", error);
         alert("Failed to save activity. Please try again");
 
@@ -243,10 +186,6 @@ async function saveActivity() {
         save.textContent = "Save";
     }
 }
-
-document.querySelectorAll(".interests button").forEach( button => {
-    button.addEventListener("click", () => selectedInterests(button)); 
-    });
 
 document.getElementById('preview').addEventListener("click", previewActivity);
 document.getElementById("saveActivity").addEventListener("click", saveActivity);
@@ -297,25 +236,16 @@ closeChangebtn.addEventListener("click", () => closePopup(changePopup));
 openSuggestBtn.addEventListener("click", () => openPopup(interestPopup));
 closeSuggestBtn.addEventListener("click", () => closePopup(interestPopup));
 
-//update email and password
+//update email 
 async function updateDetails() {
     try {
-        const newEmail = document.getElementById("newEmail").value;
+        document.getElementById("saveBtn").textContent = "Saving"
         const newPassword = document.getElementById("newPassword").value;
         const confirmPass = document.getElementById("confirmPassword").value;
 
         if (newPassword !== confirmPass) {
             alert("Passwords do not match. Please try again");
             return;
-        }
-        if (newEmail !== "") {
-            const {data, error: updateEmailError} = await supabase.auth.updateUser({
-                email: newEmail,
-            })
-
-            if (updateEmailError) {
-                throw updateEmailError;
-            }
         }
 
         const {data, error: updatePasswordError} = await supabase.auth.updateUser({
@@ -324,19 +254,19 @@ async function updateDetails() {
         if (updatePasswordError) {
             throw updatePasswordError;
         }
+        console.log("Changed password saved successfully")
+        alert("Changed password  successfully")
+        closePopup(changePopup);
+        
     } catch (error) {
         console.log("Fail to update details", error);
-        console.log("EMAIL:", JSON.stringify(newEmail));
-         if (error.message.includes("different")) {
-            alert("New password needs to be different");
-        } else if (error.message.includes("invalid")) {
-            alert("Only valid NUS emails are allowed");
-        } else {
-        alert("Failed to update your details, please try again");
-        }
-
+        alert("Failed to update, please try again")
+    } finally {
+        document.getElementById("saveBtn").textContent = "Save";
     }
+
 }
+document.getElementById("saveBtn").addEventListener("click", async () => updateDetails())
 
 //generate a new activity
 async function generateActivity(interests) {
@@ -355,6 +285,7 @@ try {
         alert("Failed to generate activity");
         return;
     }
+
     //Pre fill in form 
     document.getElementById("name").value =generatedActivity.activityName;
     document.getElementById("description").value =generatedActivity.description;
@@ -362,12 +293,14 @@ try {
 
     console.log(generatedActivity);
     alert("Activity successfully generated!")
+
     } catch (error) {
         console.log(error);
         alert("Failed to generate activity, please try again");
     }
 }
 
+//use user's profile interest
 document.getElementById("useMyInterests").addEventListener("click", async () => {
     try {
         const { data: { user }, error: authError} = await supabase.auth.getUser();
@@ -401,6 +334,7 @@ document.getElementById("useNewInterests").addEventListener("click", async () =>
     document.getElementById("interestPopupLabel").textContent = "Please enter max of 3 ONE WORD interests, separated by commas and no spaces."
 })
 
+//use new interests 
 document.getElementById("generateActivity").addEventListener("click", async () => {
 
     const interests = document.getElementById("newInterests").value.split(",").map(x => x.trim())

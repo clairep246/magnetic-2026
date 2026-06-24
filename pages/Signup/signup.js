@@ -1,6 +1,6 @@
 import { supabase } from "../../src/supabaseClient.js";
 
-async function signup() {
+export async function signup() {
     try {
     const name = document.getElementById("name").value;
     const email = document.getElementById("email").value;
@@ -45,4 +45,8 @@ async function signup() {
 }
 }
 
-document.getElementById("signUp").addEventListener("click", () => signup());
+const signUpButton = document.getElementById("signUp");
+
+if (signUpButton) {
+    signUpButton.addEventListener("click", () => signup());
+}

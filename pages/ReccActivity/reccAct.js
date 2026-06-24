@@ -1,32 +1,21 @@
 import { supabase } from "../../src/supabaseClient.js";
 
-let index = 0;
-let activities = []
-
-//sign out
 async function signOut() {
-    try {
-        const { error } = await supabase.auth.signOut();
+    const { error } = await supabase.auth.signOut();
 
-        if (error) {
-            throw error;
-            return;
-        }
-
-        alert("Successfully signed out!");
-        window.location.href = "../Login/login.html";
-    } catch (error) {
-        console.log("Failed to sign out", error)
-        alert("Failed to sign out, please try again.");
-
+    if (error) {
+        alert("Error signing out: " + error.message);
+        return;
     }
+
+    alert("Successfully signed out!");
+    window.location.href = "/pages/Login/login.html";
 }
 
 //open and close pop ups
 const openChangebtn = document.getElementById("change");
 const closeChangebtn = document.getElementById("close");
 const changePopup = document.getElementById("changeEmailPassword");
-
 const navBar = document.querySelector(".navbar");
 const mainSection = document.querySelector(".activityPage");
 
@@ -34,13 +23,17 @@ function openPopup(popupElement) {
     popupElement.style.setProperty("display", "flex", "important");
     popupElement.style.flexDirection = "column";
     navBar.style.opacity = "0.5";
-    mainSection.style.opacity = "0.5";
+    if (mainSection) { mainSection.style.opacity = "0.5"; }
+
+    if (typeof interestPopup !== "undefined" && popupElement == interestPopup) {
+        resetInterestPopup();
+    }
 }
 
 function closePopup(popupElement) {
     popupElement.style.display = "none";
     navBar.style.opacity = "1";
-    mainSection.style.opacity = "1"; 
+    if (mainSection) { mainSection.style.opacity = "1"; }
 }
 
 openChangebtn.addEventListener("click", () => openPopup(changePopup));
@@ -67,11 +60,9 @@ async function updateDetails() {
         console.log("Changed password saved successfully")
         alert("Changed password  successfully")
         closePopup(changePopup);
-
     } catch (error) {
         console.log("Fail to update details", error);
         alert("Failed to update, please try again")
-        
     } finally {
         document.getElementById("saveBtn").textContent = "Save";
     }
@@ -79,7 +70,43 @@ async function updateDetails() {
 }
 document.getElementById("saveBtn").addEventListener("click", async () => updateDetails())
 
+document.getElementById("signout").addEventListener("click", signOut);
+
+//get user location 
+function getCurrentLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(success, error);
+    } else {
+        console.log("Not supported by this browser")
+    }
+
+    function success(position) {
+        console.log("Latitude: " + position.coords.latitude + "Longitude: " + position.coords.longitude);
+        return (position.coords.latitude, position.coords.longtitude)
+    }
+
+    function error() {
+        alert("Sorry, no position available.");
+    }
+}
+
+//Recommend activity to users 
+async function recommendActivity() {
+    const {data, error: locError} = await supabase.functions.invoke(
+        "rapid-processor",
+        {
+            body: {
+            userLat: 1.3018970112620465,
+            userLng: 103.90757776830321,
+            }
+        }
+        );
+    console.log(data);
+    return data;
+}
+//currnet pos: 1.3018970112620465,103.90757776830321
 //logged in user join activity 
+
 async function joinActivity(activityId) {
     try {
         const {data: { user }, error: authError} = await supabase.auth.getUser();
@@ -96,6 +123,7 @@ async function joinActivity(activityId) {
             throw insertError;
         }
 
+        //increase the number of interested participants by 1 in the main activity pages
         const {data: activity, error: getError} = await supabase.from("Activity").select("*").eq("id", activityId).single();
         if (getError) {
             throw getError;
@@ -149,58 +177,96 @@ async function leaveActivity(activityId) {
     }
 }
 
-
-//display activities by all other users 
+//random activities
+function getRandomActivities(activities, count) {
+    if (activities.length <= count) {
+        return activities;
+    }
+    
+    const result = [];
+    const usedIndices = [];
+    
+    while (result.length < count) {
+        const index = Math.floor(Math.random() * activities.length);
+        
+        if (!usedIndices.includes(index)) {
+            usedIndices.push(index);
+            result.push(activities[index]);
+        }
+    }
+    
+    return result;
+}
+//display activity
+let activities = [];
+let index = 0;
 async function displayActivities() {
     try {
         //Get user 
         const {data: { user }, error: authError} = await supabase.auth.getUser();
 
         if (authError) {
-            throw new Error("User not authenticated");
+            throw authError;
         }
 
-        if (document.getElementById("filter").value === "All Activities") {
-            const {data, error: getError} = await supabase.from("Activity").select("*").neq("created_by", user.id);
-            if (getError) {
-                throw getError;
-            }
+    if (document.getElementById("interestSuggestion").classList.contains("active")) {
+    
+        activities = await recommendActivity(); 
+    
+    } else {
+        const {data: allActivities, error: activityError} = await supabase
+            .from("Activity")
+            .select("*")
+            .neq("created_by", user.id);
             
-            activities = data;
-            console.log(activities);
-        } else { // for activities joined by user 
-            const { data:interestedActivities, error:getError } = await supabase.from("Interested_activities").select(`Activity(*)`).eq("user_id", user.id);
-             if (getError) {
-                throw getError;
-            }
-            console.log(interestedActivities)
-            activities = interestedActivities.map(activity => activity.Activity);
+        if (activityError) {
+            throw activityError;
         }
+
+        // 2. Fetch the activities the current user has already joined
+        const { data: joinedRecords, error: getJoinedError } = await supabase
+            .from("Interested_activities")
+            .select("activity_ID")
+            .eq("user_id", user.id);
+
+        if (joinedError) throw joinedError;
+
+        // 3. Extract the IDs into a flat array or Set for quick lookup
+        const joinedActivityIds = new Set(joinedRecords.map(record => record.activity_id));
+
+        // 4. Filter out any activity the user has already joined
+        const unjoinedActivities = allActivities.filter(
+            activity => !joinedActivityIds.has(activity.id)
+        );
+            
+        // 5. Pass only unjoined activities to your random picker
+        activities = getRandomActivities(unjoinedActivities, 3);
+}
 
         //creating the activities list 
         const container = document.getElementById("activityContainer");
         container.innerHTML = "";
 
-        //no activities to be displayed 
         if (activities.length === 0) {
             const empty = document.createElement("div");
             empty.innerHTML = `
                 <div class="empty">
-                    <p>No activities to be displayed.</p>
+                    <p>No more activity recommendations.</p>
                 </div>
             `;
             container.appendChild(empty);
 
-            document.getElementById("nextButton").style.display = "none";
-            document.getElementById("prevButton").style.display = "none";
+            document.getElementById("interestSuggestion").style.display = "none";
+            document.getElementById("randomSuggestion").style.display = "none";
             return;
         }
-        
-        for (let i = index; i < index + 3; i++ ) {
-            //no more activities 
+           
+        for (let i = 0; i < 3; i++ ) {
+            //no more activity recc
             if (i >= activities.length) {
                 break;
             }
+             
             const activity = activities[i];
 
             const createdById = activity.created_by 
@@ -221,7 +287,9 @@ async function displayActivities() {
                 minute: '2-digit',
                 hour12: true
             });
-            const link = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(activity.location)}`;
+
+            const link = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(activity.location)}`
+
             //creating each card
             const activityBox = document.createElement("div");
             activityBox.innerHTML = `
@@ -229,8 +297,7 @@ async function displayActivities() {
                 <div class="activityBox">
 
                     <h1>${activity.name}</h1>
-                    
-                     <p class="label">Created by:
+                    <p class="label">Created by:
                         <span>${userProfile.name}</span>
                     </p>
 
@@ -255,61 +322,48 @@ async function displayActivities() {
                     </p>
 
                     <p class="label">Number of participants:
-                        <span>${activity.registered}/${activity.participants}</span>
+                        <span>${activity.registered} / ${activity.participants}</span>
                     </p>
 
                     <button class="joinButton">Join</button>
 
                 </div>
             `;
-            //if the activity is full, disable the join button 
+
             if (activity.registered >= activity.participants) {
                 activityBox.querySelector(".joinButton").disabled = true;
             }
-
+            
             const {data: interestedActivity, error: getError} = await supabase.from("Interested_activities")
                 .select("*")
                 .eq("user_id", user.id)
                 .eq("activity_id", activity.id)
                 .maybeSingle();
-            
+                        
             if (getError) {
                 throw getError;
             }
-
+            
             //once user join disable the join button 
             const btn = activityBox.querySelector(".joinButton");
             if (interestedActivity != null) {
                 btn.textContent = "Leave Activity";
                 btn.style.opacity = "50%"; 
                 activityBox.querySelector(".joinButton").addEventListener("click", () => leaveActivity(activity.id));            
-            } else {
+             } else {
                 activityBox.querySelector(".joinButton").addEventListener("click", () => joinActivity(activity.id));
-
-            }
+            
+                }
             container.appendChild(activityBox);
             console.log(activities);
         }
 
-        //Button states for back and forth 
-        if (index === 0) {
-            document.getElementById("prevButton").disabled = true;
-        } else {
-            document.getElementById("prevButton").disabled = false;
-        }
-
-        if (index + 3 >= activities.length) {
-            document.getElementById("nextButton").disabled = true;
-        } else {
-            document.getElementById("nextButton").disabled = false;
-        }
 
     } catch (error) {
         console.log("Failed to display activities:" + error);
+        alert("Failed to display activites")
     }
 }
-
-//Nav buttons 
 function nextActivities() {
     if (index + 3 < activities.length) {
         index += 3;
@@ -317,17 +371,17 @@ function nextActivities() {
     }
 }
 
-function prevActivities() {
-    if (index >= 0) {
-        index -= 3;
-        displayActivities();
-    }
-}
+const interestBtn = document.getElementById("interestSuggestion");
+const randomBtn = document.getElementById("randomSuggestion");
+interestBtn.addEventListener("click", async () => {
+    interestBtn.classList.toggle("active");
+    randomBtn.classList.remove("active");
+    await displayActivities();
+})
 
-document.getElementById("signout").addEventListener("click", signOut);
-document.getElementById("nextButton").addEventListener("click", nextActivities);
-document.getElementById("prevButton").addEventListener("click", prevActivities);
-document.getElementById("filter").addEventListener("change", () => {
-    displayActivities();
-});
-displayActivities();
+randomBtn.addEventListener("click", async () => {
+    randomBtn.classList.toggle("active");
+    interestBtn.classList.remove("active");
+    await displayActivities();
+})
+
