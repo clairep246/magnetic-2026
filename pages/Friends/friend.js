@@ -68,3 +68,17 @@ async function updateDetails() {
 document.getElementById("saveBtn").addEventListener("click", async () => updateDetails())
 document.getElementById("signout").addEventListener("click", signOut);
 
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(success, error);
+  } 
+}
+
+function success(position) {
+  console.log("Latitude: " + position.coords.latitude +
+  "<br>Longitude: " + position.coords.longitude);
+}
+
+function error() {
+  alert("Sorry, no position available.");
+}
