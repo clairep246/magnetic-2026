@@ -79,8 +79,9 @@ function getCurrentLocation() {
     } else {
         console.log("Not supported by this browser")
     }
+}
 
-    function success(position) {
+function success(position) {
         const lat = position.coords.latitude;
         const lng = position.coords.longitude; 
         
@@ -92,7 +93,6 @@ function getCurrentLocation() {
     function error() {
         alert("Sorry, no position available.");
     }
-}
 
 //Recommend activity to users 
 async function recommendActivity(lat, lng) {
@@ -216,7 +216,7 @@ async function displayActivities() {
 
     if (document.getElementById("interestSuggestion").classList.contains("active")) {
     
-        activities = await recommendActivity(); 
+        activities = getCurrentLocation(); 
         if (activities == null) {
             alert("There is currently no available entries matching your interest. Why not try the random suggestions feature?");
             return;
@@ -373,7 +373,7 @@ async function displayActivities() {
     }
 }
 
-const interestBtn = document.getElementById("interestSuggestion");
+/*const interestBtn = document.getElementById("interestSuggestion");
 const randomBtn = document.getElementById("randomSuggestion");
 interestBtn.addEventListener("click", async () => {
     interestBtn.classList.toggle("active");
@@ -385,5 +385,6 @@ randomBtn.addEventListener("click", async () => {
     randomBtn.classList.toggle("active");
     interestBtn.classList.remove("active");
     await displayActivities();
-})
+})*/
+await recommendActivity();
 
