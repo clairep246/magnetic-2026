@@ -373,7 +373,6 @@ async function displayActivities() {
     }
 }
 
-displayActivities();
 const interestBtn = document.getElementById("interestSuggestion");
 const randomBtn = document.getElementById("randomSuggestion");
 interestBtn.addEventListener("click", async () => {
