@@ -217,6 +217,10 @@ async function displayActivities() {
     if (document.getElementById("interestSuggestion").classList.contains("active")) {
     
         activities = await recommendActivity(); 
+        if (activities == null) {
+            alert("There is currently no available entries matching your interest. Why not try the random suggestions feature?");
+            return;
+        }
     
     } else {
         const {data: allActivities, error: activityError} = await supabase
@@ -240,7 +244,7 @@ async function displayActivities() {
         filteredIDs = joinedRecords.map(record => record.activity_id);
 
         const unjoinedActivities = allActivities.filter(
-            activity => !filteredIDs.has(activity.id)
+            activity => !filteredIDs.includes(activity.id)
         );
             
         activities = getRandomActivities(unjoinedActivities, 3);
@@ -254,7 +258,7 @@ async function displayActivities() {
             const empty = document.createElement("div");
             empty.innerHTML = `
                 <div class="empty">
-                    <p>No more activity recommendations.</p>
+                    <p>No more activity records. Please check back later.</p>
                 </div>
             `;
             container.appendChild(empty);
@@ -369,6 +373,7 @@ async function displayActivities() {
     }
 }
 
+displayActivities();
 const interestBtn = document.getElementById("interestSuggestion");
 const randomBtn = document.getElementById("randomSuggestion");
 interestBtn.addEventListener("click", async () => {
