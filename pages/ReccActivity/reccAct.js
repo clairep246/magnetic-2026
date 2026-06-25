@@ -73,6 +73,7 @@ document.getElementById("saveBtn").addEventListener("click", async () => updateD
 document.getElementById("signout").addEventListener("click", signOut);
 
 //get user location 
+let location = [];
 function getCurrentLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(success, error);
@@ -86,8 +87,8 @@ function success(position) {
         const lng = position.coords.longitude; 
         
         console.log("Latitude: " + lat + " Longitude: " + lng);
-        
-        recommendActivity(lat, lng);
+        location = [lat, lng];
+        console.log(location);
     }
 
     function error() {
