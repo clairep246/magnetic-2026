@@ -73,28 +73,21 @@ document.getElementById("saveBtn").addEventListener("click", async () => updateD
 document.getElementById("signout").addEventListener("click", signOut);
 
 //get user location 
-let location = [];
-function getCurrentLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(success, error);
-    } else {
-        console.log("Not supported by this browser")
-    }
+async function getCurrentLocation() {
+    return new Promise((resolve, reject) => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    
+                    resolve([lat, lng]); 
+                } );
+        } else {
+            reject(new Error("Not supported"));
+        }
+    });
 }
-
-function success(position) {
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude; 
-        
-        console.log("Latitude: " + lat + " Longitude: " + lng);
-        location = [lat, lng];
-        console.log(location);
-    }
-
-    function error() {
-        alert("Sorry, no position available.");
-    }
-
 //Recommend activity to users 
 async function recommendActivity(lat, lng) {
     const {data, error: locError} = await supabase.functions.invoke(
@@ -102,7 +95,7 @@ async function recommendActivity(lat, lng) {
         {
             body: {
             userLat: lat,
-            userLng: lng,
+            userLng: lng
             }
         }
         );
@@ -188,13 +181,13 @@ function getRandomActivities(activities, count) {
     }
     
     const result = [];
-    const usedIndices = [];
+    const usedIndex = [];
     
     while (result.length < count) {
         const index = Math.floor(Math.random() * activities.length);
         
-        if (!usedIndices.includes(index)) {
-            usedIndices.push(index);
+        if (!usedIndex.includes(index)) {
+            usedIndex.push(index);
             result.push(activities[index]);
         }
     }
@@ -214,25 +207,7 @@ async function displayActivities() {
         if (authError) {
             throw authError;
         }
-
-    if (document.getElementById("interestSuggestion").classList.contains("active")) {
-    
-        activities = getCurrentLocation(); 
-        if (activities == null) {
-            alert("There is currently no available entries matching your interest. Why not try the random suggestions feature?");
-            return;
-        }
-    
-    } else {
-        const {data: allActivities, error: activityError} = await supabase
-            .from("Activity")
-            .select("*")
-            .neq("created_by", user.id);
-            
-        if (activityError) {
-            throw activityError;
-        }
-
+        
         const { data: joinedRecords, error: getJoinedError } = await supabase
             .from("Interested_activities")
             .select("activity_id")
@@ -243,6 +218,30 @@ async function displayActivities() {
         }
 
         filteredIDs = joinedRecords.map(record => record.activity_id);
+
+        //Interest based matching 
+        if (document.getElementById("interestSuggestion").classList.contains("active")) {
+        
+            let [lat,lng] = await getCurrentLocation();
+            let matchInterestActivities = await recommendActivity(lat, lng);
+            if (activities == null) {
+                alert("There is currently no available entries matching your interest. Why not try the random suggestions feature?");
+                return;
+            }
+
+            activities = matchInterestActivities.filter(
+                activity => !filteredIDs.includes(activity.id)
+            );
+    
+    } else {
+        const {data: allActivities, error: activityError} = await supabase
+            .from("Activity")
+            .select("*")
+            .neq("created_by", user.id);
+            
+        if (activityError) {
+            throw activityError;
+        }
 
         const unjoinedActivities = allActivities.filter(
             activity => !filteredIDs.includes(activity.id)
@@ -263,9 +262,6 @@ async function displayActivities() {
                 </div>
             `;
             container.appendChild(empty);
-
-            document.getElementById("interestSuggestion").style.display = "none";
-            document.getElementById("randomSuggestion").style.display = "none";
             return;
         }
            
@@ -374,7 +370,7 @@ async function displayActivities() {
     }
 }
 
-/*const interestBtn = document.getElementById("interestSuggestion");
+const interestBtn = document.getElementById("interestSuggestion");
 const randomBtn = document.getElementById("randomSuggestion");
 interestBtn.addEventListener("click", async () => {
     interestBtn.classList.toggle("active");
@@ -386,7 +382,6 @@ randomBtn.addEventListener("click", async () => {
     randomBtn.classList.toggle("active");
     interestBtn.classList.remove("active");
     await displayActivities();
-})*/
-//await recommendActivity();
-getCurrentLocation();
+})
+
 
