@@ -386,5 +386,6 @@ randomBtn.addEventListener("click", async () => {
     interestBtn.classList.remove("active");
     await displayActivities();
 })*/
-await recommendActivity();
+//await recommendActivity();
+getCurrentLocation();
 
