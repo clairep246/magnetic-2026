@@ -1,0 +1,119 @@
+body {
+    font-family: 'Fredoka', sans-serif;
+    background-image: url("/images/activity_background.png");
+    height: 100vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    overflow-x: hidden;
+}
+
+/*Nav bar*/
+.navbar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 20px;
+}
+
+.logo img {
+    width: 140px;
+    height: auto;
+}
+
+.links {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    padding-right: 60px;
+}
+
+.links a {
+    text-decoration: none;
+    font-weight: bold;
+    color:#3E07AC;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.links a:hover {
+    text-decoration: underline;
+    transition-duration: 2s;
+}
+
+/* Main layout */
+.recommend-page {
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
+    margin: 50px 100px;
+}
+
+/* Robot image */
+.robot-section img {
+    width: 300px;
+    height: auto;
+}
+
+/* Right translucent panel */
+.recommend-panel {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.35);
+    border-radius: 40px;
+    padding: 40px;
+}
+
+/* Title */
+.recommend-title {
+    color: #3E07AC;
+    margin-top: 0;
+    margin-bottom: 30px;
+    font-size: 32px;
+}
+
+/* Recommendation card */
+.recommend-card {
+    background: white;
+    border-radius: 30px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+/* Profile pic */
+.recommend-pic {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+
+/* Name */
+.recommend-name {
+    font-size: 36px;
+    font-weight: bold;
+    color: #3E07AC;
+    margin: 0;
+}
+
+/* Match percentage */
+.recommend-score {
+    font-size: 24px;
+    color: #3E07AC;
+    margin: 0;
+}
+
+/* Empty state */
+.empty {
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #3E07AC;
+    font-size: 24px;
+    font-weight: bold;
+}
