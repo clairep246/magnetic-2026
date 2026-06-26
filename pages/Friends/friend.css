@@ -56,6 +56,11 @@ body {
     margin-left: 100px;
     margin-right: 100px;
 }
+.right-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
 
 /*Add Friends*/
 .add-friends-box{
@@ -81,7 +86,7 @@ body {
     color: #3E07AC;
 }
 
-#friend-code {
+#friend-code-input {
     background-color: white;
     border: none;
     border-radius: 15px;
@@ -153,4 +158,11 @@ body {
     margin-left: 100px;
     margin-right: 100px;
     gap: 30px;
+}
+
+.friend-requests {
+    background-color: #dac5ffad;
+    padding: 20px;
+    border-radius: 15px;
+    width: 250px;
 }

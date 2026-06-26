@@ -34,77 +34,42 @@
 
     <div class="all-content">
 
-        <div class="friends-list">
-            <div class="friend-card">
-            <img
-                src="/images/default-profile.png"
-                alt="Profile Picture"
-                class="friend-pic">
+        <div class="friends-list" id="friends-container"></div>
 
-            <div class="friend-info">
-                <p class="friend-name">Jane W</p>
-                <p class="friend-interest">
-                    Swimming, Tennis
+        <div class="right-panel">
+            <div class="add-friends-box">
+
+                <p class="your-code-label"> 
+                Your Code 
                 </p>
-            </div>
-        </div>
-
-        <div class="friend-card">
-            <img
-                src="/images/default-profile.png"
-                alt="Profile Picture"
-                class="friend-pic">
-
-            <div class="friend-info">
-                <p class="friend-name">Alex M</p>
-                <p class="friend-interest">
-                    Hiking, Nature
+                <p id="friend-code-display">Loading...</p>
+                <p class="enter-code-label"> 
+                    Enter Friend Code: 
                 </p>
-            </div>
-        </div>
 
-        <div class="friend-card">
-            <img
-                src="/images/default-profile.png"
-                alt="Profile Picture"
-                class="friend-pic">
-
-            <div class="friend-info">
-                <p class="friend-name">Jenny J</p>
-                <p class="friend-interest">
-                    Gaming
-                </p>
-            </div>
-        </div>
-
-        </div>
-
-        <div class="add-friends-box">
-
-            <p class="your-code-label"> 
-            Your Code 
-            </p>
-            <p id="friend-code-display">Loading...</p>
-            <p class="enter-code-label"> 
-                Enter Friend Code: 
-            </p>
-
-            <input 
-                type="text"
-                id="friend-code-input">
+                <input 
+                    type="text"
+                    id="friend-code-input">
         
-            <div class="add-cancel-buttons">
-                <button class="add-friend-button">
-                    Send Request
-                </button>
+                <div class="add-cancel-buttons">
+                    <button class="add-friend-button">
+                        Send Request
+                    </button>
 
-                <button class="cancel-button">
-                    Cancel
-                </button>
+                    <button class="cancel-button">
+                        Cancel
+                    </button>
+                </div>
             </div>
        
+         <div class="friend-requests">
+            <h3>Friend Requests</h3>
+
+            <div id="requests-container"></div>
+        </div>
         
-        
+        </div>
+       
         </div>
     </div>
 
