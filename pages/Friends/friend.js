@@ -1,5 +1,6 @@
 import { supabase } from "../../src/supabaseClient.js";
 
+// --- AUTH FUNCTIONS ---
 async function signOut() {
     const { error } = await supabase.auth.signOut();
 
@@ -12,44 +13,31 @@ async function signOut() {
     window.location.href = "../Login/login.html";
 }
 
-
-/* displaying box for each user */
+// --- PROFILE CODES ---
 async function loadFriendCode() {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
 
-  const { data: { user } } = await supabase.auth.getUser();
+    const { data, error } = await supabase
+        .from("Profile")
+        .select("friend_code")
+        .eq("created_by", user.id)
+        .single();
 
-  const { data, error } = await supabase
-    .from("Profile")
-    .select("friend_code")
-    .eq("created_by", user.id)
-    .single();
-
-  if (error) {
-    console.log(error);
-    return;
-  }
-
-  document.getElementById("friend-code-display").textContent = data.friend_code;
+    if (error) {
+        console.error(error);
+        return;
+    }
+    document.getElementById("friend-code-display").textContent = data.friend_code;
 }
 
-loadFriendCode();
-loadFriendRequests();
-loadFriends();
-const { data: { user } } = await supabase.auth.getUser();
-
-document
-    .querySelector(".add-friend-button")
-    .addEventListener("click", sendFriendRequest);
-
-
-/* send friend request */
-/* read friend code from input  -> find matching profile -> get receiver ID -> insert row into Friend_Request */
+// --- FRIEND REQUESTS OPERATIONS ---
 async function sendFriendRequest() {
     const friendCode = document.getElementById("friend-code-input").value;
 
     const { data, error } = await supabase
         .from("Profile")
-        .select("created_by")
+        .select("*")
         .eq("friend_code", friendCode)
         .single();
 
@@ -63,10 +51,23 @@ async function sendFriendRequest() {
 
     if (receiverId === user.id) {
         alert("You cannot add yourself");
+        document.getElementById("friend-code-input").value = "";
         return;
     }
 
-    const { error: requestError } = await supabase
+    const {data: checkRequest, error: checkError} = await supabase
+    .from("Friend_request")
+    .select("*")
+    .eq("sender_id", user.id)
+    .eq("receiver_id", receiverId)
+
+    if (checkRequest.length != 0) {
+        alert("Request has already been sent to this user.");
+        document.getElementById("friend-code-input").value = "";
+        return;
+    }
+
+    const { data: friendRequest, error: requestError } = await supabase
         .from("Friend_request")
         .insert([
             {
@@ -82,27 +83,34 @@ async function sendFriendRequest() {
     }
 
     alert("Friend request sent!");
-    loadFriends();
+    loadFriendRequests();
 }
-
 async function loadFriendRequests() {
+
     const { data: { user } } = await supabase.auth.getUser();
 
-    const { data, error } = await supabase
-    .from("Friend_request")
-    .select("*")
-    .eq("receiver_id", user.id)
-    .eq("status", "pending");
+    const { data:requestRecords, error:requestRecordsError } = await supabase
+        .from("Friend_request")
+        .select("*")
+        .eq("receiver_id", user.id)
+        .eq("status", "pending");
 
-    if (error) {
-    console.log(error);
-    return;
+    
+    if (requestRecordsError) {
+        console.error("Error loading requests:", requestRecordsError.message);
+        return;
     }
 
     const container = document.getElementById("requests-container");
+    container.innerHTML = ""; 
 
-    for (const request of data) {
-        const { data: senderProfile, error: senderError } =
+    if (requestRecords.length === 0) {
+        container.innerHTML = "<p>No pending friend requests.</p>";
+        return;
+    }
+
+    for (const request of requestRecords) {
+         const { data: senderProfile, error: senderError } =
             await supabase
                 .from("Profile")
                 .select("name")
@@ -113,52 +121,61 @@ async function loadFriendRequests() {
             console.log(senderError);
             continue;
         }
-        container.innerHTML += `
+        
+        const requestBox = document.createElement("div");
+        requestBox.innerHTML = `
             <div class="request-card">
                 <p>${senderProfile.name} sent you a request</p>
+                <div class="action-btns">
                 <button 
-                    class="accept-btn" 
-                    onclick="acceptFriendRequest('${request.id}')">
+                    class="accept-btn">
                     Accept
                 </button>
                 <button 
-                    class="reject-btn" 
-                    onclick="rejectFriendRequest('${request.id}')">
+                    class="reject-btn">
                     Reject
                 </button>
             </div>
-`           ;
-        }
+            </div>
+            `;
 
+        requestBox.querySelector(".accept-btn").addEventListener("click", async () => {
+            await acceptFriendRequest(request.id, requestBox);
+            loadFriendRequests(); 
+            loadFriends();
+        });
+
+        requestBox.querySelector(".reject-btn").addEventListener("click", async () => {
+            await rejectFriendRequest(request.id, requestBox);
+            loadFriendRequests(); 
+            loadFriend(); 
+        });
+
+        container.appendChild(requestBox);
+    }
 }
 
-async function acceptFriendRequest(requestId) {
-    const { data, error } = await supabase
+async function acceptFriendRequest(requestId, request) {
+    const { data: requestData, error: fetchError } = await supabase
         .from("Friend_request")
         .select("*")
         .eq("id", requestId)
         .single();
 
-    if (error) {
-        console.log(error);
+    if (fetchError) {
+        console.error(fetchError);
         return;
     }
 
     const { error: friendError } = await supabase
         .from("Friend_list")
         .insert([
-            {
-                user_id: data.sender_id,
-                friend_id: data.receiver_id
-            },
-            {
-                user_id: data.receiver_id,
-                friend_id: data.sender_id
-            }
+            { user_id: requestData.sender_id, friend_id: requestData.receiver_id },
+            { user_id: requestData.receiver_id, friend_id: requestData.sender_id }
         ]);
 
     if (friendError) {
-        console.log(friendError);
+        alert("Error adding to friend list: " + friendError.message);
         return;
     }
 
@@ -168,45 +185,46 @@ async function acceptFriendRequest(requestId) {
         .eq("id", requestId);
 
     if (updateError) {
-        console.log(updateError);
+        console.error(updateError);
         return;
     }
 
-
     alert("Friend request accepted!");
+    request.remove();
 }
 
-async function rejectFriendRequest(requestId) {
+async function rejectFriendRequest(requestId, request) {
     const { error } = await supabase
         .from("Friend_request")
         .update({ status: "rejected" })
         .eq("id", requestId);
 
     if (error) {
-        console.log(error);
+        console.error(error);
         return;
     }
 
     alert("Friend request rejected!");
+    request.remove();
 }
 
 async function loadFriends() {
     const { data: { user } } = await supabase.auth.getUser();
 
-    const { data, error } = await supabase
+    const { data:friendListData, error:friendListError } = await supabase
         .from("Friend_list")
         .select("*")
         .eq("user_id", user.id);
 
-    if (error) {
-        console.log(error);
+    if (friendListError) {
+        console.log(friendListError);
         return;
     }
 
     const container = document.getElementById("friends-container");
     container.innerHTML = "";
 
-    for (const friend of data) {
+    for (const friend of friendListData) {
         const { data: friendProfile, error: profileError } =
             await supabase
                 .from("Profile")
@@ -218,8 +236,8 @@ async function loadFriends() {
             console.log(profileError);
             continue;
         }
-
-        container.innerHTML += `
+        const friendBox = document.createElement("div");
+        friendBox.innerHTML = `
             <div class="friend-card">
                 <img
                     src="/images/default-profile.png"
@@ -234,10 +252,13 @@ async function loadFriends() {
                 </div>
             </div>
         `;
+        container.appendChild(friendBox);
     }
+    console.log(friendListData);
 }
 
-window.acceptFriendRequest = acceptFriendRequest;
-window.rejectFriendRequest = rejectFriendRequest;
-
+document.querySelector(".add-friend-button").addEventListener("click", sendFriendRequest);
 document.getElementById("signout").addEventListener("click", signOut);
+loadFriendCode();
+loadFriendRequests();
+loadFriends();
