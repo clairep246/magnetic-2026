@@ -1,6 +1,5 @@
 import { supabase } from "../../src/supabaseClient.js";
 
-// --- AUTH FUNCTIONS ---
 async function signOut() {
     const { error } = await supabase.auth.signOut();
 
@@ -13,7 +12,30 @@ async function signOut() {
     window.location.href = "../Login/login.html";
 }
 
-// --- PROFILE CODES ---
+const openChangebtn = document.getElementById("change");
+const closeChangebtn = document.getElementById("close");
+const changePopup = document.getElementById("changeEmailPassword");
+const navBar = document.querySelector(".navbar");
+
+
+function openPopup(popupElement) {
+    popupElement.style.setProperty("display", "flex", "important");
+    popupElement.style.flexDirection = "column";
+    navBar.style.opacity = "0.5";
+    document.querySelector(".heading-row").style.opacity = "0.5"; 
+ document.querySelector(".all-content").style.opacity = "0.5"; 
+}
+
+function closePopup(popupElement) {
+    popupElement.style.display = "none";
+    navBar.style.opacity = "1";
+    document.querySelector(".heading-row").style.opacity = "1"; 
+ document.querySelector(".all-content").style.opacity = "1"; 
+}
+
+openChangebtn.addEventListener("click", () => openPopup(changePopup));
+closeChangebtn.addEventListener("click", () => closePopup(changePopup));
+
 async function loadFriendCode() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
@@ -31,9 +53,20 @@ async function loadFriendCode() {
     document.getElementById("friend-code-display").textContent = data.friend_code;
 }
 
-// --- FRIEND REQUESTS OPERATIONS ---
 async function sendFriendRequest() {
     const friendCode = document.getElementById("friend-code-input").value;
+    const { data: { user } } = await supabase.auth.getUser();
+    const {data: friendCodeRecords, error: friendCodeError} = await supabase
+        .from("Profile")
+        .select("friend_code")
+        .neq("created_by", user.id);
+    
+    let friendCodes = friendCodeRecords.map(record => record.friend_code);
+    if (!friendCodes.includes(friendCode)) {
+        alert("Invalid friend code");
+        document.getElementById("friend-code-input").value = "";
+        return;
+    }
 
     const { data, error } = await supabase
         .from("Profile")
@@ -47,8 +80,7 @@ async function sendFriendRequest() {
     }
 
     const receiverId = data.created_by;
-    const { data: { user } } = await supabase.auth.getUser();
-
+   
     if (receiverId === user.id) {
         alert("You cannot add yourself");
         document.getElementById("friend-code-input").value = "";
@@ -56,10 +88,10 @@ async function sendFriendRequest() {
     }
 
     const {data: checkRequest, error: checkError} = await supabase
-    .from("Friend_request")
-    .select("*")
-    .eq("sender_id", user.id)
-    .eq("receiver_id", receiverId)
+        .from("Friend_request")
+        .select("*")
+        .eq("sender_id", user.id)
+        .eq("receiver_id", receiverId);
 
     if (checkRequest.length != 0) {
         alert("Request has already been sent to this user.");
@@ -148,7 +180,7 @@ async function loadFriendRequests() {
         requestBox.querySelector(".reject-btn").addEventListener("click", async () => {
             await rejectFriendRequest(request.id, requestBox);
             loadFriendRequests(); 
-            loadFriend(); 
+            loadFriends(); 
         });
 
         container.appendChild(requestBox);
@@ -240,8 +272,7 @@ async function loadFriends() {
         friendBox.innerHTML = `
             <div class="friend-card">
                 <img
-                    src="/images/default-profile.png"
-                    alt="Profile Picture"
+                    src="/images/default-profile.jpg"
                     class="friend-pic">
 
                 <div class="friend-info">
@@ -258,6 +289,9 @@ async function loadFriends() {
 }
 
 document.querySelector(".add-friend-button").addEventListener("click", sendFriendRequest);
+document.querySelector(".cancel-button").addEventListener("click", () => {
+    document.getElementById("friend-code-input").value = "";
+})
 document.getElementById("signout").addEventListener("click", signOut);
 loadFriendCode();
 loadFriendRequests();

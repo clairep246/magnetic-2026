@@ -10,6 +10,7 @@
 
 <body>
     <!--Nav Bar-->
+    <!--Nav Bar-->
     <nav class="navbar">
 
         <a class="logo">
@@ -17,21 +18,54 @@
         </a>
 
         <div class="links">
-            <a href="/pages/CreateActivity/create.html">Create Activity</a>
+            <div class="dropDown">
+                <a>Recommend Me</a>
+                <div class="dropDownContent">
+                    <a href="/pages/ReccActivity/reccAct.html">Recommend an activity</a>
+                    <a style="text-decoration: underline;">Recommend users</a>
+                </div>
+            </div>
             <a href="/pages/ActivityBrowser/browser.html">Browse Activities</a>
-            <a href="/pages/ActivityPage/activity.html">Your Activities</a>
-            <a style="text-decoration: underline;">Friends</a>
+             <div class="dropDown">
+                <a>Your activities</a>
+                <div class="dropDownContent">
+                    <a href="/pages/CreateActivity/create.html">Create an activity</a>
+                    <a href="/pages/ActivityPage/activity.html">Your created activities</a>
+                </div>
+            </div>
+            <a href="/pages/Friends/friend.html">Friends</a>
             <a href="/pages/Profile/profile.html">Profile</a>
-            <a id="signout">Sign out</a>
-       
+            <!--<a id="signout">Sign out</a>-->
+            <div class="dropDown">
+                <a>Setting</a>
+                <div class="dropDownContent">
+                    <a href="/pages/EditProfile/edit.html">Edit profile</a>
+                    <a id="change" >Change Password</a>
+                    <a id="signout">Sign out</a>
+                </div>
+
+            </div>
         </div>
     </nav>
+
+    <!--Change password-->
+    <div id="changeEmailPassword" class="popup">
+        <div class="popupContent">
+            <span class="close" id="close">&times;</span>
+            <h2 style="text-align: center;">Change Password</h2>
+
+            <input type="password" id="newPassword" placeholder="Enter new password">
+            <input type="password" id="confirmPassword" placeholder="Confirm new password">
+
+            <button id="saveBtn" type="button">Save</button>
+        </div>
+    </div>
 
     <div class="recommend-page">
 
         <!-- Left side robot -->
         <div class="robot-section">
-            <img src="/images/robot.png" alt="Robot">
+            <img src="/images/orbital ai bot.PNG" alt="Robot">
         </div>
 
         <!-- Right side panel -->

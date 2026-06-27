@@ -23,18 +23,15 @@ function openPopup(popupElement) {
     popupElement.style.setProperty("display", "flex", "important");
     popupElement.style.flexDirection = "column";
     navBar.style.opacity = "0.5";
-    if (mainSection) { mainSection.style.opacity = "0.5"; }
-
-    if (typeof interestPopup !== "undefined" && popupElement == interestPopup) {
-        resetInterestPopup();
-    }
+    mainSection.style.opacity = "0.5";
 }
 
 function closePopup(popupElement) {
     popupElement.style.display = "none";
     navBar.style.opacity = "1";
-    if (mainSection) { mainSection.style.opacity = "1"; }
+    mainSection.style.opacity = "1"; 
 }
+
 
 openChangebtn.addEventListener("click", () => openPopup(changePopup));
 closeChangebtn.addEventListener("click", () => closePopup(changePopup));

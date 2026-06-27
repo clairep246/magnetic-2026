@@ -163,7 +163,6 @@ body {
 h1 {
     color:#3E07AC;
     margin-top: 20px;
-    margin-bottom: 80px;
     text-align: center;
 }
 
@@ -172,11 +171,23 @@ h1 {
     display: flex;
     flex-direction: row;    
     flex-wrap: wrap;
-    gap: 25px;
     align-items: flex-start;
     margin-bottom: 20px;
 }
 
+.profilePhoto {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.profilePhoto img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 2px solid black;
+}
 .col1, .col2, .col3 {
     flex: 1;
     display: flex;

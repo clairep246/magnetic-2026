@@ -123,6 +123,13 @@ async function loadProfileDetails() {
         console.log("Failed to prefill profile:" + error);
     }
 }
+/* generating friend code for each user */
+function generateFriendCode() {
+  return Math.random()
+    .toString(36)
+    .substring(2, 8)
+    .toUpperCase();
+}
 
 // Saving profile
 async function saveProfile() {
@@ -144,6 +151,7 @@ async function saveProfile() {
         const major = document.getElementById("major").value;
         const checked =document.querySelectorAll('input[name="interests"]:checked');
         const interests = Array.from(checked).map(x => x.value);
+        const friend_code = generateFriendCode();
         const profileData = {
             created_by: user.id,
             name: name,
@@ -153,6 +161,7 @@ async function saveProfile() {
             year_of_study: year,
             major: major,
             interest: interests,
+            friend_code: friend_code
         };
 
         if (!name) {
@@ -187,7 +196,7 @@ async function saveProfile() {
             }
 
         } else {
-            const { error: insertError } = await supabase
+            const {data, error: insertError } = await supabase
                 .from("Profile")
                 .insert([profileData])
                 .select();

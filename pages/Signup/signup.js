@@ -42,26 +42,6 @@ async function signup() {
         return;
     }
 
-    const user = data.user;
-
-    const friend_code = generateFriendCode();
-
-    const { error: profileError } = await supabase
-        .from("Profile")
-        .insert([
-        {
-            created_by: user.id,
-            friend_code: friend_code,
-            name: name
-        }
-    ]);
-
-  if (profileError) {
-    alert(profileError.message);
-    return;
-  }
-
-
     alert("Signup successful!");
     window.location.href = "../EditProfile/edit.html";
 
