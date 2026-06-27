@@ -1,3 +1,4 @@
+friends.css
 body {
     font-family: 'Fredoka', sans-serif;
     background-image: url("/images/activity_background.png");
@@ -33,7 +34,7 @@ body {
 .links a {
     text-decoration: none;
     font-weight: bold;
-    color:#3E07AC;
+    color: #3E07AC;
     font-size: 16px;
     cursor: pointer;
     transition: 0.3s;
@@ -44,107 +45,243 @@ body {
     transition-duration: 2s;
 }
 
-.dropDown {
-    position: relative;
-    display: inline-block;
-    padding-bottom: 40px;
-}
-
-
-.dropDownContent {
-    display:none;
-    position: absolute;
-    top: 100%;
-    right: 0;
-    background-color: #AB9EE2;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-}
-
-.dropDownContent a {
-    text-decoration: none;
-    font-weight: bold;
-    color:#ffffff;
-    font-size: 16px;
-    cursor: pointer;
-    border-bottom: 2px solid #654c91;
-    padding: 5px;
-}
-
-.dropDownContent a:last-child {
-    border-bottom: none;
-}
-
-.dropDown:hover .dropDownContent {
+/*Friends list*/
+.heading-row {
+    font-family: 'Fredoka', sans-serif;
+    color: #3E07AC;
+    font-size: 15px;
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-left: 100px;
+    margin-right: 100px;
     text-align: center;
-    gap: 5px;
-    padding: 10px 0;
-    margin: 2px;
 }
 
-.popup {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    width: 100%;
-    height: 100%;
-    align-items: center;
-    margin-top: 50px;
-    margin-bottom: 100px;
-}
-
-.popupContent {
+.right-panel {
+    width: 350px;
     display: flex;
     flex-direction: column;
-    background-color:white;
-    padding: 20px;
-    border-radius: 10px;
-    min-width: 300px;
+    gap: 20px;
 }
 
-.popupContent h2 {
-    margin:0
-}
-
-.popupContent input {
-    margin-top: 10px;
-}
-
-.close {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-    font-size: 20px;
-    border: 1px solid black;
-    border-radius: 50%;
-    margin-bottom: 8px;
-}
-
-.close:hover {
-    background-color: grey;
-    border-radius: 50%;
-}
-
-#saveBtn {
-    padding: 12px 14px;
-    border: none;
-    border-radius: 12px;
-    background: #AB9EE2;
-    color: white;
-    font-size: 12px;
-    font-weight: bold;
-    cursor: pointer;
+/*Add Friends*/
+.add-friends-box {
+    background-color: #dac5ffad;
     width: 100%;
-    transition: 0.3s;
+    box-sizing: border-box;
+
+    padding: 20px;
+    border-radius: 15px;
+
+    color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+
+.your-code-label {
+    text-align: center;
+    margin: 0;
+    font-weight: bold;
+    color: #3E07AC;
+}
+
+#friend-code-display {
+    display: inline-block;
+    background: white;
+    color: #3E07AC;
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    width: fit-content;
+    margin: auto;
     margin-top: 10px;
 }
 
-#saveBtn:hover {
-    transform: translateY(-3px);
-    background-color: #654c91;
+.enter-code-label {
+    color: #3E07AC;
+}
+
+#friend-code-input {
+    background-color: white;
+    border: none;
+    border-radius: 15px;
+    padding: 8px;
+}
+
+.add-cancel-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.add-friend-button {
+    background-color: #3e07ac5c;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.cancel-button {
+    background-color: white;
+    color: #3e07acc9;
+    border: none;
+    padding: 10px;
+    border-radius: 20px;
+}
+
+.friends-list {
+    width: 60%;
+
+    padding: 20px;
+    border-radius: 15px;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.friends-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    max-height: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.friend-card {
+    background-color: white;
+    border-radius: 15px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.friend-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.friend-pic {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+.friend-name {
+    font-weight: bold;
+    color: #3E07AC;
+    margin: 0;
+}
+
+.friend-interest {
+    margin: 0;
+    color: #666;
+}
+
+.all-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-left: 100px;
+    margin-right: 100px;
+    gap: 30px;
+}
+
+/*Friend Requests*/
+.friend-requests {
+    width: 100%;
+    box-sizing: border-box;
+
+    background-color: #dac5ffad;
+    padding: 20px;
+    border-radius: 15px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.friend-requests h3 {
+    margin-top: -4px;
+}
+
+#requests-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    width: 100%;
+    height: 140px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.request-card {
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 10px;
+    padding-bottom: 4px;
+
+    background: #D7C0E8;
+    display: flex;
+    flex-direction: column;
+    border-radius: 12px;
+    overflow: hidden;
+    gap: 8px;
+
+    align-content: center;
+    justify-content: center;
+    text-align: center;
+
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.request-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.accept-btn {
+    background-color: #3E07AC;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.reject-btn {
+    background-color: white;
+    color: #3E07AC;
+    border: 1px solid #3E07AC;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.accept-btn:hover,
+.reject-btn:hover {
+    opacity: 0.9;
+}
+.action-btns{
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    width: 100%;
+    align-content: center;
+    justify-content: center;
+    padding-bottom: 2px;
 }

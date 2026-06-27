@@ -1,7 +1,8 @@
 import { supabase } from "../../src/supabaseClient.js";
 
-export async function signup() {
+async function signup() {
     try {
+
     const name = document.getElementById("name").value;
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
@@ -26,7 +27,7 @@ export async function signup() {
         return;
     }
 
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
         email: email,
         password: password,
         options: {
@@ -40,6 +41,26 @@ export async function signup() {
         alert(error.message);
         return;
     }
+
+    const user = data.user;
+
+    const friend_code = generateFriendCode();
+
+    const { error: profileError } = await supabase
+        .from("Profile")
+        .insert([
+        {
+            created_by: user.id,
+            friend_code: friend_code,
+            name: name
+        }
+    ]);
+
+  if (profileError) {
+    alert(profileError.message);
+    return;
+  }
+
 
     alert("Signup successful!");
     window.location.href = "../EditProfile/edit.html";

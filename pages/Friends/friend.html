@@ -46,17 +46,54 @@
         </div>
     </nav>
 
-    <!--Change password-->
-    <div id="changeEmailPassword" class="popup">
-        <div class="popupContent">
-            <span class="close" id="close">&times;</span>
-            <h2 style="text-align: center;">Change Password</h2>
+    <!--Friends List Section-->
+    <div class="heading-row">
+        <h2 class="friends-title">Friends</h2>
+        <h2 class="add-friends">Add Friends</h2>
+    </div>
 
-            <input type="password" id="newPassword" placeholder="Enter new password">
-            <input type="password" id="confirmPassword" placeholder="Confirm new password">
+    <div class="all-content">
 
-            <button id="saveBtn" type="button">Save</button>
+        <div class="friends-list" id="friends-container"></div>
+
+        <div class="right-panel">
+            <div class="add-friends-box">
+
+                <p class="your-code-label"> 
+                Your Code 
+                </p>
+                <p id="friend-code-display">Loading...</p>
+                <p class="enter-code-label"> 
+                    Enter Friend Code: 
+                </p>
+
+                <input 
+                    type="text"
+                    id="friend-code-input">
+        
+                <div class="add-cancel-buttons">
+                    <button class="add-friend-button">
+                        Send Request
+                    </button>
+
+                    <button class="cancel-button">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+       
+         <div class="friend-requests">
+            <h3>Friend Requests</h3>
+
+            <div id="requests-container"></div>
+        </div>
+        
+        </div>
+       
         </div>
     </div>
+
+
+    
 </body>
 </html>
