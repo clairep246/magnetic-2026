@@ -96,10 +96,14 @@ async function loadProfileDetails() {
             isEditing = true; 
         } else {
             isEditing = false;
+            const pageHeader = document.querySelector("h1"); 
+            pageHeader.textContent = "Create Profile";
+            
         }
 
         const profile = data[0];
         if (profile == null) {
+            navBar.style.display = "none";
             return;
         }
 
