@@ -1,6 +1,7 @@
 import { supabase } from "../../src/supabaseClient.js";
 
 async function signup() {
+    try {
     const name = document.getElementById("name").value;
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
@@ -37,6 +38,11 @@ async function signup() {
 
     alert("Signup successful!");
     window.location.href = "../EditProfile/edit.html";
+
+} catch (error) {
+    console.error("Error during signup:", error);
+    alert("An error occurred during signup. Please try again.");
+}
 }
 
 document.getElementById("signUp").addEventListener("click", () => signup());

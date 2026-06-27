@@ -5,16 +5,41 @@ let activities = []
 
 //sign out
 async function signOut() {
+    try {
     const { error } = await supabase.auth.signOut();
 
     if (error) {
-        alert("Could not sign out. Please try again.");
+        throw new error;
         return;
     }
 
     alert("Successfully signed out!");
     window.location.href = "../Login/login.html";
+} catch (error) {
+    console.log("Fail to signed out:", error);
+    alert("Could not sign out. Please try again.");
+
 }
+}
+
+//change password and email
+const open = document.getElementById("change");
+const close = document.getElementById("close");
+const changePopup = document.getElementById("changeEmailPassword");
+const navBar = document.querySelector(".navbar");
+const mainSection = document.querySelector(".activityPage")
+
+open.addEventListener("click", () => {
+    changePopup.style.display = "flex";
+    changePopup.style.flexDirection = "column";
+    navBar.style.opacity = "50%";
+    mainSection.style.opacity = "50%";
+});
+close.addEventListener("click", () => {
+    changePopup.style.display = "none";
+    navBar.style.opacity = "100%";
+    mainSection.style.opacity = "100%";
+});
 
 //display activities by user
 async function displayActivities() {
@@ -23,14 +48,14 @@ async function displayActivities() {
         const {data: { user }, error: authError} = await supabase.auth.getUser();
 
         if (authError) {
-            throw new Error("User not authenticated");
+            throw authError;
         }
 
         //Get Activities by user
         const {data, error: getError} = await supabase.from("Activity").select("*").eq("created_by", user.id);
         
         if (getError) {
-            throw new Error("Failed to get activities");
+            throw getError;
         }
         
         activities = data;
@@ -40,15 +65,19 @@ async function displayActivities() {
         container.innerHTML = "";
 
         if (activities.length === 0) {
-            const empty = document.createElement("p");
-            empty.textContent = "No activities have been created.";
+            const empty = document.createElement("div");
+            empty.innerHTML = `
+                <div class="empty">
+                    <p>No activities have been created.</p>
+                </div>
+            `;
             container.appendChild(empty);
 
-            document.getElementById("nextButton").disabled = true;
-            document.getElementById("prevButton").disabled = true;
+            document.getElementById("nextButton").style.display = "none";
+            document.getElementById("prevButton").style.display = "none";
             return;
         }
-
+           
         for (let i = index; i < index + 3; i++ ) {
             //no more activity by user 
             if (i >= activities.length) {
@@ -68,6 +97,8 @@ async function displayActivities() {
                 hour12: true
             });
 
+            const link = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(activity.location)}`
+
             //creating each card
             const activityBox = document.createElement("div");
             activityBox.innerHTML = `
@@ -81,11 +112,11 @@ async function displayActivities() {
                     </p>
 
                     <p class="label">Interests:
-                        <span>${activity.interests.join(", ")}</span>
+                        <span>${activity.generalised_interests.join(", ")}</span>
                     </p>
 
                     <p class="label">Location:
-                        <span>${activity.location}</span>
+                        <span>${activity.location} <a id="map" href="${link}"> (View on Google Maps)</a></span>
                     </p>
 
                     <p class="label">Date:
@@ -97,7 +128,7 @@ async function displayActivities() {
                     </p>
 
                     <p class="label">Number of participants:
-                        <span>${activity.participants}</span>
+                        <span>${activity.registered} / ${activity.participants}</span>
                     </p>
 
                     <button class="editButton">Edit</button>
@@ -139,6 +170,7 @@ async function displayActivities() {
 
     } catch (error) {
         console.log("Failed to display activities:" + error);
+        alert("Failed to display activites")
     }
 }
 
@@ -166,10 +198,11 @@ async function deleteActivity(activityID) {
         alert("Activity successfully deleted!");
 
         if (error) {
-            throw new Error("Failed to delete activity");
+            throw error;
 }
    } catch (error) {
-        console.log("Fail to delete activity:" +error);
+        console.log("Fail to delete activity:" + error);
+        alert("failed to delete activity");
    }
 }
 
