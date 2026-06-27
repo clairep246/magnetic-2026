@@ -45,7 +45,6 @@ body {
     transition-duration: 2s;
 }
 
-/*Drop down*/
 .dropDown {
     position: relative;
     display: inline-block;
@@ -159,12 +158,14 @@ body {
     align-items: center;
     gap: 30px;
 }
+.activityPage p {
+    font-family:'Fredoka', sans-serif;
+    color: #654c91;
+    margin-bottom: -10px;
+    font-weight: bold;
+    font-size: 20px;
 
-#filter {
-    background-color: #AB9EE2;
-    color: white;
 }
-
 .activityContainer {
     width: 100%;
     display: flex;
@@ -192,10 +193,9 @@ body {
 }
 
 .activityBox:hover {
-    transform: translateY(-8px);
+    transform: translateY(-4px);
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
-
 .activityBox h1 {
     font-weight: bold;
     color: black;
@@ -225,22 +225,10 @@ body {
     margin-bottom: 25px;
 }
 
-#map {
-    font-style: italic;
-    color:  rgb(118, 118, 118);
-}
-
-#map:hover {
-    color: black;
-}
-
 .buttons {
     display: flex;
-    flex-direction: row;
-    gap: 30px;
-    width: 30%;
-    align-content: center;
-    justify-content: center;
+    gap: 16px;
+    margin: 20px 0;
 }
 
 button {
@@ -267,16 +255,6 @@ button:disabled {
     transform: none;
 }
 
-select {
-    margin-top: -10px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    background: white;
-    font-size: 14px;
-}
-
-/*No empty to show*/
 .empty {
     width: 100%;
     display: flex;
@@ -284,3 +262,60 @@ select {
     align-items: center;
     height: 400px;
 }
+
+/*Toggle between modes*/
+.modeContainer {
+    display: flex;
+    gap: 16px;
+
+}
+
+.modeBtn {
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: #ffffff;
+    border-radius: 12px;
+    cursor: pointer;
+    text-align: left;
+    width: 250px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.modeBtn:hover{
+    transform: translateY(-3px);
+    background-color: white;
+    border: 2px solid #654c91;
+}
+
+.modeBtn .icon {
+    font-size: 24px;
+}
+.modeBtn .btnText {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    align-items: center;
+}
+.modeBtn p {
+    color: black;
+    font-size: 15px;
+}
+/*Active*/
+.modeBtn.active{
+    border:2px solid #654c91; 
+    background: #AB9EE2;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
+    cursor: not-allowed;
+}
+
+.modeBtn.active:hover {
+    transform: none;
+}
+
+.modeBtn.active p{
+    color: black;
+}
+

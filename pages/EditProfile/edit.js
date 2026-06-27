@@ -1,40 +1,86 @@
 import { supabase } from "../../src/supabaseClient.js";
 
-let store = [];
 let isEditing = false;
-
-// Selecting of interests buttons to be stored
-function selectedInterests(button) {
-    const interest = button.textContent;
-    button.classList.toggle("selected");
-
-    if (store.includes(interest)) {
-        store = store.filter(x => x !== interest);
-    } else {
-        store.push(interest);
-    }
-}
 
 //sign out
 async function signOut() {
+    try {
     const { error } = await supabase.auth.signOut();
 
     if (error) {
-        alert("Could not sign out. Please try again.");
+        throw error;
         return;
     }
 
     alert("Successfully signed out!");
     window.location.href = "../Login/login.html";
+} catch (error) {
+    console.log("failed to sign out", error);
+    alert("Failed to signout, please try again")
+}
 }
 
-// For editing mode
+//open and close pop ups
+const openChangebtn = document.getElementById("change");
+const closeChangebtn = document.getElementById("close");
+const changePopup = document.getElementById("changeEmailPassword");
+const navBar = document.querySelector(".navbar");
+const mainSection = document.querySelector(".EditProfile");
+
+function openPopup(popupElement) {
+    popupElement.style.setProperty("display", "flex", "important");
+    popupElement.style.flexDirection = "column";
+    navBar.style.opacity = "0.5";
+    mainSection.style.opacity = "0.5"; 
+}
+
+function closePopup(popupElement) {
+    popupElement.style.display = "none";
+    navBar.style.opacity = "1";
+    mainSection.style.opacity = "1"; 
+}
+
+openChangebtn.addEventListener("click", () => openPopup(changePopup));
+closeChangebtn.addEventListener("click", () => closePopup(changePopup));
+
+//update password
+async function updateDetails() {
+    try {
+        document.getElementById("saveBtn").textContent = "Saving"
+        const newPassword = document.getElementById("newPassword").value;
+        const confirmPass = document.getElementById("confirmPassword").value;
+
+        if (newPassword !== confirmPass) {
+            alert("Passwords do not match. Please try again");
+            return;
+        }
+
+        const {data, error: updatePasswordError} = await supabase.auth.updateUser({
+            password: newPassword,
+        })
+        if (updatePasswordError) {
+            throw updatePasswordError;
+        }
+        console.log("Changed password saved successfully")
+        alert("Changed password  successfully")
+        closePopup(changePopup);
+    } catch (error) {
+        console.log("Fail to update details", error);
+        alert("Failed to update, please try again")
+    } finally {
+        document.getElementById("saveBtn").textContent = "Save";
+    }
+
+}
+document.getElementById("saveBtn").addEventListener("click", async () => updateDetails())
+
+// For editing mode: pre fill in the details
 async function loadProfileDetails() {
     try {
         const { data: { user }, error: authError } = await supabase.auth.getUser();
 
         if (authError) {
-            throw new Error("User not authenticated");
+            throw authError;
         }
 
         const { data, error: getError } = await supabase
@@ -43,7 +89,7 @@ async function loadProfileDetails() {
             .eq("created_by", user.id);
 
         if (getError) {
-            throw new Error("Failed to get profile details");
+            throw getError;
         }
 
         if (data.length > 0) {
@@ -65,13 +111,13 @@ async function loadProfileDetails() {
         document.getElementById("year").value = profile.year_of_study || "";
         document.getElementById("major").value = profile.major || "";
 
-        store = profile.interest
+        profile.interest.forEach(savedValue => {
+        const checkbox = document.querySelector(`input[name="interests"][value="${savedValue}"]`);
+        if (checkbox != null) {
+            checkbox.checked = true;
+        }
+    });
 
-        document.querySelectorAll(".interests button").forEach(button => {
-            if (store.includes(button.textContent)) {
-                button.classList.add("selected");
-            }
-        });
 
     } catch (error) {
         console.log("Failed to prefill profile:" + error);
@@ -87,7 +133,7 @@ async function saveProfile() {
         const { data: { user }, error: authError } = await supabase.auth.getUser();
 
         if (authError) {
-            throw new Error("User not authenticated");
+            throw authError;
         }
 
         const name = document.getElementById("name").value;
@@ -96,7 +142,8 @@ async function saveProfile() {
         const residence = document.getElementById("residence").value;
         const year = document.getElementById("year").value;
         const major = document.getElementById("major").value;
-
+        const checked =document.querySelectorAll('input[name="interests"]:checked');
+        const interests = Array.from(checked).map(x => x.value);
         const profileData = {
             created_by: user.id,
             name: name,
@@ -105,7 +152,7 @@ async function saveProfile() {
             residences: residence,
             year_of_study: year,
             major: major,
-            interest: store,
+            interest: interests,
         };
 
         if (!name) {
@@ -122,9 +169,9 @@ async function saveProfile() {
             alert("Please select your major");
             return;
         }
-
-        if (store.length === 0) {
-            alert("Please select at least one interest");
+        
+        if (checked.length > 3) {
+            alert(`You can only select up to 3 interests!`);
             return;
         }
 
@@ -136,12 +183,8 @@ async function saveProfile() {
                 .select();
 
             if (updateError) {
-                throw new Error("Failed to update profile");
+                throw updateError;
             }
-
-            alert("Profile successfully updated!");
-            window.location.href = "../Profile/profile.html";
-            return;
 
         } else {
             const { error: insertError } = await supabase
@@ -150,25 +193,22 @@ async function saveProfile() {
                 .select();
 
             if (insertError) {
-                throw new Error("Fail to insert profile into database");
+                throw insertError;
             }
-
-            alert("Profile successfully created!");
-            window.location.href = "../Profile/profile.html";
         }
+
+        alert(isEditing ? "Profile successfully updated!"
+                        : "Profile successfully created!");
+
+        window.location.href = "../Profile/profile.html";
 
     } catch (error) {
         console.log("Failed to save profile:" + error);
         alert("Failed to save profile. Please try again");
-
     } finally {
-        saveButton.textContent = "Saved";
-    }
+            saveButton.textContent = "Save";
+        }
 }
-
-document.querySelectorAll(".interests button").forEach(button => {
-    button.addEventListener("click", () => selectedInterests(button));
-});
 
 document.getElementById("save").addEventListener("click", saveProfile);
 document.getElementById("signout").addEventListener("click", signOut);

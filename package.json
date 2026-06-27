@@ -7,14 +7,22 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:browser": "vitest --config=vitest.browser.config.js"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^6.0.2",
-    "vite": "^8.0.13"
+    "@vitest/browser-playwright": "^4.1.9",
+    "jsdom": "^29.1.1",
+    "vite": "^8.0.13",
+    "vitest": "^4.1.9",
+    "vitest-browser-react": "^2.2.0"
   },
   "dependencies": {
+    "@google/genai": "^2.8.0",
     "@supabase/supabase-js": "^2.106.1",
+    "leaflet": "^1.9.4",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-router-dom": "^7.15.1"

@@ -13,16 +13,65 @@
 
         <a class="logo">
             <img src="/images/logo.png" alt="Logo">
+        </a>
 
         <div class="links">
-            <a href="/pages/CreateActivity/create.html">Create Activity</a>
+            <div class="dropDown">
+                <a>Recommend Me</a>
+                <div class="dropDownContent">
+                    <a href="/pages/ReccActivity/reccAct.html">Recommend an activity</a>
+                    <a href="">Recommend users</a>
+                </div>
+            </div>
             <a style="text-decoration: underline;">Browse Activities</a>
-            <a href="/pages/ActivityPage/activity.html">Your Activities</a>
+             <div class="dropDown">
+                <a>Your activities</a>
+                <div class="dropDownContent">
+                    <a href="/pages/CreateActivity/create.html">Create an activity</a>
+                    <a href="/pages/ActivityPage/activity.html">Your created activities</a>
+                </div>
+            </div>
             <a href="/pages/Friends/friend.html">Friends</a>
             <a href="/pages/Profile/profile.html">Profile</a>
-            <a id="signout">Sign out</a>
-       
+
+            <div class="dropDown">
+                <a>Setting</a>
+                <div class="dropDownContent">
+                    <a href="/pages/EditProfile/edit.html">Edit profile</a>
+                    <a id="change" >Change Password</a>
+                    <a id="signout">Sign out</a>
+                </div>
+
+            </div>
         </div>
     </nav>
+
+    <!--Change password-->
+    <div id="changeEmailPassword" class="popup">
+        <div class="popupContent">
+            <span class="close" id="close">&times;</span>
+            <h2 style="text-align: center;">Change Password</h2>
+
+            <input type="password" id="newPassword" placeholder="Enter new password">
+            <input type="password" id="confirmPassword" placeholder="Confirm new password">
+
+            <button id="saveBtn" type="button">Save</button>
+        </div>
+    </div>
+
+
+    <!--Activity browser section-->
+    <div class="activityPage">
+        <select id="filter">
+                <option>All Activities</option>
+                <option>Joined activities</option>
+            </select>
+         <div class="activityContainer" id="activityContainer">
+            </div>
+        <div class="buttons">
+            <button id="prevButton" type="button">🡰</button>
+            <button id="nextButton" type="button">🡲</button>
+        </div>
+    </div>
 </body>
 </html>

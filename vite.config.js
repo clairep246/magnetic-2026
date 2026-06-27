@@ -7,6 +7,9 @@ const root = fileURLToPath(new URL('.', import.meta.url))
 
 export default defineConfig({
   plugins: [react()],
+  test: {
+    include: ['pages/**/*.test.{js,jsx,ts,tsx}', 'src/**/*.test.{js,jsx,ts,tsx}'],
+  },
   build: {
     rollupOptions: {
       input: {
@@ -20,6 +23,7 @@ export default defineConfig({
         activityPage: resolve(root, 'pages/ActivityPage/activity.html'),
         activityBrowser: resolve(root, 'pages/ActivityBrowser/browser.html'),
         friends: resolve(root, 'pages/Friends/friend.html'),
+        recommendationsActivity: resolve(root, 'pages/ReccActivity/reccAct.html'),
       },
     },
   },

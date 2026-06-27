@@ -1,14 +1,8 @@
 import { supabase } from "../../src/supabaseClient.js";
 
-/* generating friend code for each user */
-function generateFriendCode() {
-  return Math.random()
-    .toString(36)
-    .substring(2, 8)
-    .toUpperCase();
-}
-
 async function signup() {
+    try {
+
     const name = document.getElementById("name").value;
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
@@ -20,6 +14,11 @@ async function signup() {
 
     if (!email) {
         alert("Please enter your email");
+        return;
+    }
+
+    if (!email.includes("@u.nus.edu")) {
+        alert("Only valid NUS emails are allowed");
         return;
     }
 
@@ -65,6 +64,15 @@ async function signup() {
 
     alert("Signup successful!");
     window.location.href = "../EditProfile/edit.html";
+
+} catch (error) {
+    console.error("Error during signup:", error);
+    alert("An error occurred during signup. Please try again.");
+}
 }
 
-document.getElementById("signUp").addEventListener("click", () => signup());
+const signUpButton = document.getElementById("signUp");
+
+if (signUpButton) {
+    signUpButton.addEventListener("click", () => signup());
+}

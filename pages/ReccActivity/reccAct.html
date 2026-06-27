@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="activity.css">
-    <title>Your activities</title>
-    <script type="module" src="activity.js"></script>
+    <link rel="stylesheet" href="reccAct.css">
+    <title>Recommend an activity</title>
+    <script type="module" src="reccAct.js"></script>
 </head>
 <body>
     <!--Nav Bar-->
@@ -19,7 +19,7 @@
             <div class="dropDown">
                 <a>Recommend Me</a>
                 <div class="dropDownContent">
-                    <a href="/pages/ReccActivity/reccAct.html">Recommend an activity</a>
+                    <a style="text-decoration: underline;">Recommend an activity</a>
                     <a href="">Recommend users</a>
                 </div>
             </div>
@@ -28,12 +28,12 @@
                 <a>Your activities</a>
                 <div class="dropDownContent">
                     <a href="/pages/CreateActivity/create.html">Create an activity</a>
-                    <a style="text-decoration: underline;">Your created activities</a>
+                    <a href="/pages/ActivityPage/activity.html">Your created activities</a>
                 </div>
             </div>
             <a href="/pages/Friends/friend.html">Friends</a>
             <a href="/pages/Profile/profile.html">Profile</a>
-
+            <!--<a id="signout">Sign out</a>-->
             <div class="dropDown">
                 <a>Setting</a>
                 <div class="dropDownContent">
@@ -61,12 +61,23 @@
 
 
     <div class="activityPage">
+        <div class="modeContainer">
+            <button id="interestSuggestion" class="modeBtn">
+                <span class="icon">🎯</span>
+                <div class="btnText">
+                    <p>Match My Interests</p>
+                </div>
+            </button>
+            <button id="randomSuggestion" class="modeBtn">
+                <span class="icon">🎲</span>
+                <div class="btnText">
+                    <p>Surprise Me!</p>
+                </div>
+            </button>
+        </div>
          <div class="activityContainer" id="activityContainer">
             </div>
-        <div class="buttons">
-            <button id="prevButton" type="button">🡰</button>
-            <button id="nextButton" type="button">🡲</button>
-        </div>
+        
     </div>
    
 
