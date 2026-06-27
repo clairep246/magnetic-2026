@@ -1,4 +1,5 @@
 import { supabase } from "../../src/supabaseClient.js";
+import defaultProfilePic from "../../images/default-profile.jpg";
 
 async function signOut() {
     const { error } = await supabase.auth.signOut();
@@ -272,7 +273,7 @@ async function loadFriends() {
         friendBox.innerHTML = `
             <div class="friend-card">
                 <img
-                    src="/images/default-profile.jpg"
+                    src=${defaultProfilePic}
                     class="friend-pic">
 
                 <div class="friend-info">

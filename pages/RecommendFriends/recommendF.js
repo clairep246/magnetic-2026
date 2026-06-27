@@ -1,5 +1,5 @@
 import { supabase } from "../../src/supabaseClient.js";
-
+import defaultProfilePic from "../../images/default-profile.jpg";
 //signout
 async function signOut() {
     const { error } = await supabase.auth.signOut();
@@ -98,7 +98,7 @@ async function loadRecommendations() {
         reccCard.innerHTML = `
         <div class="recommend-card">
             <img
-                src="/images/default-profile.jpg"
+                src=${defaultProfilePic}
                 alt="Profile Picture"
                 class="recommend-pic">
 
