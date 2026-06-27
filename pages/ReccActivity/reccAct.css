@@ -1,12 +1,13 @@
 body {
     font-family: 'Fredoka', sans-serif;
     background-image: url("/images/activity_background.png");
-    height: 100vh;
+    height: 100%;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
     overflow-x: hidden;
+    
 }
 
 /*Nav bar*/
@@ -82,7 +83,6 @@ body {
     margin: 2px;
 }
 
-/*Popups*/
 .popup {
     display: none;
     position: fixed;
@@ -148,120 +148,174 @@ body {
     background-color: #654c91;
 }
 
-/*Edit Profile*/
-.EditProfile {
-    max-width: 100%;
+/*Activity details*/
+.activityPage {
     display: flex;
     flex-direction: column;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 20px;
     align-items: center;
-    justify-content: center;
-    padding-left: 30px;
-    padding-right: 30px;
-    padding-bottom: 20px;
+    gap: 30px;
 }
+.activityPage p {
+    font-family:'Fredoka', sans-serif;
+    color: #654c91;
+    margin-bottom: -10px;
+    font-weight: bold;
+    font-size: 20px;
 
-
-h1 {
-    color:#3E07AC;
-    margin-top: 20px;
-    margin-bottom: 40px;
-    text-align: center;
 }
-
-.EditSection {
+.activityContainer {
     width: 100%;
     display: flex;
     flex-direction: row;    
     flex-wrap: wrap;
-    gap: 30px;
-    align-items: flex-start;
-}
-
-.col1, .col2, .col3 {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+    justify-content: center;
+    align-items: stretch; 
     gap: 20px;
 }
 
-.interests {
-    width: 100%;
-    display: column;
-    align-items: center;            
-    gap: 15px;                  
-    margin-top: -5px;
-    max-height: 250px;              
-    overflow-y: auto;                
-    padding: 5px;
+/* Each box */
+.activityBox {
+    padding: 18px;
+    width: 280px;
+    min-width: 200px;
+    background: #D7C0E8;
+    display: flex;
+    flex-direction: column;
+    border-radius: 12px;
+    overflow: hidden; 
+    gap: 8px;
+    align-content: flex-start;
+    justify-content: flex-start;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.interests input[type="checkbox"] {
-    width: 16.5px;
-    height: 16.5px;
-    accent-color: #AB9EE2;          
-    cursor: pointer;
-    margin: 0;    
+.activityBox:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
-
-.interests label {
-    font-size: 18px;
-    color: black;                  
-    font-weight: 500;
-    cursor: pointer;    
-    font-family: 'Fredoka', sans-serif;                               
-}
-
-.interests label:hover {
-    color: #3E07AC;
-}
-
-label {
+.activityBox h1 {
     font-weight: bold;
-    color:#3e07ac;
+    color: black;
+    font-size: 18px;
+    align-self: center;
+    margin-bottom: -5px;
 }
 
-input {
-    margin-top: -10px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 12px;
-}
-
-textarea {
-    margin-top: -10px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 12px;
-    height: 100px;
-    font-family: 'Fredoka', sans-serif;
-}
-
-textarea::placeholder {
-    font-family: 'Fredoka', sans-serif;
-}
-
-select {
-    margin-top: -10px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    background: white;
+.activityBox .label {
+    font-weight: bold;
+    color: white;
+    margin: 0px;
     font-size: 14px;
 }
 
-.save {
-    width: 80px;
-    height: 30px;
-    margin-top: 20px;
+.activityBox span {
+    display: block;
+    color: black;
+    margin-top: 3px;
+    font-size: 13px;
+}
+
+.description {
+    display: block;
+    width: 100%;
+    height: 45px;
+    margin-bottom: 25px;
+}
+
+.buttons {
+    display: flex;
+    gap: 16px;
+    margin: 20px 0;
+}
+
+button {
+    padding: 12px 14px;
+    border: none;
+    border-radius: 12px;
     background: #AB9EE2;
     color: white;
-    border: none;
-    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
     cursor: pointer;
+    width: 100%;
     transition: 0.3s;
 }
 
-.save:hover {
+button:hover {
     transform: translateY(-3px);
-    background: #706799;
+    background-color: #654c91;
 }
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.empty {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+}
+
+/*Toggle between modes*/
+.modeContainer {
+    display: flex;
+    gap: 16px;
+
+}
+
+.modeBtn {
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: #ffffff;
+    border-radius: 12px;
+    cursor: pointer;
+    text-align: left;
+    width: 250px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.modeBtn:hover{
+    transform: translateY(-3px);
+    background-color: white;
+    border: 2px solid #654c91;
+}
+
+.modeBtn .icon {
+    font-size: 24px;
+}
+.modeBtn .btnText {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    align-items: center;
+}
+.modeBtn p {
+    color: black;
+    font-size: 15px;
+}
+/*Active*/
+.modeBtn.active{
+    border:2px solid #654c91; 
+    background: #AB9EE2;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
+    cursor: not-allowed;
+}
+
+.modeBtn.active:hover {
+    transform: none;
+}
+
+.modeBtn.active p{
+    color: black;
+}
+

@@ -1,10 +1,11 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="recc.css">
-    <title>Recommendations</title>
-    <script type="module" src="recc.js"></script>
+    <link rel="stylesheet" href="reccAct.css">
+    <title>Recommend an activity</title>
+    <script type="module" src="reccAct.js"></script>
 </head>
 <body>
     <!--Nav Bar-->
@@ -15,7 +16,13 @@
         </a>
 
         <div class="links">
-            <a style="text-decoration: underline;">Recommendations</a>
+            <div class="dropDown">
+                <a>Recommend Me</a>
+                <div class="dropDownContent">
+                    <a style="text-decoration: underline;">Recommend an activity</a>
+                    <a href="">Recommend users</a>
+                </div>
+            </div>
             <a href="/pages/ActivityBrowser/browser.html">Browse Activities</a>
              <div class="dropDown">
                 <a>Your activities</a>
@@ -26,15 +33,16 @@
             </div>
             <a href="/pages/Friends/friend.html">Friends</a>
             <a href="/pages/Profile/profile.html">Profile</a>
+            <!--<a id="signout">Sign out</a>-->
             <div class="dropDown">
                 <a>Setting</a>
                 <div class="dropDownContent">
                     <a href="/pages/EditProfile/edit.html">Edit profile</a>
-                    <a id="change">Change Password / Email</a>
+                    <a id="change" >Change Password</a>
                     <a id="signout">Sign out</a>
                 </div>
+
             </div>
-       
         </div>
     </nav>
 
@@ -42,9 +50,8 @@
     <div id="changeEmailPassword" class="popup">
         <div class="popupContent">
             <span class="close" id="close">&times;</span>
-            <h2 style="text-align: center;">Change Email / Password</h2>
+            <h2 style="text-align: center;">Change Password</h2>
 
-            <input type="email" id="newEmail" placeholder="Enter new email">
             <input type="password" id="newPassword" placeholder="Enter new password">
             <input type="password" id="confirmPassword" placeholder="Confirm new password">
 
@@ -52,9 +59,27 @@
         </div>
     </div>
 
-    <div class="recommendationPage">
-        <h2>Location</h2>
-        <p id="locationTest"></p>
+
+    <div class="activityPage">
+        <div class="modeContainer">
+            <button id="interestSuggestion" class="modeBtn">
+                <span class="icon">🎯</span>
+                <div class="btnText">
+                    <p>Match My Interests</p>
+                </div>
+            </button>
+            <button id="randomSuggestion" class="modeBtn">
+                <span class="icon">🎲</span>
+                <div class="btnText">
+                    <p>Surprise Me!</p>
+                </div>
+            </button>
+        </div>
+         <div class="activityContainer" id="activityContainer">
+            </div>
+        
     </div>
+   
+
 </body>
 </html>

@@ -12,49 +12,59 @@ async function signOut() {
     window.location.href = "../Login/login.html";
 }
 
-//change password and email
-const open = document.getElementById("change");
-const close = document.getElementById("close");
+//open and close pop ups
+const openChangebtn = document.getElementById("change");
+const closeChangebtn = document.getElementById("close");
 const changePopup = document.getElementById("changeEmailPassword");
 const navBar = document.querySelector(".navbar");
-const mainSection = document.querySelector(".friendPage")
+const mainSection = document.querySelector(".friendPage");
 
-open.addEventListener("click", () => {
-    changePopup.style.display = "flex";
-    changePopup.style.flexDirection = "column";
-    navBar.style.opacity = "50%";
-    mainSection.style.opacity = "50%";
-});
-close.addEventListener("click", () => {
-    changePopup.style.display = "none";
-    navBar.style.opacity = "100%";
-    mainSection.style.opacity = "100%";
-});
+function openPopup(popupElement) {
+    popupElement.style.setProperty("display", "flex", "important");
+    popupElement.style.flexDirection = "column";
+    navBar.style.opacity = "0.5";
+    mainSection.style.opacity = "0.5"; 
 
-document.getElementById("signout").addEventListener("click", signOut);
-
-async function find_matches() {
-    const {data: { user }, error: authError} = await supabase.auth.getUser();
-    if (authError) {
-        throw authError;
-    }
-
-    const { data: profile, error: getError } = await supabase
-        .from("Profile")
-        .select("embedding")
-        .eq("created_by", user.id)
-        .single();
-
-    if (getError) {
-        throw getError;
-    }
-    const { data: matches } = await supabase.rpc('match_profiles', {
-            query_embedding: profile.embedding, // Pass the embedding you want to compare
-            match_threshold: 0.7, // Choose an appropriate threshold for your data
-            match_count: 3, // Choose the number of matches
-            current_user_id: user.id,
-    })
-    console.log(matches);
 }
 
-find_matches()
+function closePopup(popupElement) {
+    popupElement.style.display = "none";
+    navBar.style.opacity = "1";
+    mainSection.style.opacity = "1"; 
+}
+
+openChangebtn.addEventListener("click", () => openPopup(changePopup));
+closeChangebtn.addEventListener("click", () => closePopup(changePopup));
+
+//update password
+async function updateDetails() {
+    try {
+        document.getElementById("saveBtn").textContent = "Saving"
+        const newPassword = document.getElementById("newPassword").value;
+        const confirmPass = document.getElementById("confirmPassword").value;
+
+        if (newPassword !== confirmPass) {
+            alert("Passwords do not match. Please try again");
+            return;
+        }
+
+        const {data, error: updatePasswordError} = await supabase.auth.updateUser({
+            password: newPassword,
+        })
+        if (updatePasswordError) {
+            throw updatePasswordError;
+        }
+        console.log("Changed password saved successfully")
+        alert("Changed password  successfully")
+        closePopup(changePopup);
+    } catch (error) {
+        console.log("Fail to update details", error);
+        alert("Failed to update, please try again")
+    } finally {
+        document.getElementById("saveBtn").textContent = "Save";
+    }
+
+}
+document.getElementById("saveBtn").addEventListener("click", async () => updateDetails())
+document.getElementById("signout").addEventListener("click", signOut);
+
