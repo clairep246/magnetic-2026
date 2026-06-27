@@ -2,16 +2,40 @@ import { supabase } from "../../src/supabaseClient.js";
 
 //sign out
 async function signOut() {
-    const { error } = await supabase.auth.signOut();
+    try {
+        const { error } = await supabase.auth.signOut();
 
-    if (error) {
-        alert("Error signing out: " + error.message);
-        return;
+        if (error) {
+            alert("Error signing out: " + error.message);
+            return;
+        }
+
+        alert("Successfully signed out!");
+        window.location.href = "../Login/login.html";
+    } catch (error) {
+        console.log(error);
+        alert("Failed to sign out, please try again")
     }
-
-    alert("Successfully signed out!");
-    window.location.href = "../Login/login.html";
 }
+
+//change password and email
+const open = document.getElementById("change");
+const close = document.getElementById("close");
+const changePopup = document.getElementById("changeEmailPassword");
+const navBar = document.querySelector(".navbar");
+const mainSection = document.querySelector(".Page")
+
+open.addEventListener("click", () => {
+    changePopup.style.display = "flex";
+    changePopup.style.flexDirection = "column";
+    navBar.style.opacity = "50%";
+    mainSection.style.opacity = "50%";
+});
+close.addEventListener("click", () => {
+    changePopup.style.display = "none";
+    navBar.style.opacity = "100%";
+    mainSection.style.opacity = "100%";
+});
 
 //display profile details
 async function displayProfile() {
@@ -19,7 +43,7 @@ async function displayProfile() {
         const {data: { user }, error: authError} = await supabase.auth.getUser();
     
     if (authError || !user) {
-        throw new Error("User not authenticated");
+        throw authError;
     }
     
     const {data: profiles, error: getError} = await supabase
@@ -28,7 +52,7 @@ async function displayProfile() {
         .eq("created_by", user.id);
 
     if (getError) {
-            throw new Error("Failed to load profile");
+            throw getError;
         }
 
     const profile = profiles[0];

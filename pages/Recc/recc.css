@@ -7,7 +7,6 @@ body {
     background-size: cover;
     background-attachment: fixed;
     overflow-x: hidden;
-    overflow-y: hidden;
 }
 
 /*Nav bar*/
@@ -148,75 +147,6 @@ body {
     background-color: #654c91;
 }
 
-/*Edit Profile*/
-.Page {
-    max-width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding-left: 30px;
-    padding-right: 30px;
-    padding-bottom: 20px;
-}
-
-h1 {
-    color:#3E07AC;
-    margin-top: 20px;
-    margin-bottom: 80px;
-    text-align: center;
-}
-
-.Details {
-    width: 100%;
-    display: flex;
-    flex-direction: row;    
-    flex-wrap: wrap;
-    gap: 25px;
-    align-items: flex-start;
-    margin-bottom: 20px;
-}
-
-.col1, .col2, .col3 {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    flex-wrap: wrap;
-    min-width: 0;
-}
-
-label {
-    font-weight: bold;
-    color:#3e07ac;
-    font-size: 20px;
-}
-
-span {
-    margin-top: -5px;
-    font-size: 16px;
-}
-
-.about {
-    display: block;
-    overflow-wrap: break-word;
-}
-
-.save {
-    padding: 12px 12px;
-    margin-top: 20px;
-    background: #AB9EE2;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.3s;
-    align-self: center;
-    font-size: 16px;
-    text-decoration: none;
-}
-
-.save:hover {
-    transform: translateY(-3px);
-    background: #706799;
+.recommendationPage {
+    min-height: calc(100vh - 120px);
 }
