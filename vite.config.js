@@ -24,6 +24,7 @@ export default defineConfig({
         activityBrowser: resolve(root, 'pages/ActivityBrowser/browser.html'),
         friends: resolve(root, 'pages/Friends/friend.html'),
         recommendationsActivity: resolve(root, 'pages/ReccActivity/reccAct.html'),
+        recommendationsUsers: resolve(root, 'pages/RecommendFriends/recommendF.html'),
       },
     },
   },
