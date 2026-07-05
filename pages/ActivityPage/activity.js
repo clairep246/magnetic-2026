@@ -80,6 +80,18 @@ document.getElementById("saveBtn").addEventListener("click", async () => updateD
 
 //display activities by user
 async function displayActivities() {
+    const container = document.getElementById("activityContainer");
+    if (container) {
+        container.innerHTML = `
+            <div class="loading-state" style="text-align: center; padding: 40px; font-family: sans-serif; color: #666;">
+                <div class="spinner" style="border: 4px solid rgba(0,0,0,0.1); width: 36px; height: 36px; border-radius: 50%; border-left-color: #09f; animation: spin 1s linear infinite; margin: 0 auto 10px auto;"></div>
+                <p>Retrieving activities...</p>
+            </div>
+            <style>
+                @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+            </style>
+        `;
+    }
     try {
         //Get user 
         const {data: { user }, error: authError} = await supabase.auth.getUser();

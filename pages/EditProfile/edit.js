@@ -156,6 +156,28 @@ async function saveProfile() {
         const checked =document.querySelectorAll('input[name="interests"]:checked');
         const interests = Array.from(checked).map(x => x.value);
         const friend_code = generateFriendCode();
+
+        const profilePic = document.getElementById("profilePic").files[0];
+        const MAX_SIZE = 2 * 1024 * 1024; // 2 MB
+
+        if (profilePic.size > MAX_SIZE) {
+            alert("Profile image must be under 2 MB.");
+            return;
+        }
+
+        const {data: profilePicData, error: uploadError} = await supabase
+            .storage
+            .from("Pfp")
+            .upload(user.id + "/" + profilePic.name, profilePic)
+
+        if (uploadError) {
+            throw uploadError;
+        }
+
+        const { data: publicUrl } = supabase.storage
+            .from("Pfp")
+            .getPublicUrl(user.id + "/" + profilePic.name);
+
         const profileData = {
             created_by: user.id,
             name: name,
@@ -165,7 +187,8 @@ async function saveProfile() {
             year_of_study: year,
             major: major,
             interest: interests,
-            friend_code: friend_code
+            friend_code: friend_code,
+            profilePicUrl: publicUrl.publicUrl
         };
 
         if (!name) {
@@ -188,13 +211,14 @@ async function saveProfile() {
             return;
         }
 
+        
+
         if (isEditing) {
             const { error: updateError } = await supabase
                 .from("Profile")
                 .update(profileData)
                 .eq("created_by", user.id)
                 .select();
-
             if (updateError) {
                 throw updateError;
             }

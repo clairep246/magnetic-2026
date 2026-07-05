@@ -111,6 +111,8 @@ async function displayProfile() {
     document.getElementById("interests").textContent = Array.isArray(profile.interest)
         ? profile.interest.join(", ")
         : "";
+    
+    document.getElementById("profilePhoto").src = profile.profilePicUrl|| "/images/default-profile.jpg";
 
     console.log("Profile loaded successfully");
     } catch (error) {

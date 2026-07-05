@@ -67,6 +67,18 @@ async function updateDetails() {
 }
 
 async function loadRecommendations() {
+    const container = document.getElementById("recommend-container");
+      if (container) {
+        container.innerHTML = `
+            <div class="loading-state" style="text-align: center; padding: 40px; font-family: sans-serif; color: #666;">
+                <div class="spinner" style="border: 4px solid rgba(0,0,0,0.1); width: 36px; height: 36px; border-radius: 50%; border-left-color: #09f; animation: spin 1s linear infinite; margin: 0 auto 10px auto;"></div>
+                <p>Retrieving profiles...</p>
+            </div>
+            <style>
+                @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+            </style>
+        `;
+    }
     const { data: profiles, error } =
         await supabase.functions.invoke("recommendFriends");
 
@@ -75,7 +87,7 @@ async function loadRecommendations() {
         return;
     }
 
-    const container = document.getElementById("recommend-container");
+    
     container.innerHTML = "";
 
     if (!profiles || profiles.length === 0) {
@@ -98,7 +110,7 @@ async function loadRecommendations() {
         reccCard.innerHTML = `
         <div class="recommend-card">
             <img
-                src=${defaultProfilePic}
+                src=${profile.profilePicUrl || defaultProfilePic}
                 alt="Profile Picture"
                 class="recommend-pic">
 
@@ -123,5 +135,5 @@ async function loadRecommendations() {
     console.log(profiles);
 }
 
-// Runs when the script loads
 loadRecommendations();
+document.getElementById("signout").addEventListener("click", signOut);

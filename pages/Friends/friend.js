@@ -242,6 +242,18 @@ async function rejectFriendRequest(requestId, request) {
 }
 
 async function loadFriends() {
+    const container = document.getElementById("friends-container");
+    if (container) {
+        container.innerHTML = `
+            <div class="loading-state" style="text-align: center; padding: 40px; font-family: sans-serif; color: #666;">
+                <div class="spinner" style="border: 4px solid rgba(0,0,0,0.1); width: 36px; height: 36px; border-radius: 50%; border-left-color: #09f; animation: spin 1s linear infinite; margin: 0 auto 10px auto;"></div>
+                <p>Retrieving profiles...</p>
+            </div>
+            <style>
+                @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+            </style>
+        `;
+    }
     const { data: { user } } = await supabase.auth.getUser();
 
     const { data:friendListData, error:friendListError } = await supabase
@@ -254,7 +266,6 @@ async function loadFriends() {
         return;
     }
 
-    const container = document.getElementById("friends-container");
     container.innerHTML = "";
 
     for (const friend of friendListData) {

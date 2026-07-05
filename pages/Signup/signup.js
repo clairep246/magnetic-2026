@@ -1,6 +1,6 @@
 import { supabase } from "../../src/supabaseClient.js";
 
-async function signup() {
+export async function signup() {
     try {
 
     const name = document.getElementById("name").value;

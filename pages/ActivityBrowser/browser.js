@@ -152,6 +152,18 @@ async function leaveActivity(activityId) {
 
 //display activities by all other users 
 async function displayActivities() {
+    const container = document.getElementById("activityContainer");
+    if (container) {
+        container.innerHTML = `
+            <div class="loading-state" style="text-align: center; padding: 40px; font-family: sans-serif; color: #666;">
+                <div class="spinner" style="border: 4px solid rgba(0,0,0,0.1); width: 36px; height: 36px; border-radius: 50%; border-left-color: #09f; animation: spin 1s linear infinite; margin: 0 auto 10px auto;"></div>
+                <p>Retrieving activities...</p>
+            </div>
+            <style>
+                @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+            </style>
+        `;
+    }
     try {
         //Get user 
         const {data: { user }, error: authError} = await supabase.auth.getUser();
@@ -173,6 +185,7 @@ async function displayActivities() {
              if (getError) {
                 throw getError;
             }
+
             console.log(interestedActivities)
             activities = interestedActivities.map(activity => activity.Activity);
         }
@@ -205,11 +218,11 @@ async function displayActivities() {
 
             const createdById = activity.created_by 
             //to get name for the user who created activity
-            const {data: userProfile, error: userError} = await supabase.from("Profile").select("*").eq("created_by", createdById).single();
+            const {data: userProfile, error: userError} = await supabase.from("Profile").select("name").eq("created_by", createdById);
             if (userError) {
                 throw userError;
             }
-
+            console.log(userProfile);
             const formattedDate = new Date(activity.date).toLocaleDateString(navigator.language, {
                 day: 'numeric',
                 month: 'long',
@@ -231,7 +244,7 @@ async function displayActivities() {
                     <h1>${activity.name}</h1>
                     
                      <p class="label">Created by:
-                        <span>${userProfile.name}</span>
+                        <span>${userProfile[0].name}</span>
                     </p>
 
                     <p class="label">Description:
