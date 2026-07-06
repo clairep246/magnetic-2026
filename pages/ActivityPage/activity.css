@@ -50,6 +50,15 @@ body {
     display: inline-block;
 }
 
+.dropDown::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 100%;
+    width: 100%;
+    height: 10px;
+}
+
 .dropDownContent {
     display:none;
     position: absolute;
@@ -80,7 +89,6 @@ body {
     text-align: center;
     gap: 5px;
     padding: 10px 0;
-    margin: 2px;
 }
 
 /*Popups*/
