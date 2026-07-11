@@ -1,5 +1,33 @@
 import { supabase } from "../../src/supabaseClient.js";
 import defaultProfilePic from "../../images/default-profile.jpg";
+
+document.addEventListener('DOMContentLoaded', () => {
+    const dropdowns = document.querySelectorAll('.dropDown');
+
+    dropdowns.forEach(dropdown => {
+        const button = dropdown.querySelector('.links button');
+        let timeout;
+
+        button.addEventListener('click', () => {
+            dropdown.classList.toggle('active');
+
+            clearTimeout(timeout);
+
+            timeout = setTimeout(() => {
+                dropdown.classList.remove('active');
+            }, 2000);
+        });
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.dropDown')) {
+            dropdowns.forEach(dropdown => {
+                dropdown.classList.remove('active');
+            });
+        }
+    });
+});
+
 //signout
 async function signOut() {
     const { error } = await supabase.auth.signOut();
@@ -63,10 +91,11 @@ async function updateDetails() {
     } finally {
         document.getElementById("saveBtn").textContent = "Save";
     }
-
 }
 
 async function loadRecommendations() {
+    const {data: {user} , error: userError} = await supabase.auth.getUser();
+
     const container = document.getElementById("recommend-container");
       if (container) {
         container.innerHTML = `
@@ -87,7 +116,6 @@ async function loadRecommendations() {
         return;
     }
 
-    
     container.innerHTML = "";
 
     if (!profiles || profiles.length === 0) {
@@ -107,6 +135,21 @@ async function loadRecommendations() {
         const profile = profiles[i];
         const reccCard = document.createElement("div");
        
+        const {data: checkFriend, error: checkFriendError} = await supabase
+        .from("Friend_list")
+        .select("*")
+        .eq("user_id", user.id)
+        .eq("friend_id", profile.created_by);
+
+        if (checkFriendError) {
+            throw error;
+        }
+
+        if (checkFriend && checkFriend.length > 0) {
+            continue;
+        }
+        console.log(checkFriend);
+
         reccCard.innerHTML = `
         <div class="recommend-card">
             <img

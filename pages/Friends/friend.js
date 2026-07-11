@@ -1,6 +1,33 @@
 import { supabase } from "../../src/supabaseClient.js";
 import defaultProfilePic from "../../images/default-profile.jpg";
 
+document.addEventListener('DOMContentLoaded', () => {
+    const dropdowns = document.querySelectorAll('.dropDown');
+
+    dropdowns.forEach(dropdown => {
+        const button = dropdown.querySelector('button');
+        let timeout;
+
+        button.addEventListener('click', () => {
+            dropdown.classList.toggle('active');
+
+            clearTimeout(timeout);
+
+            timeout = setTimeout(() => {
+                dropdown.classList.remove('active');
+            }, 2000);
+        });
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.dropDown')) {
+            dropdowns.forEach(dropdown => {
+                dropdown.classList.remove('active');
+            });
+        }
+    });
+});
+
 async function signOut() {
     const { error } = await supabase.auth.signOut();
 
@@ -24,14 +51,14 @@ function openPopup(popupElement) {
     popupElement.style.flexDirection = "column";
     navBar.style.opacity = "0.5";
     document.querySelector(".heading-row").style.opacity = "0.5"; 
- document.querySelector(".all-content").style.opacity = "0.5"; 
+  document.querySelector(".all-content").style.opacity = "0.5"; 
 }
 
 function closePopup(popupElement) {
     popupElement.style.display = "none";
     navBar.style.opacity = "1";
     document.querySelector(".heading-row").style.opacity = "1"; 
- document.querySelector(".all-content").style.opacity = "1"; 
+   document.querySelector(".all-content").style.opacity = "1"; 
 }
 
 openChangebtn.addEventListener("click", () => openPopup(changePopup));
@@ -88,6 +115,18 @@ async function sendFriendRequest() {
         return;
     }
 
+    const {data: checkFriend, error: checkFriendError} = await supabase
+    .from("Friend_list")
+    .select("*")
+    .eq("user_id", user.id)
+    .eq("friend_id", receiverId);
+
+    if (checkFriend && checkFriend.length > 0) {
+        alert("You are already friends with this user.");
+        document.getElementById("friend-code-input").value = "";
+        return;
+    }
+
     const {data: checkRequest, error: checkError} = await supabase
         .from("Friend_request")
         .select("*")
@@ -116,6 +155,7 @@ async function sendFriendRequest() {
     }
 
     alert("Friend request sent!");
+    document.getElementById("friend-code-input").value = "";
     loadFriendRequests();
 }
 async function loadFriendRequests() {

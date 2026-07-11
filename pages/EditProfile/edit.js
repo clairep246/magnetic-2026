@@ -2,6 +2,33 @@ import { supabase } from "../../src/supabaseClient.js";
 
 let isEditing = false;
 
+document.addEventListener('DOMContentLoaded', () => {
+    const dropdowns = document.querySelectorAll('.dropDown');
+
+    dropdowns.forEach(dropdown => {
+        const button = dropdown.querySelector('.links button');
+        let timeout;
+
+        button.addEventListener('click', () => {
+            dropdown.classList.toggle('active');
+
+            clearTimeout(timeout);
+
+            timeout = setTimeout(() => {
+                dropdown.classList.remove('active');
+            }, 2000);
+        });
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.dropDown')) {
+            dropdowns.forEach(dropdown => {
+                dropdown.classList.remove('active');
+            });
+        }
+    });
+});
+
 //sign out
 async function signOut() {
     try {

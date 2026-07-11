@@ -1,7 +1,35 @@
 import { supabase } from "../../src/supabaseClient.js";
-
+import defaultActivityPic from "../../images/activityPic.webp";
+import defaultProfilePic from "../../images/default-profile.jpg"
 let index = 0;
 let activities = []
+
+document.addEventListener('DOMContentLoaded', () => {
+    const dropdowns = document.querySelectorAll('.dropDown');
+
+    dropdowns.forEach(dropdown => {
+        const button = dropdown.querySelector('.links button');
+        let timeout;
+
+        button.addEventListener('click', () => {
+            dropdown.classList.toggle('active');
+
+            clearTimeout(timeout);
+
+            timeout = setTimeout(() => {
+                dropdown.classList.remove('active');
+            }, 2000);
+        });
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.dropDown')) {
+            dropdowns.forEach(dropdown => {
+                dropdown.classList.remove('active');
+            });
+        }
+    });
+});
 
 //sign out
 async function signOut() {
@@ -25,7 +53,9 @@ async function signOut() {
 //open and close pop ups
 const openChangebtn = document.getElementById("change");
 const closeChangebtn = document.getElementById("close");
-const changePopup = document.getElementById("changeEmailPassword");
+const changePopup = document.getElementById("changeEmailPassword")
+;
+const closeParticipantbtn = document.getElementById("closeParticipants")
 
 const navBar = document.querySelector(".navbar");
 const mainSection = document.querySelector(".activityPage");
@@ -83,13 +113,10 @@ async function displayActivities() {
     const container = document.getElementById("activityContainer");
     if (container) {
         container.innerHTML = `
-            <div class="loading-state" style="text-align: center; padding: 40px; font-family: sans-serif; color: #666;">
-                <div class="spinner" style="border: 4px solid rgba(0,0,0,0.1); width: 36px; height: 36px; border-radius: 50%; border-left-color: #09f; animation: spin 1s linear infinite; margin: 0 auto 10px auto;"></div>
+            <div class="loading-state">
+                <div class="spinner"></div>
                 <p>Retrieving activities...</p>
             </div>
-            <style>
-                @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-            </style>
         `;
     }
     try {
@@ -101,7 +128,7 @@ async function displayActivities() {
         }
 
         //Get Activities by user
-        const {data, error: getError} = await supabase.from("Activity").select("*").eq("created_by", user.id);
+        const {data, error: getError} = await supabase.from("Activity").select("*").eq("created_by", user.id).order("name");
         
         if (getError) {
             throw getError;
@@ -132,6 +159,7 @@ async function displayActivities() {
             if (i >= activities.length) {
                 break;
             }
+
             const activity = activities[i];
 
             const formattedDate = new Date(activity.date).toLocaleDateString(navigator.language, {
@@ -150,42 +178,62 @@ async function displayActivities() {
 
             //creating each card
             const activityBox = document.createElement("div");
+            activityBox.classList.add("activityBox")
             activityBox.innerHTML = `
+                <div class="activityImage">
+                    <img src="${activity.activityPicURL || defaultActivityPic}" alt="Activity Image">
+                </div>
 
-                <div class="activityBox">
+                <div class="activityContent">
 
-                    <h1>${activity.name}</h1>
+                    <h2>${activity.name}</h2>
 
-                    <p class="label">Description:
-                        <span class='description'>${activity.description}</span>
-                    </p>
+                    <h3>Description</h3>
+                    <div class="section">
+                        <p>${activity.description || "No description provided."}</p>
+                    </div>
 
-                    <p class="label">Interests:
-                        <span>${activity.generalised_interests.join(", ")}</span>
-                    </p>
+                    <h3>Interests</h3>
+                    <div class="interestContainer">
+                        ${activity.generalised_interests
+                            .map(interest => `<span>${interest}</span>`)
+                            .join("")}
+                    </div>
 
-                    <p class="label">Location:
-                        <span>${activity.location} <a id="map" href="${link}"> (View on Google Maps)</a></span>
-                    </p>
+                    <div class="infoRow">
+                        📍
+                        <span>
+                            <a href="${link}">
+                               ${activity.location} 
+                            </a>
+                        </span>
+                    </div>
 
-                    <p class="label">Date:
+                    <div class="infoRow">
+                        📅
                         <span>${formattedDate}</span>
-                    </p>
+                    </div>
 
-                    <p class="label">Time:
+                    <div class="infoRow">
+                        🕒
                         <span>${formattedTime}</span>
-                    </p>
+                    </div>
 
-                    <p class="label">Number of participants:
-                        <span>${activity.registered} / ${activity.participants}</span>
-                    </p>
+                    <div class="infoRow">
+                        👥
+                        <span>${activity.registered} / ${activity.participants} participants</span>
+                    </div>
 
-                    <button class="editButton">Edit</button>
-                    <button class="deleteButton">Delete</button>
+                    <button class="viewParticipantsButton">View Participants →</button>
+
+
+                    <div class="buttonsContainer">
+                        <button class="editButton">Edit</button>
+                        <button class="deleteButton">Delete</button>
+                    </div>
 
                 </div>
             `;
-
             //activity management actions
             activityBox.querySelector(".deleteButton").addEventListener("click", async () => {
                 const confirmation = confirm("Are you sure you want to delete this activity?");
@@ -197,14 +245,73 @@ async function displayActivities() {
                 displayActivities();
             });
 
-            activityBox.querySelector(".editButton").addEventListener("click", () => {
-                editActivity(activity.id);
+            //joined users 
+            activityBox.querySelector(".viewParticipantsButton").addEventListener("click", async () => {
+
+                const participantsList = document.getElementById("participantsList");
+                participantsList.innerHTML = `
+                    <div class="loading-state">
+                        <div class="spinner"></div>
+                        <p>Retrieving participants...</p>
+                    </div>
+                `;
+
+                // Get everyone who joined this activity
+                const { data: joinedRecords, error } = await supabase
+                    .from("Interested_activities")
+                    .select("user_id")
+                    .eq("activity_id", activity.id);
+
+                if (error) {
+                    alert("Failed to load participants");
+                    throw error;
+                    return;
+                }
+                participantsList.innerHTML = "";
+
+                if (joinedRecords.length === 0) {
+                    alert("No participants have joined")
+                    return;
+                }
+
+                // Load each participant
+                for (const record of joinedRecords) {
+
+                    const { data: profile, error: profileError } = await supabase
+                        .from("Profile")
+                        .select("*")
+                        .eq("created_by", record.user_id)
+                        .single();
+                    console.log(profile);
+
+                    const userProfile = document.createElement("div");
+
+                    userProfile.classList.add("participant");
+
+                    userProfile.innerHTML = `
+                        <img src="${profile.profilePicUrl || defaultProfilePic}" alt="Profile">
+
+                        <div class="participantInfo">
+                            <h3>${profile.name}</h3>
+                            <p>Interests: ${profile.interest}</p>
+                            <p>Major: ${profile.major}</p>
+                            <p>Year: ${profile.year_of_study}</p>
+                        </div>
+                    `;
+
+                    participantsList.appendChild(userProfile);
+                }
+                document.getElementById("participantsModal").classList.add("active")
+
             });
+
+            closeParticipantbtn.addEventListener("click", () => {
+                document.getElementById("participantsModal").classList.remove("active")
+            })
 
             container.appendChild(activityBox);
             console.log(activities);
         }
-
         //Button states for back and forth 
         if (index === 0) {
             document.getElementById("prevButton").disabled = true;

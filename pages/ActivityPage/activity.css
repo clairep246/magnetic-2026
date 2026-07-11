@@ -30,7 +30,13 @@ body {
     padding-right: 60px;
 }
 
-.links a {
+.links a,
+.links button {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+
     text-decoration: none;
     font-weight: bold;
     color:#3E07AC;
@@ -39,34 +45,31 @@ body {
     transition: 0.3s;
 }
 
-.links a:hover {
+.links a:hover{
     text-decoration: underline;
     transition-duration: 2s;
 }
 
-/*Drop down*/
+.links button:hover{
+    transform: none;
+    background-color: transparent;
+    text-decoration: underline;
+}
+
 .dropDown {
     position: relative;
     display: inline-block;
 }
 
-.dropDown::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 100%;
-    width: 100%;
-    height: 10px;
-}
-
 .dropDownContent {
-    display:none;
+    display: none;
     position: absolute;
     top: 100%;
     right: 0;
     background-color: #AB9EE2;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1000;
 }
 
 .dropDownContent a {
@@ -77,13 +80,14 @@ body {
     cursor: pointer;
     border-bottom: 2px solid #654c91;
     padding: 5px;
+    display: block;
 }
 
 .dropDownContent a:last-child {
     border-bottom: none;
 }
 
-.dropDown:hover .dropDownContent {
+.dropDown.active .dropDownContent {
     display: flex;
     flex-direction: column;
     text-align: center;
@@ -168,29 +172,37 @@ body {
     gap: 30px;
 }
 
+.activityPage h1 {
+    color:#3E07AC;
+    font-size: 24px;
+    margin: 0;
+    font-weight: bold;
+    text-align: left;
+}
+
 .activityContainer {
     width: 100%;
     display: flex;
-    flex-direction: row;    
     flex-wrap: wrap;
-    justify-content: center;
-    align-items: stretch; 
-    gap: 20px;
+
+    gap: 24px;
+    padding: 0 20px;
+    box-sizing: border-box;
 }
 
 /* Each box */
 .activityBox {
-    padding: 18px;
-    width: 280px;
-    min-width: 200px;
-    background: #D7C0E8;
+    flex: 1 1 380px;
+    max-width: 450px;
+    min-width: 320px;
+
     display: flex;
     flex-direction: column;
-    border-radius: 12px;
-    overflow: hidden; 
-    gap: 8px;
-    align-content: flex-start;
-    justify-content: flex-start;
+
+    background: #e8dcff;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow:0 8px 20px rgba(0,0,0,.12);
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
@@ -199,33 +211,90 @@ body {
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
-.activityBox h1 {
-    font-weight: bold;
-    color: black;
-    font-size: 18px;
-    align-self: center;
-    margin-bottom: -5px;
+
+.activityImage{
+    position:relative;
+    width:100%;
+    height:120px;
 }
 
-.activityBox .label {
-    font-weight: bold;
-    color: white;
-    margin: 0px;
-    font-size: 14px;
-}
-
-.activityBox span {
+.activityImage img{
+    width:100%;
+    height:100%;
+    object-fit: cover;
     display: block;
-    color: black;
-    margin-top: 3px;
-    font-size: 13px;
 }
 
-.description {
-    display: block;
+.activityContent{
+    padding-left:28px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+}
+
+.activityContent h2{
+    font-size:17px;
+    font-weight:bold;
+}
+
+.activityContent h3 {
+    color:#3E07AC;
+    margin-bottom:12px;
+    font-size: 16px;
+}
+
+.section{
+    line-height:1.6;
+    color:#333;
+    overflow-wrap:break-word;
+    word-break:break-word;
+    height: 100px;
+}
+
+.section p{
+    line-height:1.7;
+    color:#333;
+    font-size: 15px
+}
+
+.interestContainer{
+    display:flex;
+    flex-wrap: wrap;
+    gap:10px;
+    margin-bottom: 10px;
+    height: 100px;
+}
+
+.interestContainer span{
+    background:#c8b0ef;
+    color:#ffffff;
+    padding:8px 16px;
+    border-radius:20px;
+    font-size:14px;
+    font-weight:600;
+    height: 20px;
+}
+
+.infoRow{
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    gap:12px;
+    margin-bottom:18px;
+    font-size:17px;
+    color:#444;
+}
+
+.infoRow span {
+    margin-top: 5px;
+    font-size: 15px;
+}
+
+.buttonsContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
     width: 100%;
-    height: 45px;
-    margin-bottom: 25px;
+    margin-top: 20px;
 }
 
 .buttons {
@@ -268,4 +337,127 @@ button:disabled {
     justify-content: center;
     align-items: center;
     height: 400px;
+}
+.loading-state {
+    width: 100%;
+    min-height: 60vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    color: #666;
+    text-align: center;
+}
+
+.spinner {
+    width: 36px;
+    height: 36px;
+
+    border: 4px solid rgba(0,0,0,.1);
+    border-left-color: #09f;
+    border-radius: 50%;
+
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/*Participant list*/
+.participant{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    padding:15px 0;
+    border-bottom:1px solid #eee;
+}
+
+.participant img{
+    width:55px;
+    height:55px;
+    border-radius:50%;
+    object-fit:cover;
+}
+
+.participantInfo h3{
+    margin:0;
+    font-size:18px;
+}
+
+.participantInfo p{
+    margin:4px;
+    color:#666;
+}
+
+.viewParticipantsButton{
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    text-align:left;
+    text-decoration: none;
+    color:#444;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.viewParticipantsButton:hover{
+    transform: none;
+    background-color: transparent;
+    text-decoration: underline;
+}
+
+.participantsModal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+}
+
+.participantsModal.active{
+    display:flex;
+}
+
+.participantsContent{
+    width:450px;
+    max-height:70vh;
+    overflow-y:auto;
+    background:white;
+    border-radius:20px;
+    padding:25px;
+}
+
+.participantsHeader{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.participantsHeader h2{
+    margin:0;
+    color:#3E07AC
+}
+
+#closeParticipants{
+    font-size:30px;
+    cursor:pointer;
+}
+
+#participantsList {
+    overflow-x: hidden;
+    overflow-y: auto;
 }

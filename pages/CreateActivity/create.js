@@ -8,6 +8,32 @@ if (activityID !== null) {
     isEditing = true;
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    const dropdowns = document.querySelectorAll('.dropDown');
+
+    dropdowns.forEach(dropdown => {
+        const button = dropdown.querySelector('.links button');
+        let timeout;
+
+        button.addEventListener('click', () => {
+            dropdown.classList.toggle('active');
+
+            clearTimeout(timeout);
+
+            timeout = setTimeout(() => {
+                dropdown.classList.remove('active');
+            }, 2000);
+        });
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.dropDown')) {
+            dropdowns.forEach(dropdown => {
+                dropdown.classList.remove('active');
+            });
+        }
+    });
+});
 //sign out
 async function signOut() {
     try {
@@ -36,12 +62,13 @@ document.getElementById("signout").addEventListener("click", signOut);
     const date = document.getElementById("date").value
     const time = document.getElementById("time").value
     const participants = document.getElementById("participants").value
+    const image = document.getElementById("activityPic").files[0]
 
     document.getElementById("previewName").textContent = name;
     document.getElementById('previewDescription').textContent = description;
     document.getElementById('previewLocation').textContent = location;
-    document.getElementById('previewParticipants').textContent = participants;
-    document.getElementById('previewInterests').textContent = "Interests will be replaced by generalised categories";
+    document.getElementById('previewParticipants').textContent = "0 / " + participants + " participants";
+    document.getElementById('previewImage').src = image ? URL.createObjectURL(image) : "/images/activity_background.jpg";
 
     const formattedTime = new Date(`2026-01-01T${time}`).toLocaleTimeString(navigator.language, {
             hour: 'numeric',
@@ -108,7 +135,15 @@ async function saveActivity() {
         const time = document.getElementById("time").value
         const interests = document.getElementById("interest").value.split(",").map(x => x.trim())
         const participants = document.getElementById("participants").value
-        
+
+        const activityPic = document.getElementById("activityPic").files[0]
+        const MAX_SIZE = 2 * 1024 * 1024; // 2 MB
+
+        if (activityPic.size > MAX_SIZE) {
+            alert("Image must be under 2 MB.");
+            return;
+        }
+    
         if (interests.length > 3) {
             alert("Please enter max 3 interests")
             return;
@@ -163,29 +198,57 @@ async function saveActivity() {
             date,
             time,
             interests,
-            participants
+            participants,
         };
 
-        const { data: response, error } = await supabase.functions.invoke(
+        const { data: response, error: invokeError } = await supabase.functions.invoke(
             "smart-responder", {
             body: activityData
         });
 
-       
-            if(isEditing) {
-                 alert("Activity successfully updated!");
-            } else {
-                alert("Activity successfully created!");
-            }
-            window.location.href = `../ActivityPage/activity.html`; 
-        } catch (error) {
-        console.log("Failed to save activity:", error);
-        alert("Failed to save activity. Please try again");
+        if (invokeError) {
+            throw invokeError;
+        }
+        const currentActivityID = isEditing ? activityID : response.activityID;
 
+       if (activityPic) {
+            const filePath = `${userID}/${currentActivityID}`;
+
+            const { data: uploadData, error: uploadError } = await supabase
+                .storage
+                .from("activityPic")
+                .upload(filePath, activityPic, { upsert: true });
+
+            if (uploadError) throw uploadError;
+
+            const { data: publicUrlData } = supabase.storage
+                .from("activityPic")
+                .getPublicUrl(filePath);
+            
+            const { error: updateError } = await supabase
+                .from("Activity") 
+                .update({ activityPicURL: publicUrlData.publicUrl })
+                .eq("id", currentActivityID); 
+
+            if (updateError) throw updateError;
+        }
+
+        if (isEditing) {
+            alert("Activity successfully updated!");
+        } else {
+            alert("Activity successfully created!");
+        }
+
+        window.location.href = `../ActivityPage/activity.html`; 
+
+    } catch (error) {
+        console.error("Failed to save activity:", error);
+        alert("Failed to save activity. Please try again");
     } finally {
         save.textContent = "Save";
     }
 }
+
 
 document.getElementById('preview').addEventListener("click", previewActivity);
 document.getElementById("saveActivity").addEventListener("click", saveActivity);

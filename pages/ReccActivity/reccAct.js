@@ -1,4 +1,31 @@
 import { supabase } from "../../src/supabaseClient.js";
+import defaultActivityPic from "../../images/activityPic.webp";
+document.addEventListener('DOMContentLoaded', () => {
+    const dropdowns = document.querySelectorAll('.dropDown');
+
+    dropdowns.forEach(dropdown => {
+        const button = dropdown.querySelector('button');
+        let timeout;
+
+        button.addEventListener('click', () => {
+            dropdown.classList.toggle('active');
+
+            clearTimeout(timeout);
+
+            timeout = setTimeout(() => {
+                dropdown.classList.remove('active');
+            }, 2000);
+        });
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.dropDown')) {
+            dropdowns.forEach(dropdown => {
+                dropdown.classList.remove('active');
+            });
+        }
+    });
+});
 
 async function signOut() {
     const { error } = await supabase.auth.signOut();
@@ -200,13 +227,10 @@ async function displayActivities() {
     const container = document.getElementById("activityContainer");
     if (container) {
         container.innerHTML = `
-            <div class="loading-state" style="text-align: center; padding: 40px; font-family: sans-serif; color: #666;">
-                <div class="spinner" style="border: 4px solid rgba(0,0,0,0.1); width: 36px; height: 36px; border-radius: 50%; border-left-color: #09f; animation: spin 1s linear infinite; margin: 0 auto 10px auto;"></div>
+            <div class="loading-state">
+                <div class="spinner"></div>
                 <p>Retrieving activities...</p>
             </div>
-            <style>
-                @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-            </style>
         `;
     }
     try {
@@ -281,7 +305,9 @@ async function displayActivities() {
             }
              
             const activity = activities[i];
-
+            if (activity.registered >= activity.participants) {
+                continue;
+            }
             const createdById = activity.created_by 
             //to get name for the user who created activity
             const {data: userProfile, error: userError} = await supabase.from("Profile").select("name").eq("created_by", createdById);
@@ -305,46 +331,69 @@ async function displayActivities() {
 
             //creating each card
             const activityBox = document.createElement("div");
+            activityBox.classList.add("activityBox")
             activityBox.innerHTML = `
+                <div class="activityImage">
+                    <img src="${activity.activityPicURL || defaultActivityPic}" alt="Activity Image">
+                </div>
 
-                <div class="activityBox">
+                <div class="activityContent">
 
-                    <h1>${activity.name}</h1>
-                    <p class="label">Created by:
-                        <span>${userProfile[0].name}</span>
-                    </p>
+                    <h2>${activity.name}</h2>
 
-                    <p class="label">Description:
-                        <span class='description'>${activity.description}</span>
-                    </p>
+                    <div class="infoRow">
+                        👤
+                        <span>Created by: ${userProfile[0].name}</span>
+                    </div>
 
-                    <p class="label">Interests:
-                        <span>${activity.generalised_interests.join(", ")}</span>
-                    </p>
+                    <h3>Description</h3>
+                    <div class="section">
+                        <p>${activity.description || "No description provided."}</p>
+                    </div>
 
-                    <p class="label">Location:
-                        <span>${activity.location} <a id="map" href="${link}"> (View on Google Maps)</a></span>
-                    </p>
+                    <h3>Interests</h3>
+                    <div class="interestContainer">
+                        ${activity.generalised_interests
+                            .map(interest => `<span>${interest}</span>`)
+                            .join("")}
+                    </div>
 
-                    <p class="label">Date:
+                    <div class="infoRow">
+                        📍
+                        <span>
+                           
+                            <a href="${link}" target="_blank">
+                                 ${activity.location}
+                            </a>
+                        </span>
+                    </div>
+
+                    <div class="infoRow">
+                        📅
                         <span>${formattedDate}</span>
-                    </p>
+                    </div>
 
-                    <p class="label">Time:
+                    <div class="infoRow">
+                        🕒
                         <span>${formattedTime}</span>
-                    </p>
+                    </div>
 
-                    <p class="label">Number of participants:
-                        <span>${activity.registered} / ${activity.participants}</span>
-                    </p>
+                    <div class="infoRow">
+                        👥
+                        <span>${activity.registered} / ${activity.participants} participants</span>
+                    </div>
 
-                    <button class="joinButton">Join</button>
+                    <div class="buttonsContainer">
+                        <button class="joinButton">Join</button>
+    
+                    </div>
 
                 </div>
             `;
 
             if (activity.registered >= activity.participants) {
-                activityBox.querySelector(".joinButton").disabled = true;
+                //activityBox.querySelector(".joinButton").disabled = true;
+                activityBox.querySelector(".joinButton").style.opacity = 0
             }
             
             const {data: interestedActivity, error: getError} = await supabase.from("Interested_activities")

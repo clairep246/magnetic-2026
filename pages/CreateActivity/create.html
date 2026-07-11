@@ -17,7 +17,7 @@
 
         <div class="links">
             <div class="dropDown">
-                <a>Recommend Me</a>
+                <button>Recommend Me</button>
                 <div class="dropDownContent">
                     <a href="/pages/ReccActivity/reccAct.html">Recommend an activity</a>
                     <a href="/pages/RecommendFriends/recommendF.html">Recommend users</a>
@@ -25,7 +25,7 @@
             </div>
             <a href="/pages/ActivityBrowser/browser.html">Browse Activities</a>
              <div class="dropDown">
-                <a>Your activities</a>
+                <button>Your activities</button>
                 <div class="dropDownContent">
                     <a style="text-decoration: underline;">Create an activity</a>
                     <a href="/pages/ActivityPage/activity.html">Your created activities</a>
@@ -35,7 +35,7 @@
             <a href="/pages/Profile/profile.html">Profile</a>
 
             <div class="dropDown">
-                <a>Setting</a>
+                <button>Setting</button>
                 <div class="dropDownContent">
                     <a href="/pages/EditProfile/edit.html">Edit profile</a>
                     <a id="change" >Change Password</a>
@@ -66,26 +66,47 @@
 
             <div class="left">
                 <h1>Preview</h1>
+
                 <div class="leftBox">
-                    <h1 id="previewName">Name of activity</h1>
-                    <p class='label'>Description:
-                        <span id="previewDescription"> </span>
-                    </p>
-                    <p class="label">Interests:
-                        <span id="previewInterests"> </span>
-                    </p>
-                    <p class="label">Location:
-                        <span id="previewLocation"> </span>
-                    </p>
-                    <p class="label">Date:
-                        <span id="previewDate"> </span>
-                    </p>
-                    <p class="label">Time:
-                        <span id="previewTime"> </span>
-                    </p>
-                    <p class="label">Number of participants:
-                        <span id="previewParticipants">  </span>
-                    </p>  
+                     <div class="activityImage">
+                        <img id="previewImage"  alt="Activity Image">
+                    </div>
+
+                    <div class="activityContent">
+
+                        <h2 id="previewName">Name of Activity</h2>
+
+                        <h3>Description</h3>
+                        <div class="section">
+                            <p id="previewDescription"></p>
+                        </div>
+
+                        <h3>Interests</h3>
+                            <div id="previewInterests" class="interestContainer">
+                                <span>Example</span>
+                            </div>
+                        <div class="infoRow">
+                            📍
+                            <span id="previewLocation"></span>
+                        </div>
+
+                        <div class="infoRow">
+                            📅
+                            <span id="previewDate"></span>
+                        </div>
+
+                        <div class="infoRow">
+                            🕒
+                            <span id="previewTime"></span>
+                        </div>
+
+                        <div class="infoRow">
+                            👥
+                            <span id="previewParticipants"></span>
+                        </div>
+
+
+                    </div>
                 </div>
             </div>
 
@@ -93,6 +114,10 @@
                 <!-- Name -->
                 <label>Activity Name</label>
                 <input id="name" type="text" placeholder="Enter activity name" maxlength="100">
+
+                <label>Picture</label>
+                <input type="file" id="activityPic" accept="image/*">
+                
 
                 <!-- About -->
                 <label>Description</label>

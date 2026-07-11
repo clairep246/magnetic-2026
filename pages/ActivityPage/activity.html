@@ -17,7 +17,7 @@
 
         <div class="links">
             <div class="dropDown">
-                <a>Recommend Me</a>
+                <button>Recommend Me</button>
                 <div class="dropDownContent">
                     <a href="/pages/ReccActivity/reccAct.html">Recommend an activity</a>
                     <a href="/pages/RecommendFriends/recommendF.html">Recommend users</a>
@@ -25,7 +25,7 @@
             </div>
             <a href="/pages/ActivityBrowser/browser.html">Browse Activities</a>
              <div class="dropDown">
-                <a>Your activities</a>
+                <button>Your activities</button>
                 <div class="dropDownContent">
                     <a href="/pages/CreateActivity/create.html">Create an activity</a>
                     <a style="text-decoration: underline;">Your created activities</a>
@@ -35,7 +35,7 @@
             <a href="/pages/Profile/profile.html">Profile</a>
 
             <div class="dropDown">
-                <a>Setting</a>
+                <button>Setting</button>
                 <div class="dropDownContent">
                     <a href="/pages/EditProfile/edit.html">Edit profile</a>
                     <a id="change" >Change Password</a>
@@ -61,6 +61,7 @@
 
 
     <div class="activityPage">
+        <h1> Your created activities</h1>
          <div class="activityContainer" id="activityContainer">
             </div>
         <div class="buttons">
@@ -69,6 +70,22 @@
         </div>
     </div>
    
+   <div id="participantsModal" class="participantsModal">
+
+    <div class="participantsContent">
+
+        <div class="participantsHeader">
+            <h2>Participants</h2>
+            <span id="closeParticipants">&times;</span>
+        </div>
+
+        <div id="participantsList">
+
+        </div>
+
+    </div>
+
+</div>
 
 </body>
 </html>
