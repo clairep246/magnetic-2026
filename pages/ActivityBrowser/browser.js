@@ -1,6 +1,7 @@
 import { supabase } from "../../src/supabaseClient.js";
 import defaultActivityPic from "../../images/activityPic.webp";
-
+const allBtn = document.getElementById("allActivities");
+const joinedActivitiesBtn = document.getElementById("joinedActivities");
 document.addEventListener('DOMContentLoaded', () => {
     const dropdowns = document.querySelectorAll('.dropDown');
 
@@ -27,8 +28,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    document.getElementById("prevButton").style.opacity = 0;
-    document.getElementById("nextButton").style.opacity = 0
+    allBtn.classList.toggle("active")
+    displayActivities();
 });
 
 
@@ -392,8 +393,7 @@ document.getElementById("signout").addEventListener("click", signOut);
 document.getElementById("nextButton").addEventListener("click", nextActivities);
 document.getElementById("prevButton").addEventListener("click", prevActivities);
 
-const allBtn = document.getElementById("allActivities");
-const joinedActivitiesBtn = document.getElementById("joinedActivities");
+
 allBtn.addEventListener("click", async () => {
     allBtn.classList.toggle("active");
     joinedActivitiesBtn.classList.remove("active");
