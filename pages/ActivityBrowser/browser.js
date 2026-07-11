@@ -26,6 +26,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     });
+
+    document.getElementById("prevButton").style.opacity = 0;
+    document.getElementById("nextButton").style.opacity = 0
 });
 
 
@@ -199,7 +202,7 @@ async function displayActivities() {
             throw authError;
         }
 
-        if (document.getElementById("filter").value === "All Activities") {
+        if (document.getElementById("allActivities").classList.contains("active")) {
             const {data, error: getError} = await supabase.from("Activity").select("*").neq("created_by", user.id).order("name");
             if (getError) {
                 throw getError;
@@ -388,7 +391,19 @@ function prevActivities() {
 document.getElementById("signout").addEventListener("click", signOut);
 document.getElementById("nextButton").addEventListener("click", nextActivities);
 document.getElementById("prevButton").addEventListener("click", prevActivities);
-document.getElementById("filter").addEventListener("change", () => {
-    displayActivities();
-});
-displayActivities();
+
+const allBtn = document.getElementById("allActivities");
+const joinedActivitiesBtn = document.getElementById("joinedActivities");
+allBtn.addEventListener("click", async () => {
+    allBtn.classList.toggle("active");
+    joinedActivitiesBtn.classList.remove("active");
+    document.getElementById("prevButton").style.opacity = "100%";
+    document.getElementById("nextButton").style.opacity = "100%";
+    await displayActivities();
+})
+
+joinedActivitiesBtn.addEventListener("click", async () => {
+    joinedActivitiesBtn.classList.toggle("active");
+   allBtn.classList.remove("active");
+    await displayActivities();
+})

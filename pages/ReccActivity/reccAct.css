@@ -389,7 +389,7 @@ button:disabled {
 .modeBtn p {
     color: black;
     font-size: 15px;
-    margin: 0;              /* Strips default paragraph margins */
+    margin: 0;            
 }
 
 /*Active*/

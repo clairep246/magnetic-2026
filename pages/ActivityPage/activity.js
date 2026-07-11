@@ -245,6 +245,10 @@ async function displayActivities() {
                 displayActivities();
             });
 
+            activityBox.querySelector(".editButton").addEventListener("click", () => {
+                editActivity(activity.id);
+            });
+
             //joined users 
             activityBox.querySelector(".viewParticipantsButton").addEventListener("click", async () => {
 

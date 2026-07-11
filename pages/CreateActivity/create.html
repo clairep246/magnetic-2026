@@ -114,11 +114,13 @@
                 <!-- Name -->
                 <label>Activity Name</label>
                 <input id="name" type="text" placeholder="Enter activity name" maxlength="100">
-
-                <label>Picture</label>
-                <input type="file" id="activityPic" accept="image/*">
                 
-
+                <label>Picture</label>
+                <div class="pictureContainer"> 
+                    <input type="file" id="activityPic" accept="image/*">
+                    <button class="remove-btn">Remove</button>
+                </div>
+               
                 <!-- About -->
                 <label>Description</label>
                 <textarea id="description" placeholder="Please add any extra info about the location here eg specific MRT entrance" maxlength="200"></textarea>

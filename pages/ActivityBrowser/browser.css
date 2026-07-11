@@ -394,3 +394,52 @@ select {
         transform: rotate(360deg);
     }
 }
+.modeContainer {
+    display: flex;
+    gap: 16px;
+    justify-content: center; 
+}
+
+.modeBtn {
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: #ffffff;
+    border-radius: 12px;
+    cursor: pointer;
+    text-align: left;
+    width: 220px;            
+    height: 60px;           
+    padding: 0 16px;         
+    box-sizing: border-box; 
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+
+.modeBtn:hover {
+    transform: translateY(-3px);
+    background-color: white;
+    border: 2px solid #654c91;
+}
+
+.modeBtn p {
+    color: black;
+    font-size: 15px;
+    margin: 0;            
+}
+/*Active*/
+.modeBtn.active {
+    border: 2px solid #654c91; 
+    background: #AB9EE2;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
+    cursor: not-allowed;
+}
+
+.modeBtn.active:hover {
+    transform: none;
+}
+
+.modeBtn.active p {
+    color: white;
+}

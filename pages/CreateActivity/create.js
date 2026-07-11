@@ -139,7 +139,7 @@ async function saveActivity() {
         const activityPic = document.getElementById("activityPic").files[0]
         const MAX_SIZE = 2 * 1024 * 1024; // 2 MB
 
-        if (activityPic.size > MAX_SIZE) {
+        if (activityPic && activityPic.size > MAX_SIZE) {
             alert("Image must be under 2 MB.");
             return;
         }
@@ -205,10 +205,20 @@ async function saveActivity() {
             "smart-responder", {
             body: activityData
         });
-
-        if (invokeError) {
-            throw invokeError;
+    if (invokeError.context && invokeError.context.status === 422) {
+        
+        const errorBody = await invokeError.context.json(); 
+        
+        if (errorBody.error === "geocoding_failed") {
+            const geoMessage = errorBody.message;
+            console.warn("Status 422 - Geocoding failed:", geoMessage);
+            
+            // Show the user your error message
+            alert(geoMessage); 
+            return;
         }
+    }
+    
         const currentActivityID = isEditing ? activityID : response.activityID;
 
        if (activityPic) {
@@ -248,7 +258,9 @@ async function saveActivity() {
         save.textContent = "Save";
     }
 }
-
+document.querySelector(".remove-btn").addEventListener("click", () =>
+    document.getElementById("activityPic").value = ""
+)
 
 document.getElementById('preview').addEventListener("click", previewActivity);
 document.getElementById("saveActivity").addEventListener("click", saveActivity);
