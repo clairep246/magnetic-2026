@@ -334,8 +334,10 @@ async function renderActivities() {
                         <h2>${activity.name}</h2>
 
                         <div class="infoRow">
-                            👤
-                            <span>Created by: ${userProfile[0].name}</span>
+                            👤 Created by:
+                            <a href="/pages/Profile/profile.html?userId=${createdById}" style="text-decoration: none">
+                                ${userProfile[0].name}
+                            </a>
                         </div>
 
                         <h3>Description</h3>

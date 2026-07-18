@@ -205,19 +205,19 @@ async function saveActivity() {
             "smart-responder", {
             body: activityData
         });
-    if (invokeError.context && invokeError.context.status === 422) {
-        
-        const errorBody = await invokeError.context.json(); 
-        
-        if (errorBody.error === "geocoding_failed") {
-            const geoMessage = errorBody.message;
-            console.warn("Status 422 - Geocoding failed:", geoMessage);
-            
-            // Show the user your error message
-            alert(geoMessage); 
-            return;
+
+        if (invokeError) {
+            if (invokeError.context && invokeError.context.status === 422) {
+                const errorBody = await invokeError.context.json();
+
+                if (errorBody.error === "geocoding_failed") {
+                    alert(errorBody.message);
+                    return;
+                }
+            }
+
+            throw invokeError;
         }
-    }
     
         const currentActivityID = isEditing ? activityID : response.activityID;
 

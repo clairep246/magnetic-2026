@@ -116,15 +116,19 @@ export async function displayProfile() {
     if (authError || !user) {
         throw authError;
     }
-    
-    const {data: profiles, error: getError} = await supabase
+    const params = new URLSearchParams(window.location.search);
+    const viewedUserId = params.get("userId");
+
+    const profileId = viewedUserId || user.id;
+
+    const { data: profiles, error: getError } = await supabase
         .from("Profile")
         .select("*")
-        .eq("created_by", user.id);
+        .eq("created_by", profileId);
 
     if (getError) {
-            throw getError;
-        }
+        throw getError;
+    }
 
     const profile = profiles[0];
 

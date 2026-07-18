@@ -171,6 +171,13 @@ async function loadRecommendations() {
                      <strong> Score: </strong>${Math.round(profile.interestScore * 100)}% match
                 </p>
             </div>
+
+             <button
+            class="view-profile-btn"
+            onclick="window.location.href='/pages/Profile/profile.html?userId=${profile.created_by}'">
+            View Profile
+        </button>
+            </div>
             </div>
         `;
         container.appendChild(reccCard);

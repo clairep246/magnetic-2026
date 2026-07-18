@@ -283,6 +283,7 @@ async function rejectFriendRequest(requestId, request) {
 
 async function loadFriends() {
     const container = document.getElementById("friends-container");
+
     if (container) {
         container.innerHTML = `
             <div class="loading-state" style="text-align: center; padding: 40px; font-family: sans-serif; color: #666;">
@@ -290,13 +291,17 @@ async function loadFriends() {
                 <p>Retrieving profiles...</p>
             </div>
             <style>
-                @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+                @keyframes spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                }
             </style>
         `;
     }
+
     const { data: { user } } = await supabase.auth.getUser();
 
-    const { data:friendListData, error:friendListError } = await supabase
+    const { data: friendListData, error: friendListError } = await supabase
         .from("Friend_list")
         .select("*")
         .eq("user_id", user.id);
@@ -306,7 +311,7 @@ async function loadFriends() {
         return;
     }
 
-     if (friendListData.length === 0) {
+    if (friendListData.length === 0) {
         container.innerHTML = "<p>No friends added.</p>";
         return;
     }
@@ -314,22 +319,23 @@ async function loadFriends() {
     container.innerHTML = "";
 
     for (const friend of friendListData) {
-        const { data: friendProfile, error: profileError } =
-            await supabase
-                .from("Profile")
-                .select("name, interest")
-                .eq("created_by", friend.friend_id)
-                .single();
+        const { data: friendProfile, error: profileError } = await supabase
+            .from("Profile")
+            .select("name, interest")
+            .eq("created_by", friend.friend_id)
+            .single();
 
         if (profileError) {
             console.log(profileError);
             continue;
         }
+
         const friendBox = document.createElement("div");
+
         friendBox.innerHTML = `
             <div class="friend-card">
                 <img
-                    src=${defaultProfilePic}
+                    src="${defaultProfilePic}"
                     class="friend-pic">
 
                 <div class="friend-info">
@@ -338,10 +344,22 @@ async function loadFriends() {
                         ${friendProfile.interest}
                     </p>
                 </div>
+
+                 <button
+            class="view-profile-btn"
+            onclick="window.location.href='/pages/Profile/profile.html?userId=${friend.friend_id}'">
+            View Profile
+        </button>
             </div>
         `;
+
+        friendBox.querySelector(".friend-name").addEventListener("click", () => {
+            window.location.href = `/pages/Profile/profile.html?userId=${friend.friend_id}`;
+        });
+
         container.appendChild(friendBox);
     }
+
     console.log(friendListData);
 }
 
