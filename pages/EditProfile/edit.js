@@ -180,45 +180,12 @@ async function saveProfile() {
         const residence = document.getElementById("residence").value;
         const year = document.getElementById("year").value;
         const major = document.getElementById("major").value;
-        const checked =document.querySelectorAll('input[name="interests"]:checked');
+        const checked = document.querySelectorAll('input[name="interests"]:checked');
         const interests = Array.from(checked).map(x => x.value);
         const friend_code = generateFriendCode();
 
         const profilePic = document.getElementById("profilePic").files[0];
         const MAX_SIZE = 2 * 1024 * 1024; // 2 MB
-
-        if (profilePic) {
-            if (profilePic.size > MAX_SIZE) {
-                alert("Profile image must be under 2 MB.");
-                saveButton.textContent = "Save";
-                return;
-            }
-
-        const {data: profilePicData, error: uploadError} = await supabase
-            .storage
-            .from("Pfp")
-            .upload(user.id + "/" + profilePic.name, profilePic)
-
-        if (uploadError) {
-            throw uploadError;
-        }
-
-        const { data: publicUrl } = supabase.storage
-            .from("Pfp")
-            .getPublicUrl(user.id + "/" + profilePic.name);
-
-        const profileData = {
-            created_by: user.id,
-            name: name,
-            about: about,
-            telegram: telegramHandle,
-            residences: residence,
-            year_of_study: year,
-            major: major,
-            interest: interests,
-            friend_code: friend_code,
-            profilePicUrl: publicUrl.publicUrl || ""
-        };
 
         if (!name) {
             alert("Please enter your name");
@@ -234,46 +201,98 @@ async function saveProfile() {
             alert("Please select your major");
             return;
         }
-        
+
         if (checked.length > 3) {
-            alert(`You can only select up to 3 interests!`);
+            alert("You can only select up to 3 interests!");
             return;
         }
 
-        
+        if (profilePic && profilePic.size > MAX_SIZE) {
+            alert("Profile image must be under 2 MB.");
+            return;
+        }
+
+        let profilePicUrl = "";
+
+        if (isEditing) {
+            const { data: existingProfile, error: existingError } = await supabase
+                .from("Profile")
+                .select("profilePicUrl")
+                .eq("created_by", user.id)
+                .single();
+
+            if (existingError) {
+                throw existingError;
+            }
+
+            profilePicUrl = existingProfile.profilePicUrl || "";
+        }
+
+        // Upload new picture only if selected
+        if (profilePic) {
+            const { error: uploadError } = await supabase
+                .storage
+                .from("Pfp")
+                .upload(`${user.id}/${profilePic.name}`, profilePic, {
+                    upsert: true
+                });
+
+            if (uploadError) {
+                throw uploadError;
+            }
+
+            const { data } = supabase.storage
+                .from("Pfp")
+                .getPublicUrl(`${user.id}/${profilePic.name}`);
+
+            profilePicUrl = data.publicUrl;
+        }
+
+        const profileData = {
+            created_by: user.id,
+            name: name,
+            about: about,
+            telegram: telegramHandle,
+            residences: residence,
+            year_of_study: year,
+            major: major,
+            interest: interests,
+            friend_code: friend_code,
+            profilePicUrl: profilePicUrl
+        };
 
         if (isEditing) {
             const { error: updateError } = await supabase
                 .from("Profile")
                 .update(profileData)
-                .eq("created_by", user.id)
-                .select();
+                .eq("created_by", user.id);
+
             if (updateError) {
                 throw updateError;
             }
 
         } else {
-            const {data, error: insertError } = await supabase
+            const { error: insertError } = await supabase
                 .from("Profile")
-                .insert([profileData])
-                .select();
+                .insert([profileData]);
 
             if (insertError) {
                 throw insertError;
             }
         }
 
-        alert(isEditing ? "Profile successfully updated!"
-                        : "Profile successfully created!");
+        alert(isEditing
+            ? "Profile successfully updated!"
+            : "Profile successfully created!");
 
         window.location.href = "../Profile/profile.html";
 
     } catch (error) {
-        console.log("Failed to save profile:" + error);
+        console.log("Failed to save profile:", error);
         alert("Failed to save profile. Please try again");
     } finally {
-            saveButton.textContent = "Save";
-        }
+        saveButton.textContent = "Save";
+    }
 }
 
 document.getElementById("save").addEventListener("click", saveProfile);
