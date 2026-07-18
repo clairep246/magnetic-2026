@@ -43,7 +43,7 @@ describe("generalise interest function", () => {
 });
 
 //---------------------------------------------------------
-describe("Recommend activity function", () => {
+describe("Generate activity function", () => {
   
   test.each([
     ["Painting"] ,
@@ -127,7 +127,7 @@ describe("Location cleaner function", () => {
           body: { location: inputLocation },
         }
       );
-
+      console.log(data)
       const matchesExpected = data.location.trim() === expectedLocation;
       expect(matchesExpected).toBe(true);
     }
