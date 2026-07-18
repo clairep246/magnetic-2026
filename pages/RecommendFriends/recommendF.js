@@ -165,7 +165,8 @@ async function loadRecommendations() {
                     <strong> Interests: </strong>${profile.interest}
                 </p>
                 <p class="recommend-details">
-                     <strong> Friend code </strong>${profile.friend_code}
+                     <strong id > Friend code: </strong>
+                     <span class="friend-code">${profile.friend_code}</span>
                 </p>
                 <p class="recommend-details">
                      <strong> Score: </strong>${Math.round(profile.interestScore * 100)}% match
