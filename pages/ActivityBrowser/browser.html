@@ -61,27 +61,71 @@
 
 
     <!--Activity browser section-->
-    <div class="activityPage">
-        <div class="header"><h2>Browse activities</h2></div>
-        
-        <!--<select id="filter">
-                <option>All Activities</option>
-                <option>Joined activities</option>
-            </select>-->
-             <div class="modeContainer">
-            <button id="allActivities" class="modeBtn">
-                <p>All activities</p>
-            </button>
-            <button id="joinedActivities" class="modeBtn">
-                <p>Joined activities</p>
-            </button>
+<div class="activityPage">
+
+    <div class="header">
+        <div class="headerText">
+             <h2>Browse Activities</h2>
+            <p>Discover and join activities that match your interests.</p>
         </div>
-         <div class="activityContainer" id="activityContainer">
+       
+        <div class="modeContainer">
+                <button id="allActivities" class="modeBtn active">
+                    All Activities
+                </button>
+
+                <button id="joinedActivities" class="modeBtn">
+                    Joined Activities
+                </button>
             </div>
-        <div class="buttons">
-            <button id="prevButton" type="button">🡰</button>
-            <button id="nextButton" type="button">🡲</button>
-        </div>
     </div>
+
+    <div class="browserLayout">
+
+        <!-- Left Filter -->
+        <div class="filterPanel">
+
+            <h3>Filter Activities</h3>
+
+            <div class="filterList">
+                <h4>Interest</h4>
+
+                <label><input type="checkbox" value="Sports & Fitness"> 🏀 Sports & Fitness</label>
+                <label><input type="checkbox" value="Gaming"> 🎮 Gaming</label>
+                <label><input type="checkbox" value="Technology"> 💻 Technology</label>
+                <label><input type="checkbox" value="Arts & Crafts"> 🎨 Arts & Crafts</label>
+                <label><input type="checkbox" value="Music"> 🎵 Music</label>
+                <label><input type="checkbox" value="Entertainment"> 🎬 Entertainment</label>
+                <label><input type="checkbox" value="Learning & Knowledge"> 📚 Learning & Knowledge</label>
+                <label><input type="checkbox" value="Business & Career"> 💼 Business & Career</label>
+                <label><input type="checkbox" value="Food & Cooking"> 🍜 Food & Cooking</label>
+                <label><input type="checkbox" value="Travel & Outdoors"> 🏕️ Travel & Outdoors</label>
+                <label><input type="checkbox" value="Lifestyle"> 🌿 Lifestyle</label>
+                <label><input type="checkbox" value="Social Activities"> 🥳 Social Activities</label>
+                <label><input type="checkbox" value="Community service"> 🤝 Community Service</label>
+            </div>
+
+            <button id="clearFilter">Clear Filters</button>
+
+        </div>
+
+        <hr>
+        <!-- Right Content -->
+        <div class="activityContent">
+            
+
+            <div class="activityContainer" id="activityContainer">
+            </div>
+
+            <div class="buttons">
+                <button id="prevButton">🡰</button>
+                <button id="nextButton">🡲</button>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 </body>
 </html>

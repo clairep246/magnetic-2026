@@ -306,6 +306,11 @@ async function loadFriends() {
         return;
     }
 
+     if (friendListData.length === 0) {
+        container.innerHTML = "<p>No friends added.</p>";
+        return;
+    }
+
     container.innerHTML = "";
 
     for (const friend of friendListData) {

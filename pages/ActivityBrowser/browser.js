@@ -2,6 +2,9 @@ import { supabase } from "../../src/supabaseClient.js";
 import defaultActivityPic from "../../images/activityPic.webp";
 const allBtn = document.getElementById("allActivities");
 const joinedActivitiesBtn = document.getElementById("joinedActivities");
+let filteredActivities = []
+let index = 0;
+let activities = []
 document.addEventListener('DOMContentLoaded', () => {
     const dropdowns = document.querySelectorAll('.dropDown');
 
@@ -28,14 +31,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    allBtn.classList.toggle("active")
+    allBtn.classList.add("active")
     displayActivities();
 });
-
-
-
-let index = 0;
-let activities = []
 
 //sign out
 async function signOut() {
@@ -183,7 +181,46 @@ async function leaveActivity(activityId) {
     }
 }
 
+function filterActivities() {
+    const checked = [...document.querySelectorAll(".filterList input[type='checkbox']:checked")];
 
+    if (checked.length === 0) {
+        filteredActivities = [...activities];
+    } else {
+
+        const selectedInterests = checked.map(box => box.value);
+
+        filteredActivities = activities.filter(activity =>
+            activity.generalised_interests.some(interest =>
+                selectedInterests.includes(interest)
+        )
+);
+    }
+
+    index = 0;
+    renderActivities();
+}
+document.querySelectorAll(".filterList input").forEach(box => {
+
+    box.addEventListener("change", filterActivities);
+    console.log(filteredActivities)
+
+});
+document.getElementById("clearFilter").addEventListener("click", () => {
+
+    document.querySelectorAll(".filterList input").forEach(box => {
+
+        box.checked = false;
+
+    });
+
+    filteredActivities = [...activities];
+
+    index = 0;
+
+    displayActivities();
+
+});
 //display activities by all other users 
 async function displayActivities() {
     const container = document.getElementById("activityContainer");
@@ -210,6 +247,7 @@ async function displayActivities() {
             }
             
             activities = data;
+            filteredActivities = [...activities];
             console.log(activities);
         } else { // for activities joined by user 
             const { data:interestedActivities, error:getError } = await supabase.from("Interested_activities").select(`Activity(*)`).eq("user_id", user.id);
@@ -219,161 +257,176 @@ async function displayActivities() {
 
             console.log(interestedActivities)
             activities = interestedActivities.map(activity => activity.Activity);
+            filteredActivities = [...activities];
         }
 
+        await renderActivities()
+
+    }catch (error) {
+        console.log(error);
+        alert("Failed to display acitvities")
+    }
+
+}
+
+async function renderActivities() {
+    try {
+        const { data: { user }, error: authError } = await supabase.auth.getUser();
+
+        if (authError) {
+            throw authError;
+        }
         //creating the activities list 
-        const container = document.getElementById("activityContainer");
-        container.innerHTML = "";
+            const container = document.getElementById("activityContainer");
+            container.innerHTML = "";
 
-        //no activities to be displayed 
-        if (activities.length === 0) {
-            const empty = document.createElement("div");
-            empty.innerHTML = `
-                <div class="empty">
-                    <p>No activities to be displayed.</p>
-                </div>
-            `;
-            container.appendChild(empty);
+            //no activities to be displayed 
+            if (filteredActivities.length === 0) {
+                const empty = document.createElement("div");
+                empty.innerHTML = `
+                    <div class="empty">
+                        <p>No activities to be displayed.</p>
+                    </div>
+                `;
+                container.appendChild(empty);
 
-            document.getElementById("nextButton").style.display = "none";
-            document.getElementById("prevButton").style.display = "none";
-            return;
-        }
-        
-        for (let i = index; i < index + 3; i++ ) {
-            //no more activities 
-            if (i >= activities.length) {
-                break;
+                document.getElementById("nextButton").style.display = "none";
+                document.getElementById("prevButton").style.display = "none";
+                return;
             }
-            const activity = activities[i];
-
-            const createdById = activity.created_by 
-            //to get name for the user who created activity
-            const {data: userProfile, error: userError} = await supabase.from("Profile").select("name").eq("created_by", createdById);
-            if (userError) {
-                throw userError;
-            }
-            console.log(userProfile);
-            const formattedDate = new Date(activity.date).toLocaleDateString(navigator.language, {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric'
-            });
-
-            const formattedTime = new Date(`2026-01-01T${activity.time}`).toLocaleTimeString(navigator.language, {
-                hour: 'numeric',
-                minute: '2-digit',
-                hour12: true
-            });
-            const link = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(activity.location)}`;
-            //creating each card
-            const activityBox = document.createElement("div");
-            activityBox.classList.add("activityBox")
-            activityBox.innerHTML = `
-                <div class="activityImage">
-                    <img src="${activity.activityPicURL || defaultActivityPic}" alt="Activity Image">
-                </div>
-
-                <div class="activityContent">
-
-                    <h2>${activity.name}</h2>
-
-                    <div class="infoRow">
-                        👤
-                        <span>Created by: ${userProfile[0].name}</span>
-                    </div>
-
-                    <h3>Description</h3>
-                    <div class="section">
-                        <p>${activity.description || "No description provided."}</p>
-                    </div>
-
-                    <h3>Interests</h3>
-                    <div class="interestContainer">
-                        ${activity.generalised_interests
-                            .map(interest => `<span>${interest}</span>`)
-                            .join("")}
-                    </div>
-
-                    <div class="infoRow">
-                        📍
-                        <span>
-                            
-                            <a href="${link}" target="_blank">
-                                ${activity.location}
-                            </a>
-                        </span>
-                    </div>
-
-                    <div class="infoRow">
-                        📅
-                        <span>${formattedDate}</span>
-                    </div>
-
-                    <div class="infoRow">
-                        🕒
-                        <span>${formattedTime}</span>
-                    </div>
-
-                    <div class="infoRow">
-                        👥
-                        <span>${activity.registered} / ${activity.participants} participants</span>
-                    </div>
-
-                    <div class="buttonsContainer">
-                        <button class="joinButton">Join</button>
-    
-                    </div>
-
-                </div>
-            `;
-            //if the activity is full, disable the join button 
-            if (activity.registered >= activity.participants) {
-                activityBox.querySelector(".joinButton").style.opacity = 0
-            }
-
-            const {data: interestedActivity, error: getError} = await supabase.from("Interested_activities")
-                .select("*")
-                .eq("user_id", user.id)
-                .eq("activity_id", activity.id)
-                .maybeSingle();
             
-            if (getError) {
-                throw getError;
+            for (let i = index; i < index + 2; i++ ) {
+                //no more activities 
+                if (i >= filteredActivities.length) {
+                    break;
+                }
+                const activity = filteredActivities[i];
+
+                const createdById = activity.created_by 
+                //to get name for the user who created activity
+                const {data: userProfile, error: userError} = await supabase.from("Profile").select("name").eq("created_by", createdById);
+                if (userError) {
+                    throw userError;
+                }
+                console.log(userProfile);
+                const formattedDate = new Date(activity.date).toLocaleDateString(navigator.language, {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                });
+
+                const formattedTime = new Date(`2026-01-01T${activity.time}`).toLocaleTimeString(navigator.language, {
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    hour12: true
+                });
+                const link = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(activity.location)}`;
+                //creating each card
+                const activityBox = document.createElement("div");
+                activityBox.classList.add("activityBox")
+                activityBox.innerHTML = `
+                    <div class="activityImage">
+                        <img src="${activity.activityPicURL || defaultActivityPic}" alt="Activity Image">
+                    </div>
+
+                    <div class="activityContent">
+
+                        <h2>${activity.name}</h2>
+
+                        <div class="infoRow">
+                            👤
+                            <span>Created by: ${userProfile[0].name}</span>
+                        </div>
+
+                        <h3>Description</h3>
+                        <div class="section">
+                            <p>${activity.description || "No description provided."}</p>
+                        </div>
+
+                        <h3>Interests</h3>
+                        <div class="interestContainer">
+                            ${activity.generalised_interests
+                                .map(interest => `<span>${interest}</span>`)
+                                .join("")}
+                        </div>
+
+                        <div class="infoRow">
+                            📍
+                            <span>
+                                
+                                <a href="${link}" target="_blank">
+                                    ${activity.location}
+                                </a>
+                            </span>
+                        </div>
+
+                        <div class="infoRow">
+                            📅
+                            <span>${formattedDate}</span>
+                        </div>
+
+                        <div class="infoRow">
+                            🕒
+                            <span>${formattedTime}</span>
+                        </div>
+
+                        <div class="infoRow">
+                            👥
+                            <span>${activity.registered} / ${activity.participants} participants</span>
+                        </div>
+
+                        <div class="buttonsContainer">
+                            <button class="joinButton">Join</button>
+        
+                        </div>
+
+                    </div>
+                `;
+                //if the activity is full, disable the join button 
+                if (activity.registered >= activity.participants) {
+                    activityBox.querySelector(".joinButton").style.opacity = 0
+                }
+
+                const {data: interestedActivity, error: getError} = await supabase.from("Interested_activities")
+                    .select("*")
+                    .eq("user_id", user.id)
+                    .eq("activity_id", activity.id)
+                    .maybeSingle();
+                
+                if (getError) {
+                    throw getError;
+                }
+
+                //once user join disable the join button 
+                const btn = activityBox.querySelector(".joinButton");
+                if (interestedActivity != null) {
+                    btn.textContent = "Leave Activity";
+                    btn.style.opacity = "50%"; 
+                    activityBox.querySelector(".joinButton").addEventListener("click", () => leaveActivity(activity.id));            
+                } else {
+                    activityBox.querySelector(".joinButton").addEventListener("click", () => joinActivity(activity.id));
+
+                }
+                container.appendChild(activityBox);
+                console.log(activities);
             }
 
-            //once user join disable the join button 
-            const btn = activityBox.querySelector(".joinButton");
-            if (interestedActivity != null) {
-                btn.textContent = "Leave Activity";
-                btn.style.opacity = "50%"; 
-                activityBox.querySelector(".joinButton").addEventListener("click", () => leaveActivity(activity.id));            
+            //Button states for back and forth 
+            if (index === 0) {
+                document.getElementById("prevButton").disabled = true;
             } else {
-                activityBox.querySelector(".joinButton").addEventListener("click", () => joinActivity(activity.id));
-
+                document.getElementById("prevButton").disabled = false;
             }
-            container.appendChild(activityBox);
-            console.log(activities);
-        }
 
-        //Button states for back and forth 
-        if (index === 0) {
-            document.getElementById("prevButton").disabled = true;
-        } else {
-            document.getElementById("prevButton").disabled = false;
+            if (index + 3 >= activities.length) {
+                document.getElementById("nextButton").disabled = true;
+            } else {
+                document.getElementById("nextButton").disabled = false;
         }
-
-        if (index + 3 >= activities.length) {
-            document.getElementById("nextButton").disabled = true;
-        } else {
-            document.getElementById("nextButton").disabled = false;
-        }
-
     } catch (error) {
         console.log("Failed to display activities:" + error);
     }
 }
-
 //Nav buttons 
 function nextActivities() {
     if (index + 3 < activities.length) {

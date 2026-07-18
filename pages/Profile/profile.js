@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 //sign out
-async function signOut() {
+export async function signOut() {
     try {
         const { error } = await supabase.auth.signOut();
 
@@ -68,11 +68,13 @@ function closePopup(popupElement) {
     if (mainSection) { mainSection.style.opacity = "1"; }
 }
 
-openChangebtn.addEventListener("click", () => openPopup(changePopup));
-closeChangebtn.addEventListener("click", () => closePopup(changePopup));
+if (openChangebtn && closeChangebtn) {
+    openChangebtn.addEventListener("click", () => openPopup(changePopup));
+    closeChangebtn.addEventListener("click", () => closePopup(changePopup));
+}
 
 //update password
-async function updateDetails() {
+export async function updateDetails() {
     try {
         document.getElementById("saveBtn").textContent = "Saving"
         const newPassword = document.getElementById("newPassword").value;
@@ -101,10 +103,13 @@ async function updateDetails() {
     }
 
 }
-document.getElementById("saveBtn").addEventListener("click", async () => updateDetails())
+
+if (document.getElementById("saveBtn")) {
+    document.getElementById("saveBtn").addEventListener("click", async () => updateDetails())
+}
 
 //display profile details
-async function displayProfile() {
+export async function displayProfile() {
     try {
         const {data: { user }, error: authError} = await supabase.auth.getUser();
     
@@ -145,6 +150,7 @@ async function displayProfile() {
         console.log("Failed to load profile:", error);
     }
 }
-
-document.getElementById("signout").addEventListener("click", signOut);
+if (document.getElementById("signout")) {
+    document.getElementById("signout").addEventListener("click", signOut);
+}
 displayProfile();

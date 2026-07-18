@@ -187,7 +187,7 @@ async function saveProfile() {
         const profilePic = document.getElementById("profilePic").files[0];
         const MAX_SIZE = 2 * 1024 * 1024; // 2 MB
 
-        if (profilePic.size > MAX_SIZE) {
+        if (profilePic && profilePic.size > MAX_SIZE) {
             alert("Profile image must be under 2 MB.");
             return;
         }

@@ -12,11 +12,13 @@
     "test:browser": "vitest --config=vitest.browser.config.js"
   },
   "devDependencies": {
+    "@playwright/test": "^1.61.1",
+    "@types/node": "^26.1.0",
     "@vitejs/plugin-react": "^6.0.2",
     "@vitest/browser-playwright": "^4.1.9",
+    "jest": "^30.4.2",
     "jsdom": "^29.1.1",
     "vite": "^8.0.13",
-    "vitest": "^4.1.9",
     "vitest-browser-react": "^2.2.0"
   },
   "dependencies": {

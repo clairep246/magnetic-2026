@@ -2,7 +2,7 @@ import { supabase } from "../../src/supabaseClient.js";
 
 console.log("JS CONNECTED");
 
-async function login() {
+export async function login() {
 
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
@@ -32,7 +32,10 @@ async function login() {
     window.location.href = "../Profile/profile.html";
 }
 
-document.getElementById("loginBtn")
-.addEventListener("click", () => {
-    login();
-});
+// Check if the button exists before attaching the listener
+const loginBtn = document.getElementById("loginBtn");
+if (loginBtn) {
+    loginBtn.addEventListener("click", () => {
+        login();
+    });
+}

@@ -8,7 +8,7 @@ const root = fileURLToPath(new URL('.', import.meta.url))
 export default defineConfig({
   plugins: [react()],
   test: {
-    include: ['pages/**/*.test.{js,jsx,ts,tsx}', 'src/**/*.test.{js,jsx,ts,tsx}'],
+    include: ['pages/**/*.test.{js,jsx,ts,tsx}', 'src/**/*.test.{js,jsx,ts,tsx}', 'tests/**/*.test.{js,jsx,ts,tsx}'],
   },
   build: {
     rollupOptions: {

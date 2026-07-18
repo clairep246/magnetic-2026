@@ -441,3 +441,28 @@ button:disabled {
         transform: rotate(360deg);
     }
 }
+
+.header {
+    display: flex;
+    flex-direction: row;
+    gap: 100px;
+    margin-top: -10px;
+}
+
+.headerText{
+    text-align:left;
+    margin-bottom:35px;
+    padding:0;
+}
+
+.headerText h2{
+    font-size:25px;
+    color:#3E07AC;
+    margin-bottom:8px;
+}
+
+.headerText p{
+    color:#666;
+    margin:0;
+    font-size: 17px;
+}

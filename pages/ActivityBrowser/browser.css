@@ -162,37 +162,126 @@ body {
 }
 
 /*Activity details*/
-.activityPage {
+.activityPage{
+    width:95%;
+    margin:40px auto;
+}
+
+.browserLayout{
+    display:flex;
+    gap:30px;
+    align-items:flex-start;
+}
+
+.header {
     display: flex;
-    flex-direction: column;
-    width: 100%;
-    margin-top: 10px;
-    margin-bottom: 20px;
-    align-items: center;
-    gap: 30px;
+    flex-direction: row;
+    gap: 100px;
+    margin-top: -60px;
 }
 
-#filter {
-    background-color: #AB9EE2;
-    color: white;
+.headerText{
+    text-align:left;
+    margin-bottom:35px;
+    padding:0;
 }
 
-.activityPage h1 {
+.headerText h2{
+    font-size:25px;
     color:#3E07AC;
-    font-size: 24px;
-    margin: 0;
-    font-weight: bold;
-    text-align: left;
+    margin-bottom:8px;
 }
 
-.activityContainer {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
+.headerText p{
+    color:#666;
+    margin:0;
+    font-size: 17px;
+}
 
-    gap: 24px;
-    padding: 0 20px;
-    box-sizing: border-box;
+.modeContainer{
+    display:flex;
+    justify-content:center;
+    gap:18px;
+    margin-top: 25px;
+}
+
+.modeBtn{
+    width:220px;
+    height:55px;
+    background:white;
+    color:black;
+    border:2px solid #ddd;
+    border-radius:15px;
+    font-size:16px;
+    font-weight:bold;
+}
+
+.modeBtn.active{
+    background:#AB9EE2;
+    color:white;
+    border:none;
+    cursor: not-allowed;
+}
+
+.modeBtn.active:hover {
+    transform: none;
+    background-color:#AB9EE2
+}
+
+.modeBtn:hover{
+    border:#3E07AC 2px solid;
+    transform: none;
+    background-color: white;
+}
+
+.filterPanel{
+    width:260px;
+    background:white;
+    padding:25px;
+}
+
+.filterPanel h3{
+    margin-top:0;
+    color:#3E07AC;
+}
+
+.filterList{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    margin-top: -30px;
+}
+
+.filterList h4{
+    margin-bottom:5px;
+    color:#555;
+}
+
+.filterList label{
+    display:flex;
+    gap:6px;
+    align-items:center;
+    cursor:pointer;
+}
+
+#clearFilter{
+    margin-top:20px;
+    background:#AB9EE2;
+}
+
+.activityContent{
+    flex:1;
+}
+
+.activityContainer{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+
+    gap:30px;
+
+    width:100%;
 }
 
 /* Each box */
@@ -210,12 +299,6 @@ body {
     box-shadow:0 8px 20px rgba(0,0,0,.12);
     transition: transform 0.2s, box-shadow 0.2s;
 }
-
-.activityBox:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-}
-
 
 .activityImage{
     position:relative;
@@ -315,7 +398,6 @@ body {
     display: flex;
     flex-direction: row;
     gap: 30px;
-    width: 30%;
     align-content: center;
     justify-content: center;
 }
@@ -331,6 +413,20 @@ button {
     cursor: pointer;
     width: 100%;
     transition: 0.3s;
+}
+
+.buttons button {
+    padding: 12px 14px;
+    border: none;
+    border-radius: 12px;
+    background: #AB9EE2;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100px;
+    transition: 0.3s;
+    margin-top: 20px;
 }
 
 button:hover {
@@ -393,68 +489,4 @@ select {
     to {
         transform: rotate(360deg);
     }
-}
-.modeContainer {
-    display: flex;
-    gap: 16px;
-    justify-content: center; 
-}
-
-.modeBtn {
-    flex-direction: row;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    background: #ffffff;
-    border-radius: 12px;
-    cursor: pointer;
-    text-align: left;
-    width: 220px;            
-    height: 60px;           
-    padding: 0 16px;         
-    box-sizing: border-box; 
-    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-}
-
-.modeBtn:hover {
-    transform: translateY(-3px);
-    background-color: white;
-    border: 2px solid #654c91;
-}
-
-.modeBtn p {
-    color: black;
-    font-size: 15px;
-    margin: 0;            
-}
-/*Active*/
-.modeBtn.active {
-    border: 2px solid #654c91; 
-    background: #AB9EE2;
-    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
-    cursor: not-allowed;
-}
-
-.modeBtn.active:hover {
-    transform: none;
-}
-
-.modeBtn.active p {
-    color: white;
-}
-
-.header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    padding-left: 50px;
-    margin-bottom: -10px;
-}
-
-.header h2 {
-    margin: 0;
-    color:#3E07AC;
-    font-size: 25px;
 }
