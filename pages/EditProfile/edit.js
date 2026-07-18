@@ -187,10 +187,12 @@ async function saveProfile() {
         const profilePic = document.getElementById("profilePic").files[0];
         const MAX_SIZE = 2 * 1024 * 1024; // 2 MB
 
-        if (profilePic && profilePic.size > MAX_SIZE) {
-            alert("Profile image must be under 2 MB.");
-            return;
-        }
+        if (profilePic) {
+            if (profilePic.size > MAX_SIZE) {
+                alert("Profile image must be under 2 MB.");
+                saveButton.textContent = "Save";
+                return;
+            }
 
         const {data: profilePicData, error: uploadError} = await supabase
             .storage
@@ -215,7 +217,7 @@ async function saveProfile() {
             major: major,
             interest: interests,
             friend_code: friend_code,
-            profilePicUrl: publicUrl.publicUrl
+            profilePicUrl: publicUrl.publicUrl || ""
         };
 
         if (!name) {

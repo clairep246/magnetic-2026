@@ -148,6 +148,20 @@ async function loadRecommendations() {
         if (checkFriend && checkFriend.length > 0) {
             continue;
         }
+
+        const {data: friendRequestdata, error: friendRequestError} = await supabase
+        .from("Friend_request")
+        .select("*")
+        .eq("sender_id", user.id)
+        .eq("receiver_id", profile.created_by)
+
+        if (friendRequestError) {
+            throw friendRequestError;
+        }
+
+        if (friendRequestdata && friendRequestdata.length > 0) {
+            continue;
+        }
         console.log(checkFriend);
 
         reccCard.innerHTML = `
