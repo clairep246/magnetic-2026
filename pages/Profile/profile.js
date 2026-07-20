@@ -65,9 +65,9 @@ function openPopup(popupElement) {
 }
 
 function closePopup(popupElement) {
-    popupElement.style.display = "none";
-    navBar.style.opacity = "1";
-    if (mainSection) { mainSection.style.opacity = "1"; }
+    if (popupElement) popupElement.style.display = "none";
+    if (navBar) navBar.style.opacity = "1";
+    if (mainSection) mainSection.style.opacity = "1";
 }
 
 if (openChangebtn && closeChangebtn && changePopup) {
