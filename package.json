@@ -16,6 +16,7 @@
     "@types/node": "^26.1.0",
     "@vitejs/plugin-react": "^6.0.2",
     "@vitest/browser-playwright": "^4.1.9",
+    "eslint": "^10.7.0",
     "jest": "^30.4.2",
     "jsdom": "^29.1.1",
     "vite": "^8.0.13",
