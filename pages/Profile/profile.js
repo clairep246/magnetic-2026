@@ -1,6 +1,7 @@
 import { supabase } from "../../src/supabaseClient.js";
-
+import defaultProfilePic from "../../images/default-profile.jpg";
 document.addEventListener('DOMContentLoaded', () => {
+    displayProfile();
     const dropdowns = document.querySelectorAll('.dropDown');
 
     dropdowns.forEach(dropdown => {
@@ -150,7 +151,7 @@ export async function displayProfile() {
         ? profile.interest.join(", ")
         : "";
     
-    document.getElementById("profilePhoto").src = profile.profilePicUrl|| "/images/default-profile.jpg";
+    document.getElementById("profilePhoto").src = profile.profilePicUrl|| defaultProfilePic;
 
     console.log("Profile loaded successfully");
     } catch (error) {
@@ -161,4 +162,3 @@ const signOutButton = document.getElementById("signout");
 if (signOutButton) {
     signOutButton.addEventListener("click", signOut);
 }
-displayProfile();
