@@ -15,15 +15,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const button = dropdown.querySelector('.links button');
         let timeout;
 
-        button.addEventListener('click', () => {
-            dropdown.classList.toggle('active');
+        if (button) {
+            button.addEventListener('click', () => {
+                dropdown.classList.toggle('active');
 
-            clearTimeout(timeout);
+                clearTimeout(timeout);
 
-            timeout = setTimeout(() => {
-                dropdown.classList.remove('active');
-            }, 2000);
-        });
+                timeout = setTimeout(() => {
+                    dropdown.classList.remove('active');
+                }, 2000);
+            });
+        }
     });
 
     document.addEventListener('click', (e) => {
@@ -52,7 +54,10 @@ async function signOut() {
     }
 }
 
-document.getElementById("signout").addEventListener("click", signOut);
+const signOutButton = document.getElementById("signout");
+if (signOutButton) {
+    signOutButton.addEventListener("click", signOut);
+}
 
  //preview of activity details before saving
  function previewActivity() {
@@ -258,13 +263,28 @@ async function saveActivity() {
         save.textContent = "Save";
     }
 }
-document.querySelector(".remove-btn").addEventListener("click", () =>
-    document.getElementById("activityPic").value = ""
-)
+const removeButton = document.querySelector(".remove-btn");
+if (removeButton) {
+    removeButton.addEventListener("click", () => {
+        const activityPicInput = document.getElementById("activityPic");
+        if (activityPicInput) {
+            activityPicInput.value = "";
+        }
+    });
+}
 
-document.getElementById('preview').addEventListener("click", previewActivity);
-document.getElementById("saveActivity").addEventListener("click", saveActivity);
-document.getElementById("signout").addEventListener("click", signOut);
+const previewButton = document.getElementById('preview');
+const saveActivityButton = document.getElementById("saveActivity");
+
+if (previewButton) {
+    previewButton.addEventListener("click", previewActivity);
+}
+if (saveActivityButton) {
+    saveActivityButton.addEventListener("click", saveActivity);
+}
+if (signOutButton) {
+    signOutButton.addEventListener("click", signOut);
+}
 loadActivityDetails();
 
 //open and close pop ups
@@ -306,10 +326,16 @@ function closePopup(popupElement) {
     mainSection.style.opacity = "1";
 }
 
-openChangebtn.addEventListener("click", () => openPopup(changePopup));
-closeChangebtn.addEventListener("click", () => closePopup(changePopup));
-openSuggestBtn.addEventListener("click", () => openPopup(interestPopup));
-closeSuggestBtn.addEventListener("click", () => closePopup(interestPopup));
+if (openChangebtn && closeChangebtn && changePopup) {
+    openChangebtn.addEventListener("click", () => openPopup(changePopup));
+    closeChangebtn.addEventListener("click", () => closePopup(changePopup));
+}
+if (openSuggestBtn && interestPopup) {
+    openSuggestBtn.addEventListener("click", () => openPopup(interestPopup));
+}
+if (closeSuggestBtn && interestPopup) {
+    closeSuggestBtn.addEventListener("click", () => closePopup(interestPopup));
+}
 
 //update email 
 async function updateDetails() {
@@ -341,7 +367,10 @@ async function updateDetails() {
     }
 
 }
-document.getElementById("saveBtn").addEventListener("click", async () => updateDetails())
+const saveButton = document.getElementById("saveBtn");
+if (saveButton) {
+    saveButton.addEventListener("click", async () => updateDetails())
+}
 
 //generate a new activity
 async function generateActivity(interests) {
@@ -376,7 +405,9 @@ try {
 }
 
 //use user's profile interest
-document.getElementById("useMyInterests").addEventListener("click", async () => {
+const useMyInterestsButton = document.getElementById("useMyInterests");
+if (useMyInterestsButton) {
+    useMyInterestsButton.addEventListener("click", async () => {
     try {
         const { data: { user }, error: authError} = await supabase.auth.getUser();
         if (authError) {
@@ -399,18 +430,24 @@ document.getElementById("useMyInterests").addEventListener("click", async () => 
         document.getElementById("useMyInterests").textContent = "Use my interests"
 
     }
-})
+    });
+}
 
-document.getElementById("useNewInterests").addEventListener("click", async () => {
+const useNewInterestsButton = document.getElementById("useNewInterests");
+if (useNewInterestsButton) {
+    useNewInterestsButton.addEventListener("click", async () => {
     document.getElementById("useMyInterests").style.display = "none";
     document.getElementById("useNewInterests").style.display = "none";
     document.getElementById('newInterests').style.display = "block";
     document.getElementById("generateActivity").style.display = "block";
     document.getElementById("interestPopupLabel").textContent = "Please enter max of 3 ONE WORD interests, separated by commas and no spaces."
-})
+    });
+}
 
 //use new interests 
-document.getElementById("generateActivity").addEventListener("click", async () => {
+const generateActivityButton = document.getElementById("generateActivity");
+if (generateActivityButton) {
+    generateActivityButton.addEventListener("click", async () => {
 
     const interests = document.getElementById("newInterests").value.split(",").map(x => x.trim())
     if (interests.length === 0) {
@@ -433,9 +470,29 @@ document.getElementById("generateActivity").addEventListener("click", async () =
         document.getElementById("generateActivity").textContent = "Generate Activity."
         document.getElementById("interestPopupLabel").textContent = "Would you like to use your profile's interests or key in new interests for your generated activity?"
     }
-});
+    });
+}
 
 //interest info button 
 const interestInfoPopup = document.getElementById("interestInfo");
-document.getElementById("interestInfobtn").addEventListener("click", () => openPopup(interestInfoPopup));
-document.getElementById("closeInterestInfobtn").addEventListener("click", () => closePopup(interestInfoPopup))
+const interestInfoButton = document.getElementById("interestInfobtn");
+const closeInterestInfoButton = document.getElementById("closeInterestInfobtn");
+
+if (interestInfoButton && interestInfoPopup) {
+    interestInfoButton.addEventListener("click", () => openPopup(interestInfoPopup));
+}
+if (closeInterestInfoButton && interestInfoPopup) {
+    closeInterestInfoButton.addEventListener("click", () => closePopup(interestInfoPopup));
+}
+
+export {
+    signOut,
+    previewActivity,
+    loadActivityDetails,
+    saveActivity,
+    resetInterestPopup,
+    openPopup,
+    closePopup,
+    updateDetails,
+    generateActivity,
+};

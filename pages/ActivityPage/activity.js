@@ -5,21 +5,24 @@ let index = 0;
 let activities = []
 
 document.addEventListener('DOMContentLoaded', () => {
+    displayActivities();
     const dropdowns = document.querySelectorAll('.dropDown');
 
     dropdowns.forEach(dropdown => {
         const button = dropdown.querySelector('.links button');
         let timeout;
 
-        button.addEventListener('click', () => {
-            dropdown.classList.toggle('active');
+        if (button) {
+            button.addEventListener('click', () => {
+                dropdown.classList.toggle('active');
 
-            clearTimeout(timeout);
+                clearTimeout(timeout);
 
-            timeout = setTimeout(() => {
-                dropdown.classList.remove('active');
-            }, 2000);
-        });
+                timeout = setTimeout(() => {
+                    dropdown.classList.remove('active');
+                }, 2000);
+            });
+        }
     });
 
     document.addEventListener('click', (e) => {
@@ -73,8 +76,10 @@ function closePopup(popupElement) {
     mainSection.style.opacity = "1"; 
 }
 
-openChangebtn.addEventListener("click", () => openPopup(changePopup));
-closeChangebtn.addEventListener("click", () => closePopup(changePopup));
+if (openChangebtn && closeChangebtn && changePopup) {
+    openChangebtn.addEventListener("click", () => openPopup(changePopup));
+    closeChangebtn.addEventListener("click", () => closePopup(changePopup));
+}
 
 //update password
 async function updateDetails() {
@@ -106,7 +111,10 @@ async function updateDetails() {
     }
 
 }
-document.getElementById("saveBtn").addEventListener("click", async () => updateDetails())
+const saveButton = document.getElementById("saveBtn");
+if (saveButton) {
+    saveButton.addEventListener("click", async () => updateDetails())
+}
 
 //display activities by user
 async function displayActivities() {
@@ -249,6 +257,8 @@ async function displayActivities() {
                 editActivity(activity.id);
             });
 
+            const closeParticipantbtn = document.getElementById("closeParticipants");
+
             //joined users 
             activityBox.querySelector(".viewParticipantsButton").addEventListener("click", async () => {
 
@@ -309,9 +319,14 @@ async function displayActivities() {
 
             });
 
-            closeParticipantbtn.addEventListener("click", () => {
-                document.getElementById("participantsModal").classList.remove("active")
-            })
+            if (closeParticipantbtn) {
+                closeParticipantbtn.addEventListener("click", () => {
+                    const participantsModal = document.getElementById("participantsModal");
+                    if (participantsModal) {
+                        participantsModal.classList.remove("active");
+                    }
+                });
+            }
 
             container.appendChild(activityBox);
             console.log(activities);
@@ -369,8 +384,28 @@ async function deleteActivity(activityID) {
    }
 }
 
-displayActivities();
-document.getElementById("nextButton").addEventListener("click", nextActivities);
-document.getElementById("prevButton").addEventListener("click", prevActivities);
-document.getElementById("signout").addEventListener("click", signOut);
+const nextButton = document.getElementById("nextButton");
+const prevButton = document.getElementById("prevButton");
+const signOutButton = document.getElementById("signout");
 
+if (nextButton) {
+    nextButton.addEventListener("click", nextActivities);
+}
+if (prevButton) {
+    prevButton.addEventListener("click", prevActivities);
+}
+if (signOutButton) {
+    signOutButton.addEventListener("click", signOut);
+}
+
+export {
+    signOut,
+    openPopup,
+    closePopup,
+    updateDetails,
+    displayActivities,
+    nextActivities,
+    prevActivities,
+    editActivity,
+    deleteActivity,
+};

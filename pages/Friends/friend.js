@@ -2,6 +2,11 @@ import { supabase } from "../../src/supabaseClient.js";
 import defaultProfilePic from "../../images/default-profile.jpg";
 
 document.addEventListener('DOMContentLoaded', () => {
+
+    loadFriendCode();
+    loadFriendRequests();
+    loadFriends();
+
     const dropdowns = document.querySelectorAll('.dropDown');
 
     dropdowns.forEach(dropdown => {
@@ -32,7 +37,7 @@ async function signOut() {
     const { error } = await supabase.auth.signOut();
 
     if (error) {
-        alert("Error signing out: " + error.message);
+        alert("Failed to sign out, please try again.");
         return;
     }
 
@@ -61,8 +66,10 @@ function closePopup(popupElement) {
    document.querySelector(".all-content").style.opacity = "1"; 
 }
 
-openChangebtn.addEventListener("click", () => openPopup(changePopup));
-closeChangebtn.addEventListener("click", () => closePopup(changePopup));
+if (openChangebtn && closeChangebtn && changePopup) {
+    openChangebtn.addEventListener("click", () => openPopup(changePopup));
+    closeChangebtn.addEventListener("click", () => closePopup(changePopup));
+}
 
 async function loadFriendCode() {
     const { data: { user } } = await supabase.auth.getUser();
@@ -75,7 +82,8 @@ async function loadFriendCode() {
         .single();
 
     if (error) {
-        console.error(error);
+        console.error(error); 
+        alert("Failed to load friend code")
         return;
     }
     document.getElementById("friend-code-display").textContent = data.friend_code;
@@ -363,11 +371,67 @@ async function loadFriends() {
     console.log(friendListData);
 }
 
-document.querySelector(".add-friend-button").addEventListener("click", sendFriendRequest);
-document.querySelector(".cancel-button").addEventListener("click", () => {
-    document.getElementById("friend-code-input").value = "";
-})
-document.getElementById("signout").addEventListener("click", signOut);
-loadFriendCode();
-loadFriendRequests();
-loadFriends();
+const addFriendButton = document.querySelector(".add-friend-button");
+const cancelButton = document.querySelector(".cancel-button");
+if (addFriendButton) {
+    addFriendButton.addEventListener("click", sendFriendRequest);
+}
+if (cancelButton) {
+    cancelButton.addEventListener("click", () => {
+        const friendCodeInput = document.getElementById("friend-code-input");
+        if (friendCodeInput) {
+            friendCodeInput.value = "";
+        }
+    });
+}
+const signOutButton = document.getElementById("signout");
+if (signOutButton) {
+    signOutButton.addEventListener("click", signOut);
+}
+
+//update password
+async function updateDetails() {
+    try {
+        document.getElementById("saveBtn").textContent = "Saving"
+        const newPassword = document.getElementById("newPassword").value;
+        const confirmPass = document.getElementById("confirmPassword").value;
+
+        if (newPassword !== confirmPass) {
+            alert("Passwords do not match. Please try again");
+            return;
+        }
+
+        const {data, error: updatePasswordError} = await supabase.auth.updateUser({
+            password: newPassword,
+        })
+        if (updatePasswordError) {
+            throw updatePasswordError;
+        }
+        console.log("Changed password saved successfully")
+        alert("Changed password  successfully")
+        closePopup(changePopup);
+
+    } catch (error) {
+        console.log("Fail to update details", error);
+        alert("Failed to update, please try again")
+        
+    } finally {
+        document.getElementById("saveBtn").textContent = "Save";
+    }
+
+}
+const saveButton = document.getElementById("saveBtn");
+if (saveButton) {
+    saveButton.addEventListener("click", async () => updateDetails())
+}
+
+export {
+    signOut,
+    updateDetails,
+    loadFriendCode,
+    sendFriendRequest,
+    loadFriendRequests,
+    loadFriends,
+    acceptFriendRequest,
+    rejectFriendRequest,
+};

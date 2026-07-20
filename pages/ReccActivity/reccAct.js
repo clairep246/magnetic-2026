@@ -31,7 +31,7 @@ async function signOut() {
     const { error } = await supabase.auth.signOut();
 
     if (error) {
-        alert("Error signing out: " + error.message);
+        alert("Failed to sign out, please try again.");
         return;
     }
 
@@ -60,8 +60,10 @@ function closePopup(popupElement) {
 }
 
 
-openChangebtn.addEventListener("click", () => openPopup(changePopup));
-closeChangebtn.addEventListener("click", () => closePopup(changePopup));
+if (openChangebtn && closeChangebtn && changePopup) {
+    openChangebtn.addEventListener("click", () => openPopup(changePopup));
+    closeChangebtn.addEventListener("click", () => closePopup(changePopup));
+}
 
 //update password
 async function updateDetails() {
@@ -92,9 +94,15 @@ async function updateDetails() {
     }
 
 }
-document.getElementById("saveBtn").addEventListener("click", async () => updateDetails())
+const saveButton = document.getElementById("saveBtn");
+if (saveButton) {
+    saveButton.addEventListener("click", async () => updateDetails())
+}
 
-document.getElementById("signout").addEventListener("click", signOut);
+const signOutButton = document.getElementById("signout");
+if (signOutButton) {
+    signOutButton.addEventListener("click", signOut);
+}
 
 //get user location 
 async function getCurrentLocation() {
@@ -431,16 +439,25 @@ async function displayActivities() {
 
 const interestBtn = document.getElementById("interestSuggestion");
 const randomBtn = document.getElementById("randomSuggestion");
-interestBtn.addEventListener("click", async () => {
-    interestBtn.classList.toggle("active");
-    randomBtn.classList.remove("active");
-    await displayActivities();
-})
+if (interestBtn && randomBtn) {
+    interestBtn.addEventListener("click", async () => {
+        interestBtn.classList.toggle("active");
+        randomBtn.classList.remove("active");
+        await displayActivities();
+    })
 
-randomBtn.addEventListener("click", async () => {
-    randomBtn.classList.toggle("active");
-    interestBtn.classList.remove("active");
-    await displayActivities();
-})
+    randomBtn.addEventListener("click", async () => {
+        randomBtn.classList.toggle("active");
+        interestBtn.classList.remove("active");
+        await displayActivities();
+    })
+}
 
 
+export {
+    signOut,
+    updateDetails,
+    displayActivities,
+    joinActivity,
+    leaveActivity
+}

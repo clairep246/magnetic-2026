@@ -9,15 +9,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const button = dropdown.querySelector('.links button');
         let timeout;
 
-        button.addEventListener('click', () => {
-            dropdown.classList.toggle('active');
+        if (button) {
+            button.addEventListener('click', () => {
+                dropdown.classList.toggle('active');
 
-            clearTimeout(timeout);
+                clearTimeout(timeout);
 
-            timeout = setTimeout(() => {
-                dropdown.classList.remove('active');
-            }, 2000);
-        });
+                timeout = setTimeout(() => {
+                    dropdown.classList.remove('active');
+                }, 2000);
+            });
+        }
     });
 
     document.addEventListener('click', (e) => {
@@ -67,8 +69,10 @@ function closePopup(popupElement) {
     mainSection.style.opacity = "1"; 
 }
 
-openChangebtn.addEventListener("click", () => openPopup(changePopup));
-closeChangebtn.addEventListener("click", () => closePopup(changePopup));
+if (openChangebtn && closeChangebtn && changePopup) {
+    openChangebtn.addEventListener("click", () => openPopup(changePopup));
+    closeChangebtn.addEventListener("click", () => closePopup(changePopup));
+}
 
 //update password
 async function updateDetails() {
@@ -99,7 +103,10 @@ async function updateDetails() {
     }
 
 }
-document.getElementById("saveBtn").addEventListener("click", async () => updateDetails())
+const saveButton = document.getElementById("saveBtn");
+if (saveButton) {
+    saveButton.addEventListener("click", async () => updateDetails())
+}
 
 // For editing mode: pre fill in the details
 async function loadProfileDetails() {
@@ -295,6 +302,20 @@ async function saveProfile() {
     }
 }
 
-document.getElementById("save").addEventListener("click", saveProfile);
-document.getElementById("signout").addEventListener("click", signOut);
+const saveProfileButton = document.getElementById("save");
+if (saveProfileButton) {
+    saveProfileButton.addEventListener("click", saveProfile);
+}
+
+const signOutButton = document.getElementById("signout");
+if (signOutButton) {
+    signOutButton.addEventListener("click", signOut);
+}
 loadProfileDetails();
+export {
+    signOut,
+    updateDetails,
+    loadProfileDetails,
+    saveProfile,
+    generateFriendCode
+};

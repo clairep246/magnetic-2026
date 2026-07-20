@@ -2,6 +2,7 @@ import { supabase } from "../../src/supabaseClient.js";
 import defaultProfilePic from "../../images/default-profile.jpg";
 
 document.addEventListener('DOMContentLoaded', () => {
+    loadRecommendations();
     const dropdowns = document.querySelectorAll('.dropDown');
 
     dropdowns.forEach(dropdown => {
@@ -33,12 +34,12 @@ async function signOut() {
     const { error } = await supabase.auth.signOut();
 
     if (error) {
-        alert("Error signing out: " + error.message);
+        alert("Failed to sign out, please try again.");
         return;
     }
 
     alert("Successfully signed out!");
-    window.location.href = "/pages/Login/login.html";
+    window.location.href = "../Login/login.html";
 }
 //open and close pop ups
 const openChangebtn = document.getElementById("change");
@@ -61,8 +62,10 @@ function closePopup(popupElement) {
 }
 
 
-openChangebtn.addEventListener("click", () => openPopup(changePopup));
-closeChangebtn.addEventListener("click", () => closePopup(changePopup));
+if (openChangebtn && closeChangebtn && changePopup) {
+    openChangebtn.addEventListener("click", () => openPopup(changePopup));
+    closeChangebtn.addEventListener("click", () => closePopup(changePopup));
+}
 
 //update password
 async function updateDetails() {
@@ -200,5 +203,13 @@ async function loadRecommendations() {
     console.log(profiles);
 }
 
-loadRecommendations();
-document.getElementById("signout").addEventListener("click", signOut);
+const signOutButton = document.getElementById("signout");
+if (signOutButton) {
+    signOutButton.addEventListener("click", signOut);
+}
+
+export {
+    signOut,
+    updateDetails,
+    loadRecommendations
+}

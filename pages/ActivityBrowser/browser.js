@@ -12,15 +12,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const button = dropdown.querySelector('.links button');
         let timeout;
 
-        button.addEventListener('click', () => {
-            dropdown.classList.toggle('active');
+        if (button) {
+            button.addEventListener('click', () => {
+                dropdown.classList.toggle('active');
 
-            clearTimeout(timeout);
+                clearTimeout(timeout);
 
-            timeout = setTimeout(() => {
-                dropdown.classList.remove('active');
-            }, 2000);
-        });
+                timeout = setTimeout(() => {
+                    dropdown.classList.remove('active');
+                }, 2000);
+            });
+        }
     });
 
     document.addEventListener('click', (e) => {
@@ -31,7 +33,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    allBtn.classList.add("active")
+    if (allBtn) {
+        allBtn.classList.add("active");
+    }
     displayActivities();
 });
 
@@ -75,8 +79,10 @@ function closePopup(popupElement) {
     mainSection.style.opacity = "1"; 
 }
 
-openChangebtn.addEventListener("click", () => openPopup(changePopup));
-closeChangebtn.addEventListener("click", () => closePopup(changePopup));
+if (openChangebtn && closeChangebtn && changePopup) {
+    openChangebtn.addEventListener("click", () => openPopup(changePopup));
+    closeChangebtn.addEventListener("click", () => closePopup(changePopup));
+}
 
 //update password
 async function updateDetails() {
@@ -109,7 +115,10 @@ async function updateDetails() {
     }
 
 }
-document.getElementById("saveBtn").addEventListener("click", async () => updateDetails())
+const saveButton = document.getElementById("saveBtn");
+if (saveButton) {
+    saveButton.addEventListener("click", async () => updateDetails())
+}
 
 //logged in user join activity 
 async function joinActivity(activityId) {
@@ -200,27 +209,25 @@ function filterActivities() {
     index = 0;
     renderActivities();
 }
-document.querySelectorAll(".filterList input").forEach(box => {
-
+const filterBoxes = document.querySelectorAll(".filterList input");
+filterBoxes.forEach(box => {
     box.addEventListener("change", filterActivities);
-    console.log(filteredActivities)
-
 });
-document.getElementById("clearFilter").addEventListener("click", () => {
 
-    document.querySelectorAll(".filterList input").forEach(box => {
+const clearFilterButton = document.getElementById("clearFilter");
+if (clearFilterButton) {
+    clearFilterButton.addEventListener("click", () => {
+        document.querySelectorAll(".filterList input").forEach(box => {
+            box.checked = false;
+        });
 
-        box.checked = false;
+        filteredActivities = [...activities];
 
+        index = 0;
+
+        displayActivities();
     });
-
-    filteredActivities = [...activities];
-
-    index = 0;
-
-    displayActivities();
-
-});
+}
 //display activities by all other users 
 async function displayActivities() {
     const container = document.getElementById("activityContainer");
@@ -444,21 +451,50 @@ function prevActivities() {
     }
 }
 
-document.getElementById("signout").addEventListener("click", signOut);
-document.getElementById("nextButton").addEventListener("click", nextActivities);
-document.getElementById("prevButton").addEventListener("click", prevActivities);
+const signOutButton = document.getElementById("signout");
+const nextButton = document.getElementById("nextButton");
+const prevButton = document.getElementById("prevButton");
 
+if (signOutButton) {
+    signOutButton.addEventListener("click", signOut);
+}
+if (nextButton) {
+    nextButton.addEventListener("click", nextActivities);
+}
+if (prevButton) {
+    prevButton.addEventListener("click", prevActivities);
+}
 
-allBtn.addEventListener("click", async () => {
-    allBtn.classList.toggle("active");
-    joinedActivitiesBtn.classList.remove("active");
-    document.getElementById("prevButton").style.opacity = "100%";
-    document.getElementById("nextButton").style.opacity = "100%";
-    await displayActivities();
-})
+if (allBtn) {
+    allBtn.addEventListener("click", async () => {
+        allBtn.classList.toggle("active");
+        if (joinedActivitiesBtn) {
+            joinedActivitiesBtn.classList.remove("active");
+        }
+        if (prevButton) {
+            prevButton.style.opacity = "100%";
+        }
+        if (nextButton) {
+            nextButton.style.opacity = "100%";
+        }
+        await displayActivities();
+    });
+}
 
-joinedActivitiesBtn.addEventListener("click", async () => {
-    joinedActivitiesBtn.classList.toggle("active");
-   allBtn.classList.remove("active");
-    await displayActivities();
-})
+if (joinedActivitiesBtn) {
+    joinedActivitiesBtn.addEventListener("click", async () => {
+        joinedActivitiesBtn.classList.toggle("active");
+        if (allBtn) {
+            allBtn.classList.remove("active");
+        }
+        await displayActivities();
+    });
+}
+
+export {
+    signOut,
+    updateDetails,
+    displayActivities,
+    joinActivity,
+    leaveActivity,
+};

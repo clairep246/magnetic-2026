@@ -7,15 +7,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const button = dropdown.querySelector('.links button');
         let timeout;
 
-        button.addEventListener('click', () => {
-            dropdown.classList.toggle('active');
+        if (button) {
+            button.addEventListener('click', () => {
+                dropdown.classList.toggle('active');
 
-            clearTimeout(timeout);
+                clearTimeout(timeout);
 
-            timeout = setTimeout(() => {
-                dropdown.classList.remove('active');
-            }, 2000);
-        });
+                timeout = setTimeout(() => {
+                    dropdown.classList.remove('active');
+                }, 2000);
+            });
+        }
     });
 
     document.addEventListener('click', (e) => {
@@ -68,7 +70,7 @@ function closePopup(popupElement) {
     if (mainSection) { mainSection.style.opacity = "1"; }
 }
 
-if (openChangebtn && closeChangebtn) {
+if (openChangebtn && closeChangebtn && changePopup) {
     openChangebtn.addEventListener("click", () => openPopup(changePopup));
     closeChangebtn.addEventListener("click", () => closePopup(changePopup));
 }
@@ -104,8 +106,9 @@ export async function updateDetails() {
 
 }
 
-if (document.getElementById("saveBtn")) {
-    document.getElementById("saveBtn").addEventListener("click", async () => updateDetails())
+const saveButton = document.getElementById("saveBtn");
+if (saveButton) {
+    saveButton.addEventListener("click", async () => updateDetails())
 }
 
 //display profile details
@@ -154,7 +157,8 @@ export async function displayProfile() {
         console.log("Failed to load profile:", error);
     }
 }
-if (document.getElementById("signout")) {
-    document.getElementById("signout").addEventListener("click", signOut);
+const signOutButton = document.getElementById("signout");
+if (signOutButton) {
+    signOutButton.addEventListener("click", signOut);
 }
 displayProfile();
