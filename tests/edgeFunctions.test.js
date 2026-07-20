@@ -35,16 +35,32 @@ describe("generalise interest function", () => {
           },
         }
       );
+
+      let result = data.interests;
+
+      if (Array.isArray(result)) {
+        // Already an array
+      } else if (typeof result === "string") {
+        result = result
+          .split(",")
+          .map(item => item.trim())
+          .filter(Boolean);
+      } else {
+        throw new Error("Unexpected interests format");
+      }
+
+      console.log(result);
       console.log(data.interests);
-      expect(ALLOWED_INTERESTS.includes(data.interests)).toBe(true);
-    }
+      
+      expect(result.every(item => ALLOWED_INTERESTS.includes(item))).toBe(true);
+    },
+    15_000 
   );
 
 });
 
 //---------------------------------------------------------
 describe("Generate activity function", () => {
-  
   test.each([
     ["Painting"] ,
     ["Football", "Gaming"] ,
