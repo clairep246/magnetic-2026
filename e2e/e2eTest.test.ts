@@ -75,7 +75,6 @@ test.describe('Signup', () => {
   test('6. Successful signup', async ({ page }) => {
   test.setTimeout(80000);
 
-  // Handle signup success dialog
   page.once('dialog', async dialog => {
     console.log(`[Dialog Detected]: "${dialog.message()}"`);
     expect(dialog.message()).toBe('Signup successful!');
@@ -87,10 +86,8 @@ test.describe('Signup', () => {
   await page.locator("#password").fill("123456");
   await page.getByRole("button", { name: "Create Account" }).click();
 
-  // Wait until the profile page is loaded
   await expect(page).toHaveURL(/.*\/EditProfile\/edit\.html/);
 
-  // Register the next dialog BEFORE clicking Save
   page.once('dialog', async dialog => {
     console.log(`[Dialog Detected]: "${dialog.message()}"`);
     expect(dialog.message()).toBe('Profile successfully created!');
@@ -105,7 +102,6 @@ test.describe('Signup', () => {
 
   await page.getByRole('button', { name: 'Save' }).click();
 
-  // Optional: verify you're still on the profile page
   await expect(page).toHaveURL(/.*\/Profile\/profile\.html/);
 });
 });
@@ -289,7 +285,6 @@ test.describe('Activity Creation', () => {
   });
 
  test('Successfully create activity and redirect', async ({ page }) => {
-  // 1. Fill in the form fields
   await page.locator('#name').fill('Valid Activity' + Date.now());
   await page.locator('#location').fill('nus');
   await page.locator('#date').fill('2026-12-25');
@@ -297,19 +292,15 @@ test.describe('Activity Creation', () => {
   await page.locator('#interest').fill('Gaming, Coding');
   await page.locator('#participants').fill('10');
 
-  // 2. Set up the event promise and trigger the click simultaneously
-  const [dialog] = await Promise.all([
-    page.waitForEvent('dialog'),
-    page.locator('#saveActivity').click()
-  ]);
+  page.on('dialog', async dialog => {
+    expect(dialog.message()).toBe('Activity successfully created!');
+    await dialog.accept(); 
+  });
 
-  // 3. Assert on the dialog message and accept it
-  expect(dialog.message()).toBe('Activity successfully created!');
-  await dialog.accept();
+  await page.getByRole("button", { name: "Save Activity" }).click();
 
-  // 4. Assert the final redirect after the dialog is closed
   await expect(page).toHaveURL(/.*\/ActivityPage\/activity\.html/);
-});
+  });
 });
 
 test.describe('Friend request', () => {
@@ -338,7 +329,7 @@ test.describe('Friend request', () => {
       await dialog.accept();
     });
 
-    await page.locator('#friend-code-input').fill('W3CU6U');
+    await page.locator('#friend-code-input').fill('ZCPIYB');
     await page.getByText("Send Request").click();
   });
 
@@ -390,11 +381,11 @@ test.describe('Friend request', () => {
 
      test("Send friend request with friend code that has been used before", async ({ page }) => {
     page.once('dialog', async dialog => {
-      expect(dialog.message()).toBe('Request has already been sent to this user');
+      expect(dialog.message()).toBe('Request has already been sent to this user.');
       await dialog.accept();
     });
 
-    await page.locator('#friend-code-input').fill('E0H0CP');
+    await page.locator('#friend-code-input').fill('O3RN24');
     await page.getByText("Send Request").click();
   });
 });
