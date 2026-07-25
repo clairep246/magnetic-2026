@@ -1,4 +1,7 @@
+// @vitest-environment jsdom
+
 import { describe, it, expect, beforeEach, vi } from "vitest";
+
 const {
     mockInvoke,
     mockFriendEq,
@@ -8,6 +11,7 @@ const {
     mockFriendEq: vi.fn(),
     mockRequestEq: vi.fn(),
 }));
+
 vi.mock("../src/supabaseClient.js", () => ({
     supabase: {
         auth: {
