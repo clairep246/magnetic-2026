@@ -100,7 +100,13 @@ async function loadRecommendations() {
     const {data: {user} , error: userError} = await supabase.auth.getUser();
 
     const container = document.getElementById("recommend-container");
-      if (container) {
+    if (!container) {
+        return;
+    }
+    if (userError) {
+        throw userError;
+    }
+    if (container) {
         container.innerHTML = `
             <div class="loading-state" style="text-align: center; padding: 40px; font-family: sans-serif; color: #666;">
                 <div class="spinner" style="border: 4px solid rgba(0,0,0,0.1); width: 36px; height: 36px; border-radius: 50%; border-left-color: #09f; animation: spin 1s linear infinite; margin: 0 auto 10px auto;"></div>
@@ -116,6 +122,7 @@ async function loadRecommendations() {
 
     if (error) {
         console.error("Error loading recommendations:", error);
+        alert("Unable to load friends, please reoload page to try again")
         return;
     }
 
@@ -130,12 +137,12 @@ async function loadRecommendations() {
         return;
     }
 
-    for (let i = 0; i < 5; i++) {
-        if (i >= profiles.length) {
+    let displayedCount = 0;
+
+    for (const profile of profiles) {
+        if (displayedCount === 5) {
             break;
         }
-
-        const profile = profiles[i];
         const reccCard = document.createElement("div");
        
         const {data: checkFriend, error: checkFriendError} = await supabase
@@ -145,7 +152,8 @@ async function loadRecommendations() {
         .eq("friend_id", profile.created_by);
 
         if (checkFriendError) {
-            throw error;
+            console.error("Error checking existing friends:", checkFriendError);
+            continue;
         }
 
         if (checkFriend && checkFriend.length > 0) {
@@ -199,6 +207,15 @@ async function loadRecommendations() {
             </div>
         `;
         container.appendChild(reccCard);
+        displayedCount++;
+    }
+
+    if (displayedCount === 0) {
+        container.innerHTML = `
+            <div class="empty">
+                <p>No recommended friends yet.</p>
+            </div>
+        `;
     }
     console.log(profiles);
 }
