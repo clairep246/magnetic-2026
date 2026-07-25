@@ -440,6 +440,18 @@ button:disabled {
     transform: none;
 }
 
+#prevButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+#nextButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
 select {
     margin-top: -10px;
     padding: 8px;

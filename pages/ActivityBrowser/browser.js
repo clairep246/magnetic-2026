@@ -128,7 +128,6 @@ async function joinActivity(activityId) {
             throw authError;
         }
 
-        //pair the user to the activities they want to join in the interested_activities table
         const {data: joinedActivity, error: insertError} = await supabase.from("Interested_activities").insert({
             activity_id: activityId,
             user_id: user.id
@@ -257,14 +256,19 @@ async function displayActivities() {
             filteredActivities = [...activities];
             console.log(activities);
         } else { // for activities joined by user 
-            const { data:interestedActivities, error:getError } = await supabase.from("Interested_activities").select(`Activity(*)`).eq("user_id", user.id);
+            const { data:activities, error:getError } = await supabase.from("Interested_activities")
+                .select(`
+                    *,
+                    Activity(*)
+                `)
+                .eq("user_id", user.id)
+                .order("Activity(name)");
              if (getError) {
                 throw getError;
             }
 
-            console.log(interestedActivities)
-            activities = interestedActivities.map(activity => activity.Activity);
-            filteredActivities = [...activities];
+            console.log("Joined activities result:", activities);
+            filteredActivities = activities.map(item => item.Activity);
         }
 
         await renderActivities()
@@ -427,26 +431,26 @@ async function renderActivities() {
                 document.getElementById("prevButton").disabled = false;
             }
 
-            if (index + 3 >= activities.length) {
+if (index + 3 >= filteredActivities.length) {
                 document.getElementById("nextButton").disabled = true;
             } else {
                 document.getElementById("nextButton").disabled = false;
-        }
+            }
     } catch (error) {
         console.log("Failed to display activities:" + error);
     }
 }
 //Nav buttons 
 function nextActivities() {
-    if (index + 3 < activities.length) {
-        index += 3;
+    if (index + 2 < activities.length) {
+        index += 2;
         displayActivities();
     }
 }
 
 function prevActivities() {
     if (index >= 0) {
-        index -= 3;
+        index -= 2;
         displayActivities();
     }
 }
